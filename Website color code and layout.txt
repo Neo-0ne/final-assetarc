@@ -1,0 +1,475 @@
+🎨 Brand Colors (as code tokens + usage)
+
+Core palette
+
+Gold gradient (primary): #B78628 → #FFD700 (metallic) — headings, CTAs, accents, hover states. 
+
+Bronze (gradient start): #8C6239 — left/early stops in gradients, borders. 
+
+Black (background): #000000 — global background / header / footer. 
+
+White (content blocks): #FFFFFF — cards, text blocks for readability. 
+
+Soft Silver (accents): #D3D3D3 — thin dividers, subtle UI lines. 
+
+CSS variables (present in style.css)
+
+:root{
+  --gold-light:#FFD700; --gold-med:#B78628; --gold-dark:#8C6239;
+  --white:#ffffff; --black:#000000;
+}
+
+
+(Used across header, nav, main, buttons, cards.) 
+
+Gradient utility (custom CSS)
+You also have a reusable class example for gold gradient buttons:
+
+.btn-gold{background:linear-gradient(135deg,#8C6239,#B78628,#FFD700);color:#fff}
+
+
+🔤 Typography
+
+Headings (serif): Playfair Display or Cormorant Garamond for premium/legal tone. 
+
+Body (sans-serif): Inter, Lato, or Source Sans Pro for clarity. 
+
+Buttons/CTAs: Inter SemiBold / Lato Bold. 
+
+The base style.css demo used Georgia as a serif fallback (can be swapped to your final font stack). 
+
+🧱 Layout System & Page Structure
+
+Global layout choices
+
+Dark shell with light cards: Dark charcoal/black background with white content blocks for readability (premium hybrid style). 
+
+Card UI: .card{ background:#1a1a1a; border:1px solid var(--gold-dark); border-radius:16px; box-shadow:0 0 15px rgba(255,215,0,.1) } (mobile rules included). 
+
+Responsive: Header/main padding adjustments and flexible nav on sub-768px. 
+
+Primary templates (present/defined)
+
+front-page.php (home), page-*.php for about/services/pricing/education/consultation/login, vault-access.php, white-label.php, webhook-handler.php, plus core: style.css, functions.php, header.php, footer.php, index.php. 
+
+Custom dashboards via /templates: template-dashboard.php, template-metrics.php, template-review.php, template-vault.php (must have WP template headers). 
+
+Home/index behavior
+
+index.php centers hero, shows gold CTAs, routes to Client Intake, Advisor, Consultation, Education. Requires a gold color token if using Tailwind utilities as shown. 
+
+🧭 Navigation, Header & Footer
+
+Header
+
+Black header, gold logo/text, nav links gold→white on hover. 
+
+White-label aware: header.php detects subdirectory brand and loads logo/name from environment (e.g., BRAND_X_NAME/LOGO). 
+
+Footer
+
+Black footer, subtle gold-dark top border, muted text; matches header styling. 
+
+🧩 Components (ready styles)
+
+Buttons: Gold background, black text; hover → lighter gold. (You requested black outline + gold text invert as a variant; base demo shows filled gold—keep both variants.) 
+
+Pricing Cards, Trust Strip, Bot Panel Grid, Sticky CTA — CSS blocks prepared for the premium look (gold accents, shadows, hover elevate). 
+
+👤 Advisor / White-Label Behavior
+
+Subdirectory routing (/advisorX) for brand override (logo/colors/meta) — Option A (single WP install) is recommended for scale. 
+
+White-label loader proposed in white-label.php: detect subdir, pull branding JSON/DB, override tokens, assets, tags. 
+
+Advisor dashboard shows token usage, pending reviews, links to white-label settings & metrics. 
+
+🔐 Auth, Vault & Redirects (functions)
+
+Login redirect: logged-in users auto-land on /vault. 
+
+Hide admin bar for non-admins. 
+
+Shortcode [advisor_brand] exposes detected brand name in content blocks. 
+
+⚙️ Theme Bootstrap & Enqueues
+
+Theme header (required!): Valid metadata block at top of style.css. (Fix for the earlier WP install error.) 
+
+Enqueue CSS/JS: functions.php should enqueue /css/custom.css and /js/script.js (token forms, AJAX, modals). 
+
+Folder map (final): css/, js/, templates/, core PHP files, screenshot.png. 
+
+Screenshot preview: place screenshot.png (1200×900) so the theme previews correctly in WP Admin. 
+
+🧪 Blog & Single posts
+
+Blog posts route via single.php (you asked for it among remaining files); blog uses standard loop + theme styles. The doc notes /sample-post/ → single.php. 
+
+🖇️ Integration Points (Flask/bots/FX/etc.)
+
+Webhook→Flask: webhook-handler.php to connect forms to bot backend. 
+
+Vault gate: vault-access.php for secure doc preview/release after human review. 
+
+Token UI/logic: in JS (validation) + functions (hold/deduct/release) + advisor dashboard templates. 
+
+Dynamic gold token (Tailwind optional): If using Tailwind utilities in index.php, make sure gold is defined in tailwind.config.js. 
+
+✅ What to double-check in your repo (fast audit list)
+
+style.css header present at top; color tokens/typography consistent. 
+
+functions.php enqueues /css/custom.css & /js/script.js and contains login redirect + admin-bar hide + shortcode. 
+ 
+
+Templates renamed .php with valid headers (Dashboard/Metrics/Review/Vault). 
+
+White-label detect/override in white-label.php + header.php brand loader. 
+ 
+
+Index/Home hero CTAs and routes match your paths; Tailwind token defined if used. 
+
+Blog has single.php wired (per /sample-post/). 
+
+Screenshot present at 1200×900. 
+
+If you want, I can package this as a theme “spec sheet” PDF and/or regenerate the theme ZIP with all pages, CSS tokens, white-label loader, and missing files (e.g., single.php, newsletter-handler.php, review-flag-router.php) filled in exactly to these specs for one-click upload.
+
+Sources
+You said:
+Set out the layout of the home page.
+ChatGPT said:
+Thought for 13s
+
+Here’s a clear, implementation-ready layout for the Home page. It’s structured top-to-bottom, with each section’s purpose, content, and WP implementation notes so your developer can build it quickly and you can verify it against the theme.
+
+Top-level anatomy (desktop → mobile)
+
+Sticky Header & Announcement Bar
+
+Hero (primary CTA)
+
+Trust Strip (logos / assurances)
+
+“How It Works” (3–4 steps)
+
+Choose Your Path (Clients vs Advisors)
+
+Featured Bots Grid (quick launch)
+
+Lead Magnet / Vault Teaser
+
+Compliance & Security (South Africa first)
+
+Case Studies & Testimonials
+
+Pricing Snapshot (+ “See full pricing”)
+
+Resource Highlights (Guides / Webinars / FAQ)
+
+Final CTA Strip
+
+Footer
+
+1) Sticky Header & Announcement Bar
+
+Purpose: Navigation + quick promo.
+Content: Logo (gold), primary nav (Solutions, Pricing, Resources, Login), right-aligned CTA “Start structuring”. Optional thin announcement bar above (e.g., “New: IBC wizard with USD pricing (24h FX lock)”).
+WP: header.php + WP Menu. Announcement bar as Theme Option (Customizer) or small reusable block.
+
+2) Hero (primary CTA)
+
+Purpose: Instantly communicate value and drive action.
+Content:
+
+H1: “Asset protection, tax efficiency, done right.”
+
+Sub: “Generate compliant trust & company drafts with human review before delivery.”
+
+CTAs: Start free assessment (primary), Explore bots (secondary).
+
+Right: Illustration/diagram (sword-and-arc motif) or short demo loop.
+WP: Gutenberg Group block with two columns; or a front-page.php hero partial. Add ACF fields for H1, subcopy, CTA links, image/video.
+
+3) Trust Strip (logos / assurances)
+
+Purpose: Build credibility.
+Content: “Trusted by advisors & founders” + grayscale logos; small badges: “FICA-aware”, “SARS s42–47 logic”, “Human-reviewed output”.
+WP: Reusable block or ACF repeater (logos).
+
+4) “How It Works” (3–4 steps)
+
+Purpose: Show the workflow in plain English.
+Content (4 cards):
+
+Pick a bot (Trust / Company / FICA / IBC)
+
+Answer guided questions
+
+We generate drafts (held for review)
+
+Human approves → You download securely
+Include a tiny note: “No AI mentions in documents. All outputs human-verified.”
+WP: Cards in a Columns block; icons via theme assets.
+
+5) Choose Your Path
+
+Purpose: Route different users cleanly.
+Content: Two large tiles:
+
+I’m a Client → Assessment Wizard
+
+I’m an Advisor (White-label) → Advisor Portal (token mgmt, branding)
+Each tile includes a 2–3 bullet value list.
+WP: Two Columns with buttons. Show/hide advisor tile if viewing under a white-label subdomain.
+
+6) Featured Bots Grid (quick launch)
+
+Purpose: Immediate entry to top flows.
+Content: 6 cards (can scroll on mobile):
+
+Trust Setup
+
+Company Registration (CIPC/BVI/etc.)
+
+SARS s47 Check
+
+FICA Intake
+
+IBC Structuring (USD quotes, 24h FX lock)
+
+Quote Generator (ZAR/USD/BTC/ETH)
+Each card: icon, one-liner, small “Start” button, “Learn more” link.
+WP: Shortcode [bot_grid] or ACF repeater. Each card links to a page or modal that triggers the relevant flow.
+
+7) Lead Magnet / Vault Teaser
+
+Purpose: Capture leads who aren’t ready to start.
+Content: “Get the Asset Protection Starter Pack” (PDF checklist + webinar seat). Email field + button. Note: “Watermarked to your email. 72h access.”
+WP: Form block (Fluent/Gravity). On submit: send via your lead magnet bot flow; add to Notion/email list.
+
+8) Compliance & Security (South Africa first)
+
+Purpose: Address risk concerns upfront.
+Content: Two columns:
+
+Compliance: “We incorporate SARS Sections 42-47 triggers, FICA risk tiering (PEP/high-value flags), advisor review before release.”
+
+Security: “Secure vault, watermarking, tokenized access; no public sharing; resume-journey login.”
+Optional small link: “See our compliance notes”.
+WP: Static content with internal links to a “Compliance” page.
+
+9) Case Studies & Testimonials
+
+Purpose: Social proof (HNWIs, founders, advisors).
+Content: 2–3 cards: situation → what we did → outcome; plus short testimonial quotes with names blurred or initials if needed.
+WP: ACF repeater (Case studies); Testimonials as a slider/carousel.
+
+10) Pricing Snapshot
+
+Purpose: Set expectations; drive to full pricing page.
+Content: 3 cards (Starter, Professional, Advisor/White-label). Show headline benefits, “from R… / $…”, and “See pricing” CTA. Tiny note: “Quotes valid 7 days. FX locks 24h for IBC.”
+WP: ACF fields or a Pricing table block; main button → /pricing.
+
+11) Resource Highlights
+
+Purpose: Educate & build authority.
+Content: 3 up-to-date items (auto-pulled): Latest guide, Webinar date, Popular FAQ (“What triggers s47 compliance?”).
+Include a link: “All resources”.
+WP: Latest posts block (category: Resources) + a small FAQ list (ACF repeater or FAQ plugin).
+
+12) Final CTA Strip
+
+Purpose: Last push to action.
+Content: Left: “Ready to structure with confidence?” Right: primary button “Start free assessment”, secondary “Talk to us” (booking).
+WP: Full-width Group with gradient background.
+
+13) Footer
+
+Purpose: Completes navigation and trust.
+Content: 4 columns:
+
+Product (Bots, Pricing, Advisor)
+
+Resources (Guides, Webinars, FAQ)
+
+Company (About, Legal, Contact)
+
+Legal (Terms, Privacy, POPIA)
+Bottom line: copyright, small social icons.
+WP: footer.php + WP menu + widget areas.
+
+Interaction & behavior (essentials)
+
+Sticky header shrinks on scroll.
+
+Hero buttons: primary opens assessment; secondary scrolls to Bots Grid.
+
+Bots Grid “Start” opens a modal (or routes to a standalone page) with the intake form; saving creates a resume token.
+
+Lead Magnet form: on success, show inline “Download” + email the link; write CRM entry.
+
+Compliance badges: on hover, show 1-sentence microcopy (e.g., “PEP detection triggers EDD & 6-month review”).
+
+Pricing: “See full pricing” routes to full table with jurisdictional surcharges (e.g., +15% for BVI/St. Kitts) and currency toggles.
+
+Analytics: Track view_hero, click_assessment, start_bot_X, submit_lead_magnet, open_pricing, cta_footer_click.
+
+WordPress build notes (fast path)
+
+Use Gutenberg with a few custom blocks (Hero, Bots Grid, Final CTA).
+
+Register an ACF Options Page for: announcement bar, hero text, lead magnet settings, compliance badges, pricing snapshot.
+
+Provide a [bot_grid] shortcode to render cards from a JSON/ACF list (title, icon, description, link).
+
+Make Front Page a static page using front-page.php.
+
+Keep images light; add a 1200×900 screenshot.png for theme preview.
+
+Add a home.css partial to scope section styles: #hero, #trust-strip, #how-it-works, #paths, #bots, #lead-magnet, #compliance, #testimonials, #pricing, #resources, #cta-final.
+
+Optional wireframe (ASCII)
+[ Announcement Bar ]
+[ Header: Logo | Nav | CTA ]
+
+| Hero ---------------------------------------------------- |
+| H1 + Sub | Primary CTA | Secondary CTA | Visual/Demo      |
+
+[ Trust Strip: logos / badges ]
+
+[ How It Works: 1 → 2 → 3 → 4 cards ]
+
+[ Choose Your Path: Clients | Advisors ]
+
+[ Featured Bots Grid: 6 cards (Start / Learn) ]
+
+[ Lead Magnet: email field + Download ]
+
+[ Compliance & Security: two-column explainer ]
+
+[ Case Studies + Testimonials ]
+
+[ Pricing Snapshot (3 cards) + “See pricing” ]
+
+[ Resource Highlights (3 items) + link ]
+
+| Final CTA Strip: “Start free assessment”  [ button ]     |
+
+[ Footer: 4 columns + legal ]
+
+
+If you want, I can turn this into a ready-to-import Gutenberg template (JSON) or a front-page.php skeleton with ACF fields wired up so your team can drop it in and tweak copy/images.
+
+You said:
+I don't see any reference to the video above the fold.
+ChatGPT said:
+
+You’re right — in my previous home page layout I included the visual/demo illustration in the hero, but I didn’t spell out the video “above the fold” treatment. Let me fix that and set out exactly how it fits.
+
+🎥 Hero Section with Video (Above the Fold)
+
+Purpose: Immediately convey what AssetArc does — show the system generating compliant documents with review overlay. This reduces bounce and builds trust.
+
+Layout (Desktop)
+
+Left column (60%)
+
+H1: “Asset Protection & Tax Structuring, Automated — With Human Review”
+
+Subheading: “Generate trust deeds, company setups, and SARS s42–47 compliant drafts. Always human-checked before release.”
+
+Primary CTA (gold button): “Start Free Assessment”
+
+Secondary CTA (outlined gold): “See How It Works” → scroll to “How it Works” section.
+
+Right column (40%)
+
+Embedded video (hero video)
+
+Plays muted auto-loop (20–30s demo, no audio by default)
+
+Styled in a rounded card with gold outline/shadow
+
+Hover = light gold glow
+
+Click expands to lightbox/full-screen playback
+
+Layout (Mobile)
+
+Stacked vertically
+
+Video first (full-width, aspect ratio 16:9, autoplay muted)
+
+Headline + Subheadline + CTAs below it
+
+Content of Video
+
+20–30s loop:
+
+Selecting a bot (Trust Setup / SARS s47)
+
+Input screen → compliance logic firing (PEP flag, 70% rule)
+
+Draft document preview with watermark
+
+“Human Review” overlay ticked
+
+Secure Vault icon / “Resume Journey” login demo
+
+Overlay text snippets (in gold, fade in/out):
+
+“Select your bot”
+
+“Logic applied: FICA + SARS 47”
+
+“Draft generated”
+
+“Reviewed before release”
+
+Technical WordPress Implementation
+
+In front-page.php hero block:
+
+<div class="hero">
+  <div class="hero-left">
+    <h1><?php the_field('hero_headline'); ?></h1>
+    <p><?php the_field('hero_sub'); ?></p>
+    <a class="btn-gold" href="/assessment">Start Free Assessment</a>
+    <a class="btn-outline" href="#how-it-works">See How It Works</a>
+  </div>
+  <div class="hero-right">
+    <video autoplay muted loop playsinline class="hero-video">
+      <source src="<?php the_field('hero_video'); ?>" type="video/mp4">
+    </video>
+  </div>
+</div>
+
+
+Custom Fields (ACF):
+
+hero_headline
+
+hero_sub
+
+hero_video (upload field for MP4/WebM)
+
+CSS styling:
+
+.hero-video {
+  border-radius: 20px;
+  border: 2px solid var(--gold-light);
+  box-shadow: 0 0 20px rgba(255,215,0,0.2);
+  max-width: 100%;
+}
+
+Positioning in Flow
+
+The hero is the above-the-fold area.
+
+Video is right-aligned desktop, full-width mobile.
+
+Immediately below: Trust strip (logos), then “How It Works”.
+
+✅ This ensures the video demo is part of the first visual impression — not buried — while keeping CTAs clear.
