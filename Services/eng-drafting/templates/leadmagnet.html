@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Your Custom Structuring Recommendation</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 800px; margin: 20px auto; padding: 20px; border: 1px solid #eee; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .header { text-align: center; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 20px; }
+        .header h1 { color: #003366; }
+        .recommendation { background-color: #f0f8ff; padding: 20px; border-left: 5px solid #003366; }
+        .recommendation h2 { margin-top: 0; color: #003366; }
+        .user-input { margin-top: 30px; }
+        .user-input h3 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .footer { text-align: center; margin-top: 30px; font-size: 0.8em; color: #777; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AssetArc</h1>
+            <h2>Your Custom Structuring Recommendation</h2>
+        </div>
+
+        <div class="recommendation">
+            <h2>Recommended Structure: {{ recommendation.name }}</h2>
+            <p><strong>Reasoning:</strong> {{ recommendation.reasoning }}</p>
+        </div>
+
+        <div class="user-input">
+            <h3>Summary of Your Goals</h3>
+            <p>We have generated this recommendation based on the following goals you provided:</p>
+            <blockquote>
+                <p><em>"{{ goal }}"</em></p>
+            </blockquote>
+        </div>
+
+        <div class="footer">
+            <p>This document is a preliminary recommendation based on the information you provided. It is not legal or financial advice. We recommend booking a consultation to discuss your specific needs with a qualified advisor.</p>
+            <p>&copy; AssetArc. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
