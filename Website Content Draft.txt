@@ -1,0 +1,152 @@
+?? Website Content Draft (Clean – No AI/Bot References)
+
+Home Page
+Hero (Above the Fold)
+H1:
+Asset Protection & Tax Structuring, Automated — With Human Review
+Subheading:
+Generate trusts, companies, and SARS s42–47 compliant drafts in minutes. All documents are verified by licensed professionals before delivery.
+CTAs:
+* [Start Free Assessment]
+* [See How It Works]
+Video:
+Short 20–30s loop showing: selecting a process ? compliance checks ? draft generated ? “Human Review” overlay ? secure vault.
+
+Trust Strip
+Text:
+Trusted by South African founders, global entrepreneurs, and licensed advisors.
+Logos/Badges:
+* FICA Compliant
+* SARS s42–47 Aware
+* Human Reviewed
+
+How It Works
+1. Choose your process (Trust Setup, Company Registration, Compliance Check).
+2. Answer guided questions.
+3. Draft documents are generated.
+4. A human expert reviews them before release into your secure vault.
+
+Choose Your Path
+Tile 1: I’m a Client
+Start your assessment, generate your draft pack, and access compliance-ready templates.
+Tile 2: I’m an Advisor
+Offer white-label automation, manage tokens, and deliver branded packs to clients.
+
+Featured Workflows
+* Trust Setup
+* Company Registration (CIPC, BVI, St. Kitts)
+* SARS Section 47 Compliance Test
+* FICA Intake & Risk Tiering
+* International Structuring (USD quotes, FX lock 24h)
+* Instant Quote Generator (ZAR, USD, BTC, ETH)
+
+Lead Magnet / Vault Teaser
+Text:
+Unlock the Asset Protection Starter Pack:
+* Free checklist
+* Webinar seat
+* Sample compliance report
+CTA: [Get Access]
+
+Compliance & Security
+Compliance:
+* Section 42–47 triggers built in
+* FICA risk-tiering (PEP/high-value flags)
+* Human review before release
+Security:
+* Tokenized access
+* Watermarked drafts
+* Resume anytime with secure vault
+
+Testimonials / Case Studies
+
+Suggestions:
+* Case study: “High-net-worth family restructured holdings ? 30% tax saving, SARS compliant.”
+* Testimonial: “The only structuring system that actually understands SA compliance.” – J.B., Advisor
+
+
+Pricing Snapshot
+* Starter (from R1,200)
+* Professional (multi-service bundles)
+* Advisor / White-label (custom pricing, token allocation)
+
+Resource Highlights
+* Latest Guide: Structuring Trusts in 2025
+* Upcoming Webinar: How to Stay s47 Compliant
+* FAQ: What triggers a SARS restructure test?
+
+Final CTA
+Text: Ready to structure with confidence?
+CTA: [Start Free Assessment]
+
+Footer
+* Product: Processes, Pricing, Advisor
+* Resources: Guides, Webinars, FAQ
+* Company: About, Legal, Contact
+* Legal: Terms, Privacy, POPIA
+
+Pricing Page
+H1: Transparent Pricing, No Surprises
+Intro Text:
+Our pricing is token-based, transparent, and FX-aware. Quotes are valid for 7 days; USD-based quotes are locked for 24h.
+Pricing Table:
+* Starter: From R1,200 — single process run, compliance check, vault delivery
+* Professional: From R3,500 — bundled services, multiple documents, priority support
+* Advisor / White-label: Custom token packs, branded portal, client management
+
+Suggestions: Add surcharge notes:
+* BVI +15%
+* St. Kitts +20%
+* Urgent reviews +10%
+
+
+Solutions Page (replacing “Bots”)
+H1: Explore Our Structuring Workflows
+Intro Text:
+Each workflow is designed to handle compliance-sensitive processes, automatically applying checks before human review.
+Process Cards (with CTA “Start Now”):
+* Trust Setup — Draft deeds, compliant with SARS & FICA
+* Company Registration — SA CIPC & offshore jurisdictions
+* Section 47 Compliance — Test restructures against legislation
+* FICA Intake — Collect, flag, and store KYC/AML securely
+* International Structuring — USD-based with FX lock guarantee
+* Quote Generator — Instant ZAR/USD/crypto conversion
+
+Advisor Page
+H1: Power Your Advisory Practice with Automation
+Intro Text:
+White-label the AssetArc system, deliver branded outputs, and manage your clients with tokenized access.
+Sections:
+* Manage Tokens: Allocate, track, and recycle unused tokens
+* Branded Portals: Add your logo, headers, and custom disclaimers
+* Profitability Dashboard: Track revenue per client, cost per lead, conversion rates
+* Compliance Built-in: Section 42–47, FICA checks, human-reviewed outputs
+CTA: [Book a Demo]
+
+Resources Page
+H1: Learn, Apply, and Stay Compliant
+Intro Text:
+Guides, webinars, and FAQs to help you stay ahead of compliance requirements.
+Content Blocks:
+* Guides: Downloadable structuring PDFs
+* Webinars: Upcoming dates + registration links
+* FAQ: Expandable list (e.g., “What is Section 47?”, “What is a PEP?”)
+
+About Page
+
+Suggestions:
+* Story: “AssetArc was built to give founders and advisors a single platform to manage structuring with compliance-first automation.”
+* Mission: “To protect legacies, minimise tax exposure, and ensure compliance.”
+* Team: Add founder bio + advisor board (when available).
+
+
+Contact Page
+H1: Get in Touch
+Content:
+* Form: Name, Email, Message
+* Office: Cape Town, South Africa
+* Email: support@asset-arc.com
+* Phone: +27 xxx xxx xxxx
+
+Suggestion: Add live chat widget (drift/intercom) + booking calendar for demos.
+
