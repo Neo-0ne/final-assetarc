@@ -1,0 +1,165 @@
+version: "3.9"
+services:
+  p01-auth:
+    labels:
+      com.assetarc.engine: "E1"
+      com.assetarc.role: "identity"
+  p06-gateway-full:
+    labels:
+      com.assetarc.engine: "E1"
+      com.assetarc.role: "gateway"
+  p11-admin:
+    labels:
+      com.assetarc.engine: "E1"
+      com.assetarc.role: "admin"
+
+  p02-llm:
+    labels:
+      com.assetarc.engine: "E2"
+      com.assetarc.role: "drafting.llm"
+  p10-docgen:
+    labels:
+      com.assetarc.engine: "E2"
+      com.assetarc.role: "drafting.docgen"
+  p14-doc-engine:
+    labels:
+      com.assetarc.engine: "E2"
+      com.assetarc.role: "drafting.letters"
+
+  p03-fx:
+    labels:
+      com.assetarc.engine: "E3"
+      com.assetarc.role: "billing.fx"
+  p07-payments:
+    labels:
+      com.assetarc.engine: "E3"
+      com.assetarc.role: "billing.payments"
+  p15-quote:
+    labels:
+      com.assetarc.engine: "E3"
+      com.assetarc.role: "billing.quote"
+  p17-subscriptions:
+    labels:
+      com.assetarc.engine: "E3"
+      com.assetarc.role: "billing.subscriptions"
+
+  p13-fica:
+    labels:
+      com.assetarc.engine: "E4"
+      com.assetarc.role: "compliance.fica"
+  p16-review:
+    labels:
+      com.assetarc.engine: "E4"
+      com.assetarc.role: "compliance.review"
+  p24-compliance-s42-s47:
+    labels:
+      com.assetarc.engine: "E4"
+      com.assetarc.role: "compliance.s42_47"
+  p34-legal-healthcheck:
+    labels:
+      com.assetarc.engine: "E4"
+      com.assetarc.role: "compliance.healthcheck"
+  p37-submission-checker:
+    labels:
+      com.assetarc.engine: "E4"
+      com.assetarc.role: "compliance.submission"
+  p38-bbbee:
+    labels:
+      com.assetarc.engine: "E4"
+      com.assetarc.role: "compliance.bbbee"
+
+  p18-company:
+    labels:
+      com.assetarc.engine: "E5"
+      com.assetarc.role: "lifecycle.company"
+  p19-trust:
+    labels:
+      com.assetarc.engine: "E5"
+      com.assetarc.role: "lifecycle.trust"
+  p20-structure:
+    labels:
+      com.assetarc.engine: "E5"
+      com.assetarc.role: "lifecycle.design"
+  p21-linking:
+    labels:
+      com.assetarc.engine: "E5"
+      com.assetarc.role: "lifecycle.linking"
+  p22-drafting-oversight:
+    labels:
+      com.assetarc.engine: "E5"
+      com.assetarc.role: "lifecycle.oversight"
+  p23-ibc:
+    labels:
+      com.assetarc.engine: "E5"
+      com.assetarc.role: "lifecycle.ibc"
+  p25-structure-comparison:
+    labels:
+      com.assetarc.engine: "E5"
+      com.assetarc.role: "lifecycle.compare"
+  p26-residency-planner:
+    labels:
+      com.assetarc.engine: "E5"
+      com.assetarc.role: "lifecycle.residency"
+  p39-trustee-services:
+    labels:
+      com.assetarc.engine: "E5"
+      com.assetarc.role: "lifecycle.trustee"
+
+  p29-leadmagnet:
+    labels:
+      com.assetarc.engine: "E6"
+      com.assetarc.role: "engage.leadmagnet"
+  p30-content:
+    labels:
+      com.assetarc.engine: "E6"
+      com.assetarc.role: "engage.content"
+  p31-education:
+    labels:
+      com.assetarc.engine: "E6"
+      com.assetarc.role: "engage.education"
+  p32-marketing-automation:
+    labels:
+      com.assetarc.engine: "E6"
+      com.assetarc.role: "engage.automation"
+  p40-newsletter-logic:
+    labels:
+      com.assetarc.engine: "E6"
+      com.assetarc.role: "engage.newsletter"
+  p28-review-followup:
+    labels:
+      com.assetarc.engine: "E6"
+      com.assetarc.role: "engage.followup"
+  p08-booking:
+    labels:
+      com.assetarc.engine: "E6"
+      com.assetarc.role: "engage.booking"
+
+  p12-analytics:
+    labels:
+      com.assetarc.engine: "E7"
+      com.assetarc.role: "analytics.core"
+  p36-advisor-kpi:
+    labels:
+      com.assetarc.engine: "E7"
+      com.assetarc.role: "analytics.kpi"
+  p41-utm-metrics:
+    labels:
+      com.assetarc.engine: "E7"
+      com.assetarc.role: "analytics.utm"
+
+  p04-vault:
+    labels:
+      com.assetarc.engine: "E8"
+      com.assetarc.role: "vault.core"
+  p27-vault-features:
+    labels:
+      com.assetarc.engine: "E8"
+      com.assetarc.role: "vault.features"
+  p33-filemgmt:
+    labels:
+      com.assetarc.engine: "E8"
+      com.assetarc.role: "vault.filemgmt"
+  p35-doc-annotation:
+    labels:
+      com.assetarc.engine: "E8"
+      com.assetarc.role: "vault.annotation"

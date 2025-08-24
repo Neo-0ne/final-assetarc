@@ -1,0 +1,361 @@
+services:
+  p01-auth:
+    image: ghcr.io/neo-0ne/assetarc-p01-auth:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5001:8080"
+    profiles: [core]
+
+  p02-llm:
+    image: ghcr.io/neo-0ne/assetarc-p02-llm:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5002:8080"
+    profiles: [core]
+
+  p03-fx:
+    image: ghcr.io/neo-0ne/assetarc-p03-fx:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5003:8080"
+    profiles: [core]
+  
+  p04-vault:
+    image: ghcr.io/neo-0ne/assetarc-p04-vault:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5004:8080"
+    profiles: [core]
+
+  p06-gateway-full:
+    image: ghcr.io/neo-0ne/assetarc-p06-gateway-full:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5006:8080"
+    profiles: [platform]
+
+  p07-payments:
+    image: ghcr.io/neo-0ne/assetarc-p07-payments:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5007:8080"
+    profiles: [platform]
+
+  p08-booking:
+    image: ghcr.io/neo-0ne/assetarc-p08-booking:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5008:8080"
+    profiles: [platform]
+
+  p09-review:
+    image: ghcr.io/neo-0ne/assetarc-p09-review:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5009:8080"
+    profiles: [platform]
+
+  p10-docgen:
+    image: ghcr.io/neo-0ne/assetarc-p10-docgen:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5010:8080"
+    profiles: [core]
+
+  p11-admin:
+    image: ghcr.io/neo-0ne/assetarc-p11-admin:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5011:8080"
+    profiles: [platform]
+
+  p12-analytics:
+    image: ghcr.io/neo-0ne/assetarc-p12-analytics:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5012:8080"
+    profiles: [platform]
+
+  p13-fica:
+    image: ghcr.io/neo-0ne/assetarc-p13-fica:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5013:8080"
+    profiles: [client]
+
+  p14-doc-engine:
+    image: ghcr.io/neo-0ne/assetarc-p14-doc-engine:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5014:8080"
+    profiles: [core]
+
+  p15-quote:
+    image: ghcr.io/neo-0ne/assetarc-p15-quote:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5015:8080"
+    profiles: [client]
+
+  p16-review:
+    image: ghcr.io/neo-0ne/assetarc-p16-review:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5016:8080"
+    profiles: [core]
+
+  p17-subscriptions:
+    image: ghcr.io/neo-0ne/assetarc-p17-subscriptions:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5017:8080"
+    profiles: [platform]
+
+  p18-company:
+    image: ghcr.io/neo-0ne/assetarc-p18-company:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5018:8080"
+    profiles: [client]
+
+  p19-trust:
+    image: ghcr.io/neo-0ne/assetarc-p19-trust:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5019:8080"
+    profiles: [client]
+
+  p20-structure:
+    image: ghcr.io/neo-0ne/assetarc-p20-structure:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5020:8080"
+    profiles: [client]
+
+  p21-linking:
+    image: ghcr.io/neo-0ne/assetarc-p21-linking:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5021:8080"
+    profiles: [client]
+
+  p22-drafting-oversight:
+    image: ghcr.io/neo-0ne/assetarc-p22-drafting-oversight:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5022:8080"
+    profiles: [client]
+
+  p23-ibc:
+    image: ghcr.io/neo-0ne/assetarc-p23-ibc:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5023:8080"
+    profiles: [client]
+
+  p24-compliance-s42-s47:
+    image: ghcr.io/neo-0ne/assetarc-p24-compliance-s42-s47:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5024:8080"
+    profiles: [client]
+
+  p25-structure-comparison:
+    image: ghcr.io/neo-0ne/assetarc-p25-structure-comparison:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5025:8080"
+    profiles: [client]
+
+  p26-residency-planner:
+    image: ghcr.io/neo-0ne/assetarc-p26-residency-planner:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5026:8080"
+    profiles: [client]
+
+  p27-vault-features:
+    image: ghcr.io/neo-0ne/assetarc-p27-vault-features:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5027:8080"
+    profiles: [platform]
+
+  p28-review-followup:
+    image: ghcr.io/neo-0ne/assetarc-p28-review-followup:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5028:8080"
+    profiles: [client]
+
+  p29-leadmagnet:
+    image: ghcr.io/neo-0ne/assetarc-p29-leadmagnet:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5029:8080"
+    profiles: [comms]
+
+  p30-content:
+    image: ghcr.io/neo-0ne/assetarc-p30-content:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5030:8080"
+    profiles: [comms]
+
+  p31-education:
+    image: ghcr.io/neo-0ne/assetarc-p31-education:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5031:8080"
+    profiles: [comms]
+
+  p32-marketing-automation:
+    image: ghcr.io/neo-0ne/assetarc-p32-marketing-automation:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5032:8080"
+    profiles: [comms]
+
+  p33-filemgmt:
+    image: ghcr.io/neo-0ne/assetarc-p33-filemgmt:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5033:8080"
+    profiles: [comms]
+
+  p34-legal-healthcheck:
+    image: ghcr.io/neo-0ne/assetarc-p34-legal-healthcheck:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5034:8080"
+    profiles: [comms]
+
+  p35-doc-annotation:
+    image: ghcr.io/neo-0ne/assetarc-p35-doc-annotation:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5035:8080"
+    profiles: [comms]
+
+  p36-advisor-kpi:
+    image: ghcr.io/neo-0ne/assetarc-p36-advisor-kpi:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5036:8080"
+    profiles: [comms]
+
+  p37-submission-checker:
+    image: ghcr.io/neo-0ne/assetarc-p37-submission-checker:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5037:8080"
+    profiles: [comms]
+
+  p38-bbbee:
+    image: ghcr.io/neo-0ne/assetarc-p38-bbbee:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5038:8080"
+    profiles: [comms]
+
+  p39-trustee-services:
+    image: ghcr.io/neo-0ne/assetarc-p39-trustee-services:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5039:8080"
+    profiles: [comms]
+
+  p40-newsletter-logic:
+    image: ghcr.io/neo-0ne/assetarc-p40-newsletter-logic:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5040:8080"
+    profiles: [comms]
+
+  p41-utm-metrics:
+    image: ghcr.io/neo-0ne/assetarc-p41-utm-metrics:main
+    restart: unless-stopped
+    env_file:
+      - .env.global
+    ports:
+      - "5041:8080"
+    profiles: [comms]
+
