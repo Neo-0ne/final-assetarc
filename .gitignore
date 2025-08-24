@@ -1,0 +1,26 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# DB files
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment variables
+.env*
+!/.env.example
+!/.env.global.example
+
+# IDE / Editor specific
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build artifacts
+build/
+dist/
+*.egg-info/

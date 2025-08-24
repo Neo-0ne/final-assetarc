@@ -1,0 +1,31 @@
+openapi: 3.0.3
+info: { title: AssetArc  Compliance & Quality (E4), version: 1.0.0 }
+servers: [ { url: https://compliance.example.com } ]
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+paths:
+  /compliance/run:
+    post:
+      summary: Run module checklist (FICA, S4247, Healthcheck, Submission)
+      security: [ { bearerAuth: [] } ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ module_id, inputs ]
+              properties:
+                module_id: { type: string }
+                inputs: { type: object }
+      responses: { '200': { description: Result + required documents } }
+  /compliance/evidence/{case_id}:
+    get:
+      summary: Download evidence pack
+      security: [ { bearerAuth: [] } ]
+      parameters:
+        - in: path
+          name: case_id
+          required: true
+          schema: { type: string }
+      responses: { '200': { description: Zip } }

@@ -1,0 +1,57 @@
+openapi: 3.0.3
+info: { title: AssetArc  Storage & Delivery (E8), version: 1.0.0 }
+servers: [ { url: https://vault.example.com } ]
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+paths:
+  /vault/upload:
+    post:
+      summary: Upload and register file
+      security: [ { bearerAuth: [] } ]
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file: { type: string, format: binary }
+                meta: { type: string }
+      responses: { '200': { description: File id } }
+  /vault/file/{id}:
+    get:
+      summary: Get signed URL for file
+      security: [ { bearerAuth: [] } ]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses: { '200': { description: URL } }
+  /vault/share-link:
+    post:
+      summary: Create a share link with policy (expiry, watermark)
+      security: [ { bearerAuth: [] } ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file_id: { type: string }
+                expires_in: { type: integer }
+                watermark: { type: string }
+      responses: { '200': { description: Link } }
+  /notes/annotate:
+    post:
+      summary: Attach advisor notes/annotations to a file
+      security: [ { bearerAuth: [] } ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file_id: { type: string }
+                notes: { type: array, items: { type: object } }
+      responses: { '200': { description: OK } }

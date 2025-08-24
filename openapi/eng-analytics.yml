@@ -1,0 +1,21 @@
+openapi: 3.0.3
+info: { title: AssetArc  Data & Insights (E7), version: 1.0.0 }
+servers: [ { url: https://analytics.example.com } ]
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+paths:
+  /events/ingest:
+    post:
+      summary: Ingest events from services and clients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses: { '200': { description: OK } }
+  /analytics/kpi:
+    get:
+      summary: Advisor KPI snapshot
+      security: [ { bearerAuth: [] } ]
+      responses: { '200': { description: KPIs } }

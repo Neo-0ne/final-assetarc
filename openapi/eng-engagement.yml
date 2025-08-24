@@ -1,0 +1,48 @@
+openapi: 3.0.3
+info: { title: AssetArc  Client Engagement (E6), version: 1.0.0 }
+servers: [ { url: https://engage.example.com } ]
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+paths:
+  /engage/sequence/start:
+    post:
+      summary: Start a drip/automation sequence
+      security: [ { bearerAuth: [] } ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sequence_id: { type: string }
+                context: { type: object }
+      responses: { '200': { description: OK } }
+  /engage/email/send:
+    post:
+      summary: Send templated email
+      security: [ { bearerAuth: [] } ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                template_id: { type: string }
+                to: { type: string }
+                data: { type: object }
+      responses: { '200': { description: OK } }
+  /engage/booking/slot:
+    post:
+      summary: Create booking slot (optionally gated by payment)
+      security: [ { bearerAuth: [] } ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                when: { type: string, format: date-time }
+                with: { type: string }
+                price_lock: { type: string }
+      responses: { '200': { description: Booking confirmed } }

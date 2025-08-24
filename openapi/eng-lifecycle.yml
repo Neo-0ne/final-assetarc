@@ -1,0 +1,35 @@
+openapi: 3.0.3
+info: { title: AssetArc  Corporate Lifecycle (E5), version: 1.0.0 }
+servers: [ { url: https://lifecycle.example.com } ]
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+paths:
+  /lifecycle/design:
+    post:
+      summary: Propose target structure & doc list
+      security: [ { bearerAuth: [] } ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                goals: { type: array, items: { type: string } }
+                jurisdiction: { type: string }
+      responses: { '200': { description: Structure plan } }
+  /lifecycle/pack:
+    post:
+      summary: Build and deliver a document pack
+      security: [ { bearerAuth: [] } ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ flow_id, templates, data ]
+              properties:
+                flow_id: { type: string }
+                templates: { type: array, items: { type: string } }
+                data: { type: object }
+      responses: { '200': { description: Pack link } }

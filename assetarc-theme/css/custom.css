@@ -1,0 +1,27 @@
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+a {
+  color: #FFD700;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #B78628;
+}
+
+button {
+  background-color: #8C6239;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 0.5rem;
+}
+
+button:hover {
+  background-color: #B78628;
+}

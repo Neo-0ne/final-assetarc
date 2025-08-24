@@ -1,0 +1,65 @@
+openapi: 3.0.3
+info: { title: AssetArc  Knowledge & Drafting (E2), version: 1.0.0 }
+servers: [ { url: https://drafting.example.com } ]
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+paths:
+  /llm/generate:
+    post:
+      summary: Generate text via model (free or skill)
+      security: [ { bearerAuth: [] } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mode: { type: string, enum: [free, skill] }
+                messages: { type: array, items: { type: object } }
+                skill_id: { type: string }
+                vars: { type: object }
+      responses: { '200': { description: OK } }
+  /doc/render:
+    post:
+      summary: Render single template to file
+      security: [ { bearerAuth: [] } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ template_id, data ]
+              properties:
+                template_id: { type: string }
+                data: { type: object }
+                out_format: { type: string, enum: [docx, pdf, html] }
+      responses: { '200': { description: File meta (id, url) } }
+  /doc/pack:
+    post:
+      summary: Render multiple templates and zip
+      security: [ { bearerAuth: [] } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ templates, data ]
+              properties:
+                templates: { type: array, items: { type: string } }
+                data: { type: object }
+      responses: { '200': { description: Zip meta } }
+  /templates:
+    get:
+      summary: List templates (filtered by jurisdiction, type)
+      parameters:
+        - in: query
+          name: jurisdiction
+          schema: { type: string }
+        - in: query
+          name: type
+          schema: { type: string }
+      responses: { '200': { description: OK } }

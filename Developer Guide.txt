@@ -1,0 +1,1121 @@
+Expanded Bot & Service List with External Dependencies
+
+Core Access & Gateway
+P01 – Auth
+* Purpose: OTP-based login, session tokens, refresh cycle, cookie management.
+* External Dependencies:
+o SMTP or SES service for OTP email delivery.
+o Must comply with POPIA (ZA) / GDPR (EU) for storing personal data.
+P06 – Gateway
+* Purpose: Reverse proxy / API aggregator routing requests to downstream services.
+* External Dependencies:
+o Needs TLS/SSL certs (Google-managed or Let’s Encrypt).
+o External DNS configuration.
+
+Knowledge & Computation
+P02 – LLM Engine
+* Purpose: Document drafting, structuring simulation, summarization.
+* External Dependencies:
+o Gemini API (or other LLM provider).
+o Domain-specific training material: Companies Act, Trust Property Control Act, Income Tax Act, international tax treaties, IBC legislation.
+P03 – FX (Foreign Exchange)
+* Purpose: Currency conversion & rate locking for invoicing.
+* External Dependencies:
+o FX rate feeds (e.g., Open Exchange Rates, XE, or Google Cloud Marketplace FX feed).
+o Regulatory compliance: SARB exchange control rules (for South Africa).
+P04 – Vault
+* Purpose: Secure document repository (PDF/DOCX).
+* External Dependencies:
+o Encryption keys (Google KMS).
+o Integration with Google Cloud Storage for persistence.
+
+Payments & Administration
+P07 – Payments
+* Purpose: Issue invoices, record payments, trigger receipts.
+* Templates: invoice.html
+* External Dependencies:
+o Payment gateway API (Stripe, PayPal, PayFast).
+o VAT compliance rules (depends on jurisdiction of invoice).
+P11 – Admin
+* Purpose: Central admin panel (user management, logs, access).
+* External Dependencies:
+o Admin must sync with IAM roles defined in Google Cloud.
+P12 – Analytics
+* Purpose: Usage metrics, reporting dashboards.
+* External Dependencies:
+o Google Analytics or custom telemetry.
+o POPIA/GDPR restrictions on storing personally identifiable usage data.
+
+Document Generation & Structuring
+P10 – DocGen
+* Purpose: Generate company resolutions, trust addenda, invoices.
+* Templates:
+o company_resolution.docx
+o trust_deed_addendum.docx
+o invoice.html
+* External Dependencies:
+o Companies Act (South Africa) — board resolutions must follow Sections 66–73.
+o Trust Property Control Act — trust amendments.
+P14 – Doc Engine
+* Purpose: General-purpose templating engine.
+* Templates: Letters, reports.
+* External Dependencies:
+o Jurisdiction-specific wording (e.g., letterhead compliance for submissions).
+P18 – Company Service
+* Purpose: Incorporation packs, share certificates, checklists.
+* Templates:
+o board_resolution.docx
+o share_certificate.docx
+o incorporation_checklist.html
+* External Dependencies:
+o Companies Act (SA) — Section 42–47 for share issues/repurchases.
+o CIPC filing forms & formats.
+P19 – Trust Service
+* Purpose: Trust deed, resolutions, letters of wishes.
+* Templates:
+o trust_deed.docx
+o letter_of_wishes.docx
+* External Dependencies:
+o Trust Property Control Act (TPCA, SA).
+o International equivalents if offshore trust (Jersey, Guernsey, Mauritius).
+
+P20 – Structure Service
+* Purpose: Org charts, structure memos.
+* Templates: structure_memo.docx, org_chart.html
+* External Dependencies:
+o Local corporate law (e.g., holding/subsidiary rules).
+o SARS interpretation notes.
+P23 – IBC Service
+* Purpose: Draft International Business Company documents.
+* Templates:
+o moa.docx (Memorandum of Association)
+o nominee_agreement.docx
+o kyc_checklist.html
+* External Dependencies:
+o Jurisdictions typically supported: BVI, Seychelles, Mauritius, Belize, Cyprus.
+o Requires jurisdiction-specific IBC Acts and statutory forms.
+o KYC rules under FATF and local Financial Services Authority.
+
+Compliance & Oversight
+P13 – FICA (KYC/AML)
+* Purpose: Collect client declarations, run compliance checklists.
+* Templates: client_declaration.docx, fica_checklist.docx
+* External Dependencies:
+o FICA Act (SA).
+o FATF recommendations (for non-SA clients).
+P24 – Compliance (Section 42–47)
+* Purpose: Automate compliance workflows around company law.
+* Templates:
+o compliance_checklist.docx
+o ruling_request.docx
+* External Dependencies:
+o Companies Act, Sections 42–47 (SA): rules on financial assistance, distributions, share buybacks, solvency/liquidity test.
+o CIPC directive forms.
+P34 – Legal Healthcheck
+* Purpose: Audits, gap reports.
+* Templates: audit_report.docx, compliance_checklist.html
+* External Dependencies:
+o Needs Tax Act, Companies Act, and any sector-specific regs (e.g., financial services, mining).
+P37 – Submission Checker
+* Purpose: Final review before CIPC/SARS/Registrar submission.
+* Templates: completeness_checklist.docx, final_check.html
+* External Dependencies:
+o CIPC & SARS submission guidelines (formatting, required annexures).
+
+Supporting Bots (Reviews, Advisors, Marketing)
+* P15 – Quote: Generates pro forma invoices.
+* P16 – Review: Summarises compliance/doc reviews.
+* P21 – Linking: Manages share transfers, minutes.
+* P22 – Drafting Oversight: Applies watermarks, coversheets.
+* P25 – Structure Comparison: Benchmarks alternate legal structures.
+* P26 – Residency Planner: Needs tax residency tests (tie-breaker clauses in tax treaties).
+* P28 – Review Follow-up: Email follow-ups.
+* P29–P32 – Marketing/Content/Automation: Landing pages, newsletters, drip campaigns.
+* P31 – Education: Training material, certificates.
+* P35 – Doc Annotation: Advisor comments on drafts.
+* P36 – Advisor KPI: Advisor performance dashboards.
+* P38 – BBBEE: Needs DTI Codes of Good Practice (South Africa).
+* P39 – Trustee Services: Trustee minutes/resolutions.
+* P40 – Newsletter Logic: Automated mailers.
+* P41 – UTM Metrics: Marketing campaign analytics.
+
+?? Key Observations
+* IBC Bot (P23): Requires multi-jurisdiction template sets. Current repo has only a single moa.docx ? incomplete.
+* Compliance Bots (P24, P34, P37): Must be linked with Section 42–47 legal text and CIPC filing templates.
+* Trust Bots (P19, P39): Currently SA-based. For true global use, need Mauritius, Jersey, BVI trust deeds.
+* FX & Payments (P03, P07): Require integration with regulator-approved gateways and exchange control reporting.
+
+?? Gap List of Missing Templates & Jurisdictional Coverage
+
+IBC Service (P23)
+Current Templates:
+* moa.docx (generic)
+* nominee_agreement.docx
+* kyc_checklist.html
+Missing (per jurisdiction):
+* BVI:
+o Articles of Association
+o Registered Agent Appointment Letter
+o Director Consent to Act
+o Beneficial Owner Register template
+* Seychelles:
+o Memorandum & Articles of Association (separate, not combined)
+o Certificate of Incumbency format
+o Share Register template
+* Mauritius:
+o GBL1/GBL2 Application Forms
+o Consent to Act (Directors & Shareholders)
+o Tax Residency Certificate request
+* Belize/Cyprus:
+o Statutory Declaration forms
+o Bank Account Opening Resolution
+
+Company Service (P18)
+Current Templates:
+* board_resolution.docx
+* share_certificate.docx
+* incorporation_checklist.html
+Missing:
+* CIPC Forms (South Africa):
+o COR14.1 (Notice of Incorporation)
+o COR14.2 (Memorandum of Incorporation)
+o COR39 (Change of Directors)
+o COR15.2 (Special Resolutions)
+* Cross-border (if multi-jurisdiction):
+o Certificate of Good Standing template
+o Apostille/Notarial cover sheet
+
+Trust Service (P19 / P39)
+Current Templates:
+* trust_deed.docx
+* letter_of_wishes.docx
+* Trustee resolutions, minutes
+Missing:
+* South Africa:
+o Master of the High Court Trust Registration Form (J401)
+o Beneficiary Register template
+* Mauritius / Jersey / Guernsey:
+o Offshore Trust Deed templates (differing clauses on perpetuity, reserved powers)
+o Protector Appointment Agreement
+* International Banking:
+o FATCA / CRS Self-Certification forms for trusts
+
+Compliance Service (P24 / P34 / P37)
+Current Templates:
+* Compliance checklist
+* Ruling request
+* Audit reports
+Missing:
+* Section 42–47 (SA):
+o Solvency & Liquidity Test template (as per Section 4)
+o Financial Assistance Resolution template (Sec 44/45)
+o Share Buyback Special Resolution template (Sec 48)
+* CIPC/SARS Filings:
+o Pre-approval ruling request template (for share reorganizations)
+o Binding Private Ruling (BPR) application form template
+
+Residency Planner (P26)
+Current Templates:
+* plan_summary.docx
+* plan_report.html
+Missing:
+* Jurisdictional tie-breaker tests:
+o South Africa vs. treaty partner residency tests (e.g., SA–UK, SA–Mauritius, SA–Netherlands)
+o Tax Residency Certificate request forms (per jurisdiction)
+
+FICA Service (P13)
+Current Templates:
+* client_declaration.docx
+* fica_checklist.docx
+Missing:
+* Banking compliance:
+o Source of Funds Declaration
+o Politically Exposed Person (PEP) checklist
+* Cross-jurisdictional:
+o FATF enhanced due diligence forms
+
+BBBEE Service (P38)
+Current Templates:
+* bbbee_affidavit.docx
+* verification_checklist.html
+Missing:
+* DTI Code Updates:
+o Sector-specific scorecard templates (Construction, ICT, Transport)
+o BEE Verification Agency submission form
+
+General Missing Across Multiple Services
+* Watermark / Submission overlays: country-specific compliance watermarks (e.g., “Draft – Not for Filing”).
+* Cover letters: formal filing cover sheets (CIPC, Registrar of Trusts, offshore registrars).
+* Bank Resolutions: required in almost every jurisdiction for opening accounts.
+* Tax Documents:
+o Dividend Withholding Tax declaration forms (per jurisdiction).
+o Tax clearance certificate request templates.
+
+?? External Information & Law Tie-ins
+* South Africa: Companies Act (Sections 4, 42–47, 66–73), Trust Property Control Act, Income Tax Act, FICA.
+* IBC Jurisdictions: BVI Business Companies Act, Seychelles IBC Act, Mauritius Companies Act, Belize IBC Act.
+* International: OECD CRS/FATCA templates, Tax Treaties for residency.
+* Sector-specific: DTI BEE Codes, financial services licensing regs.
+
+? With this expanded gap list, you can now brief your developer/legal team to:
+1. Source missing templates per jurisdiction.
+2. Embed legal references directly in code comments for drafting consistency.
+3. Separate per-jurisdiction folders in templates directory (e.g., /P23-ibc/templates/bvi/moa.docx).
+?? Bot ? Document Linkage & Template Map
+
+P07 – Payments
+Purpose: Handle invoices, receipts, and financial workflows.
+Current Templates:
+* invoice.html
+Missing/Needed:
+* receipt.html (bank proof template)
+* payment_confirmation.docx
+* Jurisdiction tie-in: local VAT/sales tax formats.
+
+P10 – DocGen (General Document Generator)
+Purpose: Core template engine for company/trust docs.
+Current Templates:
+* company_resolution.docx
+* trust_deed_addendum.docx
+* invoice.html
+Missing/Needed:
+* nda.docx (for advisors/clients)
+* shareholders_agreement.docx
+* employment_contract.docx
+* Jurisdiction tie-in: labor law compliance clauses.
+
+P11 – Admin
+Purpose: Portal interface, front-end shell.
+Templates:
+* index.html
+(No external docs required).
+
+P12 – Analytics
+Purpose: Client/advisor KPI and reporting.
+Current Templates:
+* analytics_report.html
+Missing/Needed:
+* Export to analytics_report.pdf
+* Integration with P36-advisor-kpi.
+
+P13 – FICA
+Purpose: Compliance with Financial Intelligence Centre Act.
+Current Templates:
+* client_declaration.docx
+* fica_checklist.docx
+* report.html
+Missing/Needed:
+* pep_checklist.docx (Politically Exposed Persons)
+* source_of_funds.docx
+* CRS/FATCA Self-certification.
+External: FICA, FATF standards.
+
+P14 – Doc Engine
+Purpose: Letter/report generator engine.
+Current Templates:
+* letter.docx
+* report.html
+Missing/Needed:
+* cover_letter.docx for regulator submissions.
+* Jurisdiction tie-in: CIPC filing coversheets.
+
+P15 – Quote Engine
+Purpose: Automated client quotations.
+Current Templates:
+* quote.docx
+* proforma_invoice.html
+Missing/Needed:
+* engagement_letter.docx.
+
+P16 – Review
+Purpose: Initial client review summaries.
+Current Templates:
+* review_summary.html
+Missing/Needed:
+* Export to PDF.
+* Advisor notes overlay (linked with P35-doc-annotation).
+
+P17 – Subscriptions
+Purpose: Client onboarding & subscription emails.
+Templates:
+* welcome_email.html
+Missing/Needed: None.
+
+P18 – Company Services
+Purpose: Incorporations, share movements, board matters.
+Current Templates:
+* board_resolution.docx
+* share_certificate.docx
+* incorporation_checklist.html
+Missing/Needed:
+* South Africa (CIPC): COR14.1, COR14.2, COR39, COR15.2.
+* certificate_of_good_standing.docx
+* director_consent.docx.
+External: Companies Act, CIPC.
+
+P19 – Trust Services
+Purpose: Draft, register, and manage trusts.
+Current Templates:
+* letter_of_wishes.docx
+* trust_deed.docx
+* trustee_resolution.html
+Missing/Needed:
+* South Africa: J401 trust registration.
+* Mauritius/Jersey: Protector appointment, offshore trust deed.
+* FATCA/CRS templates.
+
+P20 – Structure Services
+Purpose: Org chart, structuring memos.
+Current Templates:
+* structure_memo.docx
+* org_chart.html
+Missing/Needed:
+* Jurisdiction-specific structuring examples (e.g., SA–Mauritius holding structure).
+
+P21 – Linking Services
+Purpose: Linking companies, trusts, shareholders.
+Current Templates:
+* share_transfer_form.docx
+* minutes_addendum.docx
+* linking_summary.html
+Missing/Needed:
+* loan_agreement.docx.
+* SARS tax clearance request forms.
+
+P22 – Drafting Oversight
+Purpose: QA and review of drafts.
+Current Templates:
+* review_coversheet.docx
+* watermark_overlay.html
+Missing/Needed:
+* submission_tracker.docx.
+
+P23 – IBC (Offshore Companies)
+Purpose: Draft and register offshore companies.
+Current Templates:
+* moa.docx
+* nominee_agreement.docx
+* kyc_checklist.html
+Missing/Needed:
+* BVI: Articles of Association, Beneficial Owner Register.
+* Seychelles: Certificate of Incumbency, Share Register.
+* Mauritius: Tax Residency Certificate request.
+* Belize: Apostille forms.
+
+P24 – Compliance (Sec 42–47)
+Purpose: Enforce SA company law compliance.
+Current Templates:
+* compliance_checklist.docx
+* ruling_request.docx
+* summary_report.html
+Missing/Needed:
+* Sec 44/45 Financial Assistance Resolution.
+* Sec 48 Share Buyback Special Resolution.
+* Sec 4 Solvency/Liquidity Test.
+External: SA Companies Act 2008.
+
+P25 – Structure Comparison
+Purpose: Compare structuring options.
+Templates:
+* comparison_memo.docx
+* comparison_report.html
+Missing/Needed:
+* Auto-generated scoring framework.
+
+P26 – Residency Planner
+Purpose: Tax residency planning.
+Current Templates:
+* plan_summary.docx
+* plan_report.html
+Missing/Needed:
+* SA vs Treaty country tie-breaker forms.
+* Residency Certificate request (per country).
+External: OECD tax treaties.
+
+P28 – Review Follow-up
+Purpose: Follow-up notes to clients.
+Templates:
+* followup_letter.docx
+* email_followup.html
+
+P29 – Lead Magnet
+Purpose: Marketing capture docs.
+Templates:
+* leadmagnet.html
+
+P30 – Content Bot
+Purpose: Blog and email content engine.
+Templates:
+* email_shell.html
+* blog_shell.html
+
+P31 – Education
+Purpose: Learning materials.
+Current Templates:
+* certificate.docx
+* syllabus.html
+Missing/Needed:
+* training_manual.docx.
+
+P32 – Marketing Automation
+Templates:
+* sequence_step.html
+* welcome.html
+
+P34 – Legal Healthcheck
+Purpose: Client audit.
+Current Templates:
+* audit_report.docx
+* compliance_checklist.html
+Missing/Needed:
+* CIPC/ SARS submission request forms.
+
+P35 – Doc Annotation
+Purpose: Add advisor notes to docs.
+Templates:
+* advisor_notes_cover.docx
+* overlay.html
+
+P36 – Advisor KPI
+Purpose: Metrics & advisor tracking.
+Templates:
+* kpi_report.html
+
+P37 – Submission Checker
+Purpose: Ensure docs ready for filing.
+Current Templates:
+* completeness_checklist.docx
+* final_check.html
+Missing/Needed:
+* Regulator-specific filing cover letters.
+
+P38 – BBBEE
+Purpose: BBBEE affidavits and compliance.
+Current Templates:
+* bbbee_affidavit.docx
+* verification_checklist.html
+Missing/Needed:
+* Sector scorecards (construction, ICT, etc.).
+
+P39 – Trustee Services
+Purpose: Trustee meeting packs.
+Templates:
+* trustee_resolution.docx
+* trustee_minutes.docx
+* agenda.html
+
+P40 – Newsletter Logic
+Templates:
+* newsletter_base.html
+* promo_block.html
+
+P41 – UTM Metrics
+Templates:
+* utm_report.html
+
+?? How They Interact
+* DocGen (P10) + Doc Engine (P14) = backbone for template rendering.
+* Company (P18), Trust (P19), IBC (P23), Compliance (P24) = main legal drafting modules.
+* FICA (P13), Residency (P26), BBBEE (P38) = compliance add-ons.
+* Review (P16), Oversight (P22), Checker (P37) = QA cycle.
+* Payments (P07), Subscriptions (P17), Quote (P15) = financial ops.
+* Analytics (P12), Advisor KPI (P36) = reporting.
+* Content (P30), Marketing Automation (P32), Newsletter (P40), Lead Magnet (P29) = growth & outreach.
+?? Prioritization of Missing Templates & Features
+
+?? HIGH PRIORITY (MVP / Submission-Critical)
+These are must-have for clients to generate complete, submission-ready documents.
+1. P18 – Company
+o CIPC forms: COR14.1, COR14.2, COR39, COR15.2
+o Certificate of Good Standing
+o Director Consent
+2. P19 – Trust Services
+o SA Trust Registration (J401)
+o Offshore trust deeds (Mauritius, Jersey)
+o Protector appointment templates
+3. P23 – IBC
+o BVI: Articles of Association, Beneficial Owner Register
+o Seychelles: Certificate of Incumbency, Share Register
+o Mauritius: Tax Residency Certificate request
+o Belize: Apostille forms
+4. P24 – Compliance (Sec 42–47)
+o Sec 44/45 Financial Assistance Resolution
+o Sec 48 Share Buyback Resolution
+o Sec 4 Solvency/Liquidity Test
+5. P13 – FICA
+o PEP checklist
+o Source of Funds
+o CRS/FATCA self-certification
+6. P37 – Submission Checker
+o Regulator-specific filing cover letters (CIPC, SARS, Offshore registrars).
+
+?? MEDIUM PRIORITY (Operational & Advisor Tools)
+Important for smooth workflow, but not blocking initial client deliverables.
+1. P07 – Payments
+o Receipt template
+o Payment confirmation
+2. P10 – DocGen
+o NDA
+o Shareholders’ Agreement
+o Employment contract
+3. P15 – Quote
+o Engagement Letter
+4. P26 – Residency Planner
+o SA vs Treaty country tie-breaker forms
+o Residency Certificate request
+5. P38 – BBBEE
+o Sector scorecards (construction, ICT, etc.)
+
+?? LOW PRIORITY (Nice-to-Have, Non-blocking)
+Value-add but not urgent for compliance or submissions.
+1. P20 – Structure Services
+o Jurisdiction-specific structuring samples
+2. P28 – Review Follow-up
+o Additional automation logic
+3. P31 – Education
+o Training manual
+4. P34 – Legal Healthcheck
+o Automated CIPC/SARS integration
+5. P12 – Analytics / P36 – KPI
+o PDF exports, deeper integrations
+
+?? External Data / Legal Inputs Required
+* South Africa:
+o Companies Act (Sec 42–47)
+o CIPC forms (COR14, COR15, COR39, J401 for trusts)
+o FICA Act + FATF standards
+o SARS (tax clearance, residency certificates, exchange control approval)
+* International (IBC/Trusts):
+o BVI: Business Companies Act, BO register rules
+o Seychelles: IBC Act, statutory filings
+o Mauritius: Companies Act, tax treaty access
+o Belize: IBC Act, Apostille requirements
+* OECD / Global:
+o CRS & FATCA self-certification templates
+o OECD model tax treaties (for residency planning)
+
+? This way, the developers know:
+* Which modules MUST be completed for launch (legal filings, compliance, trust/IBC).
+* Which can be delayed without blocking client submissions.
+* Where to fetch legal forms/external references.
+
+?? Dependency Map: Bots ? Templates ? External Inputs
+
+Core Company/Trust/IBC Layer
+These are the foundation modules for entity creation and legal compliance.
+P18 – Company Bot
+* Templates: Board resolutions, share certificates, incorporation checklist
+* External:
+o CIPC Forms – COR14.1 (Notice of Incorporation), COR14.2 (Memorandum of Incorporation), COR39 (Change of Directors), COR15.2 (Alteration of MOI)
+o Companies Act Sec 42–47 (financial assistance, buybacks, solvency test)
+o SARS Tax Clearance Certificates
+* Dependency: Used by DocGen, Linking, Compliance Checker
+P19 – Trust Bot
+* Templates: Trust Deed, Letter of Wishes, Trustee Resolution
+* External:
+o SA Master of the High Court forms (J401 Trust Registration)
+o Offshore Trust Statutes (Mauritius, Jersey)
+o SARS Beneficial Owner filings
+* Dependency: Feeds Compliance (beneficial ownership), Drafting Oversight
+P23 – IBC Bot
+* Templates: MOA, Nominee Agreement, KYC checklist
+* External:
+o BVI – Articles of Association, Beneficial Owner Register
+o Seychelles – IBC Act compliance filings
+o Mauritius – Tax Residency Certificate
+o Belize – Apostille, Incumbency Certificate
+* Dependency: Interacts with Payments (fees), DocGen, and Submission Checker
+
+Compliance & Oversight Layer
+These ensure everything generated is legally compliant and regulator-ready.
+P24 – Compliance (Sec 42–47)
+* Templates: Compliance checklist, ruling request, summary report
+* External: SA Companies Act (Sec 42–47) & CIPC filings
+* Dependency: Works with P18 Company, P21 Linking, P25 Structure Comparison
+P13 – FICA Bot
+* Templates: Client declaration, checklist, FICA report
+* External: FICA Act, FATF, CRS/FATCA self-certification, PEP lists
+* Dependency: Used by Payments, Trust, IBC, Residency Planner
+P37 – Submission Checker
+* Templates: Completeness checklist, final check
+* External:
+o CIPC e-services
+o SARS eFiling integration
+o Offshore registry portals
+* Dependency: Runs after DocGen, Company, IBC, Trust
+P22 – Drafting Oversight
+* Templates: Review cover sheet, watermark overlay
+* External: Jurisdictional drafting standards
+* Dependency: Ensures all DocGen outputs meet legal formatting rules
+
+Advisor & Structuring Layer
+Tools that help advisors simulate, plan, and explain structures.
+P20 – Structure Bot
+* Templates: Structure memo, org chart
+* External: OECD guidelines on tax structuring, Double Tax Agreements
+* Dependency: Pulls data from Company, Trust, IBC
+P25 – Structure Comparison
+* Templates: Comparison memo, report
+* External: Comparative law databases (SA vs offshore)
+* Dependency: Pulls from Company, Trust, IBC, Residency Planner
+P26 – Residency Planner
+* Templates: Plan summary, residency report
+* External:
+o SARS tax residency rules
+o OECD tie-breaker tests
+o Country-specific tax treaties
+* Dependency: Feeds Structure Bot, Compliance Checker
+P34 – Legal Healthcheck
+* Templates: Audit report, compliance checklist
+* External: CIPC records, SARS compliance data
+* Dependency: Uses Company/Trust/IBC/Payments data for a client “health snapshot”
+
+Payments, Admin & Engagement Layer
+This ties commercial workflows into legal automation.
+P07 – Payments Bot
+* Templates: Invoice, receipt, payment confirmation
+* External: Banking integrations (Stripe, PayFast), SARS VAT rules
+* Dependency: Triggers on outputs from DocGen, IBC, Trust
+P15 – Quote Bot
+* Templates: Quote, proforma invoice, engagement letter
+* External: Advisor billing models
+* Dependency: Feeds into Payments and Subscription
+P17 – Subscriptions Bot
+* Templates: Welcome email, renewal notice
+* External: Payment gateways
+* Dependency: Manages ongoing advisor-client service automation
+
+Marketing, Education & Advisory Support
+Supports advisors in growth, training, and client retention.
+P29 – Lead Magnet
+* Templates: Landing page HTML
+* External: Website CMS (WordPress integration)
+* Dependency: Uses DocGen outputs as “free sample”
+P30 – Content Bot
+* Templates: Blog shell, email shell
+* External: WordPress, Mailchimp
+* Dependency: Uses outputs from Analytics and Lead Magnet
+P31 – Education Bot
+* Templates: Certificate, syllabus
+* External: CPD accreditation body templates
+* Dependency: Works with Advisor KPI & Analytics
+P32 – Marketing Automation
+* Templates: Sequence step, welcome message
+* External: CRM systems (HubSpot, Zoho)
+* Dependency: Feeds Newsletter Logic & Content Bot
+
+?? Summary of Interaction Flow
+1. DocGen + Company/Trust/IBC ? Create primary legal docs.
+2. Compliance + FICA + Drafting Oversight ? Verify legality and regulator standards.
+3. Submission Checker ? Package final set for direct filing.
+4. Payments + Quote + Subscriptions ? Handle commercial transactions.
+5. Analytics + KPI + Marketing ? Advisor tools for reporting, client growth, retention.
+
+? This map shows which bots are purely internal, which require external legal references, and which rely on integration with regulators or service providers.
+? Developers now know which templates must be sourced immediately (CIPC, J401, BVI filings) and which can be filled later.
+? Advisors can identify which tools create direct client outputs vs internal-only reports.
+
+?? Redundancy & Consolidation Analysis
+1. Resolution Generators
+* Bots involved:
+o P18 Company (board resolution)
+o P19 Trust (trustee resolution)
+o P21 Linking (minutes addendum, share transfer resolution)
+o P39 Trustee Services (trustee resolution, trustee minutes)
+* Problem: Multiple services generate variations of resolutions, often differing only by jurisdiction or entity type.
+* Solution: Create a Unified Resolution Engine:
+o Takes input ? entity type (Company, Trust, IBC)
+o Applies jurisdiction-specific template (SA, BVI, Seychelles, Mauritius, etc.)
+o Outputs correct resolution format.
+* Impact: Reduces 4 bots into 1 with jurisdictional branching.
+
+2. Checklists & Compliance Documents
+* Bots involved:
+o P13 FICA (FICA checklist)
+o P24 Compliance S42–S47 (compliance checklist)
+o P34 Legal Healthcheck (compliance checklist)
+o P37 Submission Checker (completeness checklist)
+* Problem: Overlap in checklist logic — all essentially validate inputs or documents.
+* Solution: Consolidate into a Central Compliance Checklist Engine:
+o Modules for FICA, Sec 42–47, final submission, and legal audit.
+o Single UX for advisors to “run all compliance checks.”
+* Impact: Cuts 4 checklist flows down to 1 engine with modules.
+
+3. Invoices & Payment Docs
+* Bots involved:
+o P07 Payments (invoice)
+o P10 DocGen (invoice)
+o P15 Quote (proforma invoice, quote)
+* Problem: Duplication of invoice generation across multiple services.
+* Solution: Merge into a Billing Engine:
+o Generates quote ? proforma ? invoice ? receipt as part of one lifecycle.
+o Integrates with Payments and Subscriptions automatically.
+* Impact: Prevents template duplication and invoice mismatches.
+
+4. Letters & Addenda
+* Bots involved:
+o P14 Doc Engine (letter)
+o P19 Trust (letter of wishes)
+o P28 Review Follow-up (followup letter)
+* Problem: Multiple bots producing letters, different formatting.
+* Solution: Create a Letter & Correspondence Engine:
+o Advisor can pick purpose (wishes, legal opinion, follow-up, notice).
+o Centralized template system with jurisdiction tagging.
+* Impact: Reduces 3 separate bots into 1 letter module.
+
+5. Reports & Memos
+* Bots involved:
+o P12 Analytics (analytics report)
+o P20 Structure (structure memo)
+o P25 Structure Comparison (comparison memo, report)
+o P26 Residency Planner (residency report)
+o P34 Legal Healthcheck (audit report)
+o P36 Advisor KPI (KPI report)
+o P41 UTM Metrics (UTM report)
+* Problem: Overlap in report generation. All are data + legal commentary outputs.
+* Solution: Build a Report Engine with submodules:
+o Legal reports (structure, audit, compliance)
+o Analytics reports (KPI, UTM, client insights)
+* Impact: Consolidates into one reporting system, reduces code duplication, standardizes formatting.
+
+6. Education & Marketing Flows
+* Bots involved:
+o P29 Lead Magnet
+o P30 Content (blog/email)
+o P31 Education (syllabus, certificate)
+o P32 Marketing Automation (sequences)
+o P40 Newsletter Logic (newsletter base)
+* Problem: Fragmented client engagement flows.
+* Solution: Combine into Client Engagement Engine:
+o Unified workflow: Lead capture ? Content drip ? Education ? Newsletter ? Automation.
+o Uses same CRM/WordPress integration.
+* Impact: Cuts 5 fragmented bots down to 1 engine with sequential logic.
+
+?? External Input Mapping by Consolidated Module
+Consolidated ModuleExternal Sources NeededResolution EngineCIPC (SA), BVI Registry, Seychelles IBC Registry, Trust Master’s OfficeCompliance Checklist EngineSA Companies Act (42–47), FICA Act, FATF/CRS, CIPC, SARSBilling EngineSARS VAT, Stripe/PayFast APIsLetter & Correspondence EngineOffshore drafting standards, Apostille requirementsReport EngineOECD DTAs, SARS tax data, CIPC records, CRM dataClient Engagement EngineWordPress, Mailchimp, HubSpot/Zoho CRM
+?? Recommended Developer Action
+1. Collapse redundant bots into engines (Resolutions, Checklists, Billing, Letters, Reports, Engagement).
+2. Maintain modular templates inside each engine (jurisdiction & purpose based).
+3. Centralize external API calls (CIPC, SARS, FATF, Stripe) instead of scattering them across bots.
+4. Advisor UX ? 1 dashboard with modules (not 40+ fragmented bots).
+
+? With this, you reduce 40+ bots to ~6 core engines while still covering all compliance and jurisdictional requirements.
+? Advisors will experience one coherent system, not a mess of disconnected tools.
+? Developers will have cleaner codebases, fewer redundancies, and easier scaling.
+
+0) High-level shape
+
+[WordPress + Frontends]
+        ?  (SSO: P01)
+        ?
+????????????????????????????
+?  E1 Identity & Access    ?  ? P01, P06, P11
+????????????????????????????
+           ? JWT cookies / user ctx / roles
+           ?
+????????????????????????????      ????????????????????????????
+?E2 Knowledge & Drafting   ????????E8 Storage & Delivery     ?
+?(LLM + Templates + DocGen)?      ?(Vault, Links, Watermark) ?
+????????????????????????????      ????????????????????????????
+           ? doc packs / HTML/PDF/DOCX
+           ?
+????????????????????????????      ????????????????????????????
+?E3 Pricing & Billing      ????????E7 Data & Insights        ?
+?(FX + Payments + Subs)    ?      ?(Events, Analytics, KPI)  ?
+????????????????????????????      ????????????????????????????
+           ? quotes/locks/checkout
+           ?
+????????????????????????????
+?E4 Compliance & Quality   ? ? FICA, S42–47, Healthcheck,
+?(Checklists & Submission) ?    Review/Submission gate
+????????????????????????????
+           ? approvals / evidence
+           ?
+????????????????????????????
+?E5 Corporate Lifecycle    ? ? Company, Trust, IBC, Linking
+?(Resolutions & Actions)   ?    Structure design + packs
+????????????????????????????
+           ? onboarding funnels
+           ?
+????????????????????????????
+?E6 Client Engagement      ? ? Lead Magnet, Content, Edu,
+?(Content, Drips, Booking) ?    Newsletter, Marketing Auto
+????????????????????????????
+
+
+E1) Identity & Access (Auth + Gateway + Admin)
+Collapses: P01 Auth, P06 Gateway/Bridge, P11 Admin
+Purpose: One source of truth for users, roles (owner_admin, advisor, client), sessions (email-OTP), and Gateway routing.
+* APIs
+o POST /auth/request-otp, POST /auth/verify-otp, POST /auth/refresh, POST /auth/logout, GET /auth/user
+o GET /gateway/routes (service discovery for UI)
+o GET /admin/tenants, PATCH /admin/users/:id (role mgmt)
+* Events (emit)
+o user.created, user.login, user.logout, role.changed
+* Storage
+o Users, OTPs, refresh tokens
+* External
+o SES (email), WP SSO plugin (already provided)
+* Migrate from P##
+o Keep P01 as-is (you already have it running). Fold P06 proxy rules + P11 admin UI under this engine.
+
+E2) Knowledge & Drafting (LLM + Templates + DocGen)
+Collapses: P02 LLM, P10 Docgen, P14 Doc Engine (+ letters)
+Purpose: Turn prompts + data into finished DOCX/PDF/HTML using curated skills + Jinja/Docx templates.
+* Submodules
+o Skills/Prompts: legal_summary, risk_assessment, content_repurpose (extensible)
+o Template Service: stores & versions templates; injects data; exports DOCX/PDF/HTML
+o Pack Builder: assembles multi-doc packs for a workflow (e.g., IBC incorporation pack)
+* APIs
+o POST /llm/generate (free/skill modes)
+o POST /doc/render (template_id, data) ? file
+o POST /doc/pack ([template_id…], data) ? zip
+* Events
+o doc.rendered, pack.created
+* Storage
+o Template registry (with jurisdiction tags), render history, cache
+* External
+o OpenAI (or configured model), optional watermark lib
+* Migrate from P##
+o P02, P10, P14 merge here. Keep your existing templates but relocate them into a single templates registry with tags:
+* type:{resolution|agreement|form|letter|invoice|report}
+* jurisdiction:{ZA|BVI|Belize|Mauritius|Seychelles|Cayman|…}
+* entity:{company|trust|ibc|individual}
+
+E3) Pricing & Billing (FX + Payments + Subscriptions)
+Collapses: P03 FX (24h lock), P07 Payments/Webhooks, P15 Quote, P17 Tokens/Subs
+Purpose: Produce quotes (respecting FX), lock rates 24h, process checkout, mint/track access tokens or subscription tiers.
+* APIs
+o POST /pricing/quote {base,target,amount} ? rate, converted
+o POST /pricing/lock ? {lock_id, rate, expires_at}
+o POST /checkout/session ? pay link, webhooks
+o GET /tokens/balance, POST /tokens/consume, GET /subs/plan
+* Events
+o pricing.locked, payment.succeeded, subscription.activated, tokens.debited
+* Storage
+o FX cache, locked rates, invoices, payments, token ledger, plan assignments
+* External
+o Yoco / NOWPayments, SARS VAT rules (for invoice calc), OXR/ExchangeRate host, CoinGecko (crypto)
+* Migrate from P##
+o P03/P07/P15/P17 combine; your invoice template lives in E2 and is invoked by billing. Stop duplicating invoice templates elsewhere.
+
+E4) Compliance & Quality (FICA, Sec 42–47, Healthcheck, Submission)
+Collapses: P13 FICA, P24 Compliance (S42–S47), P34 Healthcheck, P37 Submission Checker, P16 Review
+Purpose: One Checklist Engine with modules. Produces a single Evidence Pack and a pass/fail gate before delivery.
+* Modules
+o FICA/KYC: checklist + evidence capture
+o Section 42–47: SA Companies Act transactions (rollover, liquidation, group relief)
+o Legal Healthcheck: risk audit and remediation plan
+o Submission Checker: final completeness gate before delivery
+o Draft Review: inline review notes (ties to E8 annotations)
+* APIs
+o POST /compliance/run {module_id, inputs} ? score, issues, required docs
+o GET /compliance/evidence/:case_id ? consolidated zip
+* Events
+o compliance.passed, compliance.failed, evidence.updated
+* External (by module)
+o FICA: FIC Act, FATF/CRS guidance
+o Sec 42–47: SA Companies Act sections, SARS rulings/practice notes
+* Migrate from P##
+o Fold P13, P24, P34, P37, P16 into this engine. Templates for their reports move to E2.
+
+E5) Corporate Lifecycle (Company/Trust/IBC/Linking)
+Collapses: P18 Company, P19 Trust, P20 Structure Design, P21 Linking, P22 Drafting Oversight, P23 IBC, P25 Comparison
+Purpose: Orchestrate incorporations, trusts, cross-entity linking, and pack generation with jurisdiction branching.
+* Submodules
+o Intake & Structure Design (from P20)
+o Company Pack (ZA)
+o Trust Pack (ZA)
+o IBC Pack (offshore) with jurisdictions: BVI, Belize, Mauritius, Seychelles, Cayman (from earlier plan)
+o Linking/Entity Changes (share transfer, minutes addenda)
+o Comparison (P25) — compare structures & pricing
+* APIs
+o POST /lifecycle/design ? target structure + doc list
+o POST /lifecycle/pack {flow_id, jurisdiction, data} ? calls E2 to render all docs; stores to E8
+* Events
+o pack.ready, resolution.issued, entity.linked
+* External
+o CIPC (ZA), offshore registries (BVI/Seychelles/MU/Belize/Cayman) for format/wording rules
+* Migrate from P##
+o P18–P23, P25 merge here. All their DOCX/HTML templates live in E2 templates registry with jurisdiction tags.
+
+E6) Client Engagement (Lead Magnet, Content, Education, Newsletter, Booking)
+Collapses: P29 Lead Magnet, P30 Content, P31 Education, P32 Marketing Automation, P40 Newsletter Logic; Booking module (from initial plan)
+Purpose: Capture ? educate ? nurture ? schedule. Single orchestration with WordPress frontends.
+* Submodules
+o Lead Magnet (LP + gated PDF)
+o Content Repurpose (uses E2 LLM skills)
+o Education (syllabus, quizzes, certificate)
+o Newsletter Builder (sections/blocks)
+o Sequences/Automation (triggers based on E7 events)
+o Booking/Calendar (with payments handoff)
+* APIs
+o POST /engage/sequence/start, POST /engage/email/send, POST /engage/booking/slot
+* Events
+o lead.captured, lesson.completed, booking.confirmed
+* External
+o WP (theme/SSO), Calendly/Google Calendar, Mailer (SMTP/SES)
+* Migrate from P##
+o P29–P32, P40 collapse here. Booking module plugs into Payments (E3) for “slot ? pay ? confirm”.
+
+E7) Data & Insights (Events, Analytics, KPI, UTM)
+Collapses: P12 Analytics, P36 Advisor KPI, P41 UTM Metrics, P39 Telemetry
+Purpose: Event bus + analytics store + dashboards (advisor & ops).
+* APIs
+o POST /events/ingest (server & client)
+o GET /analytics/* (dashboards/exports)
+* Events
+o Stores everything (source-of-truth for funnels, conversions, usage)
+* Storage
+o Columnar/OLAP or Postgres; export to BigQuery later if needed
+* Migrate from P##
+o P12, P36, P41, P39 combine. All bots publish to /events/ingest. Admin/Advisor UI reads here.
+
+E8) Storage & Delivery (Vault, FileMgmt, Annotation)
+Collapses: P04 Vault, P27 Vault Features, P33 FileMgmt, P35 Doc Annotation
+Purpose: Durable store for generated/ingested docs, secure delivery, watermarks, annotations, client unlocks after payment.
+* APIs
+o POST /vault/upload, GET /vault/file/:id (signed), POST /vault/share-link
+o POST /vault/watermark (policy based)
+o POST /notes/annotate (advisor notes over docs)
+* Events
+o file.ready, file.shared, file.unlocked
+* External
+o S3/Cloud Storage, SES/SMTP (share notifications)
+* Migrate from P##
+o P04, P27, P33, P35 merge here. Doc Engine (E2) and Lifecycle (E5) always store outputs here.
+
+Mapping table (from today’s P## ? engines)
+* E1: P01, P06, P11
+* E2: P02, P10, P14 (all templates/docs/letters/invoices consolidated here)
+* E3: P03, P07, P15, P17
+* E4: P13, P16, P24, P34, P37
+* E5: P18, P19, P20, P21, P22, P23, P25
+* E6: P29, P30, P31, P32, P40 (+ Booking)
+* E7: P12, P36, P41, P39
+* E8: P04, P27, P33, P35
+
+Service-to-Service API matrix (minimal contracts)
+* WP/Frontends ? E1: /auth/* (cookies), then call others with credentials.
+* E5/E4/E6 ? E2: /doc/render, /doc/pack for all document outputs.
+* E5/E6 ? E3: /pricing/*, /checkout/session, /tokens/*.
+* All ? E8: /vault/* for storing & distributing outputs.
+* All ? E7: /events/ingest to log actions for analytics.
+
+External knowledge & law hooks (where each engine needs authoritative inputs)
+* E2 Drafting: template rules per jurisdiction (ZA Companies Act; BVI/Belize/MU/Seychelles/Cayman IBC regs); SARS/Apostille formatting where relevant.
+* E3 Billing: SARS VAT, FX providers (OXR/ExchangeRate host), crypto pricing, gateway webhooks (Yoco/NOWPayments).
+* E4 Compliance: FIC Act/FATF/CRS, SA Companies Act Sec 42–47 (transactions), SARS practice notes/rulings for edge cases.
+* E5 Lifecycle: CIPC (forms & resolutions wording), offshore registry requirements (IBCs), beneficial ownership statements, KYC demands per jurisdiction.
+* E6 Engagement: WP APIs, Calendly/Google Calendar, email deliverability (DMARC/DKIM for SES).
+* E7 Insights: no external—optional BigQuery/Looker later.
+* E8 Storage: S3/GCS policies (lifecycle, encryption, presigned URL TTL).
+
+Templates strategy (where they live)
+* All DOCX/HTML/PDF templates live in E2 with tags:
+o jurisdiction: ZA|BVI|Belize|Mauritius|Seychelles|Cayman|…
+o use: resolution|agreement|checklist|report|invoice|certificate|newsletter|email_block
+o engine_owner: E5|E4|E3|…
+* Engines call E2 with {template_id, data} and receive a file.
+* This removes duplicate “invoice.html”, “resolution.docx” etc. scattered across services.
+
+Migration plan (practical)
+1. Keep everything running on your VM.
+2. Code consolidation by folder (no runtime change yet):
+o Create 8 top-level service folders: eng-identity, eng-drafting, eng-billing, eng-compliance, eng-lifecycle, eng-engagement, eng-analytics, eng-vault.
+o Move code from P## into the matching engine folder without changing APIs yet.
+3. Centralize templates:
+o Create eng-drafting/templates/ and move all template files there.
+o Add a templates.json index (id, tags, version, path).
+4. Refactor internal calls:
+o Replace direct template access in P18/P19/P23… with REST calls to eng-drafting.
+o Replace ad-hoc storage with eng-vault calls.
+o Replace scattered invoice generation with a call chain E3 ? E2 ? E8.
+5. Cut redundant endpoints:
+o Remove duplicates: invoices in P10/P07, checklists across P13/P24/P34/P37, resolutions in P18/P19/P21/P39.
+6. Event pipeline:
+o Standardize logging to eng-analytics /events/ingest.
+7. Admin UI:
+o Keep a single Admin (under E1) that touches all engines via their APIs.
+
+Phased rollout (safe)
+* Phase 1 (Now): Centralize templates in E2; make E5/E4 call E2 for all docs.
+* Phase 2: Route all file writes/links through E8 only.
+* Phase 3: Switch invoice/quote to E3 (remove duplicates).
+* Phase 4: Replace checklists with E4 modules; deprecate P13/P24/P34/P37 UIs.
+* Phase 5: Collapse analytics into E7; point dashboards there.
+* Phase 6: Delete redundant endpoints & folders.
+
+If you want, I can generate:
+* a template index (templates.json) starter for E2 with your current list + IBC jurisdictions,
+* a minimal OpenAPI spec per engine,
+* and a compose overlay that labels the 8 engines while keeping the existing containers alive during the transition.
+
+
+If you want, I can tailor the template variables per renderer (docx/html/pdf) next — just say which ones you’ll wire up first.
+Here’s the pragmatic order I’d recommend wiring and hardening next, so you get real end-to-end value fast without boiling the ocean:
+1) Make “Auth ? LLM ? DocGen” a closed loop
+Why: Almost every bot flows through these.
+What to wire first
+* P01 Auth (already up): confirm cookies/JWTs reach downstream.
+* P02 LLM: lock the skills you’ll actually use in docgen (legal_summary, risk_assessment, content_repurpose).
+* P14 Doc Engine: implement the rendering path for DOCX + HTML with the template index I dropped.
+Deliverable: A user in WP clicks “Generate”, LLM prepares content, DocGen renders company_resolution.docx and report.html, downloadable from P27 Vault when you plug it later.
+Smoke tests: /auth/user, /llm/generate?mode=skill, /docgen/render for 2–3 templates.
+2) Payments “happy path”
+Why: Lets you test pre-/post-payment gating and tokens.
+What to wire
+* P03 FX (live or cached) ? P07 Payments (Yoco/NOWPayments) ? P17 Subscriptions (token/tiers).
+* Use the proforma_invoice.html and invoice.html templates (P15/P07).
+Deliverable: Quote ? lock FX rate (24h) ? checkout ? token credit ? gated page unlock.
+Smoke tests: Create FX lock; complete sandbox payment; token increments and allows a DocGen run.
+3) Company setup “thin slice”
+Why: High-frequency scenario; drives confidence.
+What to wire
+* P18 Company with board_resolution.docx + share_certificate.docx (works with P14 Doc Engine).
+* P21 Linking (share transfer + minutes addendum) right after.
+Deliverable: Single client journey: auth ? intake (minimal) ? company resolution + share cert ? linking addendum.
+4) IBC: start with 2–3 jurisdictions (phase 1)
+Why: Avoid stalling on the full matrix; prove the pattern.
+What to wire
+* P23 IBC with jurisdiction set BVI, Seychelles, Mauritius first.
+* Templates: MOA, Nominee Agreement, KYC Checklist per jurisdiction (use the index variants).
+Deliverable: Select jurisdiction ? collect deltas ? render full submission pack for those 3. Add the rest (Belize, Cayman) in phase 2.
+5) Review & Submission guardrails
+Why: Keeps quality up as you scale templates.
+What to wire
+* P16 Review (review_summary.html), P22 Drafting Oversight (review_coversheet.docx), P37 Submission Checker (completeness_checklist.docx).
+* Hook them as pre-delivery checks before vault release.
+Deliverable: Every generated pack must pass Review + Submission checks before P27 release.
+6) Vault delivery + Admin visibility
+Why: Round out the loop; make ops happy.
+What to wire
+* P27 Vault Features with watermarking + delivery links.
+* P11 Admin: minimally list recent runs, statuses, and links to artifacts.
+Deliverable: Ops can see, reissue, or revoke document deliveries.
+
+Template wiring order (very specific)
+1. DocGen HTML: report.html, invoice.html, proforma_invoice.html
+2. DocGen DOCX (core): company_resolution.docx, board_resolution.docx, share_certificate.docx
+3. IBC DOCX (phase 1): moa.docx, nominee_agreement.docx for BVI, Seychelles, Mauritius
+4. Compliance: review_coversheet.docx, completeness_checklist.docx
+5. Trust / Extras (phase 2): trust_deed.docx, letter_of_wishes.docx, etc.
+6. Remaining IBC jurisdictions (phase 2): Belize, Cayman.
+
+Minimal technical plan per step
+* Auth pass-through: ensure COOKIE_DOMAIN and COOKIE_SECURE are correct; /auth/user works cross-origin from WP.
+* LLM skills: freeze prompts/vars for each template; add Postman examples.
+* DocGen adapter: implement POST /render that accepts template_id + variables and returns a file; add error pages for missing vars.
+* Payments hook: upon webhook success ? call P17 to credit tokens; DocGen checks balance before rendering.
+* FX lock: always attach lock_id to a quote; DocGen includes locked rate metadata on the cover sheet.
+* Review gates: DocGen writes manifest.json; P16/P22/P37 use it to validate required docs before P27 release.
+* Admin: read-only list from a shared runs table or events topic; don’t block MVP on full CRUD.
+
+Nice-to-have (don’t block MVP)
+* Centralized secrets in GCP Secret Manager (wire via env on the VM).
+* Cloud Logging/Monitoring sinks for Access/LLM/DocGen.
+* Cached price tiers in P17 to avoid hitting payments for tiny runs.
+
+If you want me to execute this plan:
+Say “go” and tell me which environment (your current VM vs. fresh Workstation). I’ll start with Auth ? LLM ? DocGen and the Payments happy path, then IBC (BVI/Seychelles/Mauritius) phase 1.
+
