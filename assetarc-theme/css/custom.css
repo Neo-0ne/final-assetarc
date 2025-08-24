@@ -1,27 +1,69 @@
+/*
+  AssetArc Custom Styles
+  This file contains custom styles and overrides.
+*/
+
+/* CSS Variables from the Brand Guidelines */
+:root {
+  --gold-light: #FFD700;
+  --gold-med: #B78628;
+  --gold-dark: #8C6239;
+  --white: #ffffff;
+  --black: #000000;
+  --soft-silver: #D3D3D3;
+}
+
+/* Typography */
+/* Note: Using system fonts as placeholders. Final fonts (Playfair Display, Inter) would be enqueued in functions.php */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Georgia', serif; /* Placeholder for Playfair Display or Cormorant Garamond */
+}
+
 body {
-  background-color: #000;
-  color: #fff;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Segoe UI', sans-serif; /* Placeholder for Inter or Lato */
 }
 
-a {
-  color: #FFD700;
-  text-decoration: none;
+/* Custom Utility Classes */
+.text-gold {
+  color: var(--gold-light);
 }
 
-a:hover {
-  color: #B78628;
+.border-gold-dark {
+  border-color: var(--gold-dark);
 }
 
-button {
-  background-color: #8C6239;
-  border: none;
-  padding: 0.5rem 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 0.5rem;
+/* Component Styles from Brand Guidelines */
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold-med), var(--gold-light));
+  color: var(--black);
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 4px;
+  transition: transform 0.2s;
 }
 
-button:hover {
-  background-color: #B78628;
+.btn-gold:hover {
+  transform: scale(1.05);
+}
+
+.btn-outline {
+  border: 2px solid var(--gold-med);
+  color: var(--gold-med);
+  background: transparent;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-outline:hover {
+  background-color: var(--gold-med);
+  color: var(--black);
+}
+
+.card {
+  background: #1a1a1a;
+  border: 1px solid var(--gold-dark);
+  border-radius: 16px;
+  box-shadow: 0 0 15px rgba(255, 215, 0, .1);
 }

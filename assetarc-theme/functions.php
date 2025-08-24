@@ -21,6 +21,7 @@ add_action('after_setup_theme', 'assetarc_theme_setup');
 // Enqueue styles and scripts
 function assetarc_enqueue_assets() {
   wp_enqueue_style('assetarc-style', get_stylesheet_uri());
+  wp_enqueue_style('assetarc-custom-style', get_template_directory_uri() . '/css/custom.css', array('assetarc-style'));
   wp_enqueue_script('assetarc-scripts', get_template_directory_uri() . '/assets/main.js', array('jquery'), false, true);
 }
 add_action('wp_enqueue_scripts', 'assetarc_enqueue_assets');
