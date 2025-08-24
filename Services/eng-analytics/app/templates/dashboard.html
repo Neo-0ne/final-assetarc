@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AssetArc Analytics Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 2em; }
+        .chart-container { max-width: 800px; margin: auto; }
+    </style>
+</head>
+<body>
+    <h1>AssetArc Analytics Dashboard</h1>
+    <p>Displaying key metrics for the last 24 hours.</p>
+
+    <div class="chart-container">
+        <canvas id="kpiChart"></canvas>
+    </div>
+
+    <script>
+        const kpiData = {{ kpi_data|tojson }};
+
+        const ctx = document.getElementById('kpiChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Users Created', 'User Logins', 'Packs Generated'],
+                datasets: [{
+                    label: 'Count in Last 24 Hours',
+                    data: [
+                        kpiData.users_created_today,
+                        kpiData.logins_today,
+                        kpiData.packs_generated_today
+                    ],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(255, 159, 64, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
