@@ -1,4 +1,6 @@
 import os
+import sys
+import sys
 import boto3
 import requests
 import uuid
@@ -9,14 +11,18 @@ from auth_decorator import require_auth_from_identity
 
 app = Flask(__name__)
 
+# --- Add common module to path ---
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'common')))
+from secrets import get_secret
+
 # --- Configuration ---
-DRAFTING_SERVICE_URL = os.getenv('DRAFTING_SERVICE_URL', 'http://localhost:5001')
-BILLING_SERVICE_URL = os.getenv('BILLING_SERVICE_URL', 'http://localhost:5003')
-CAL_COM_BASE_URL = os.getenv('CAL_COM_BASE_URL', 'https://api.cal.com/v2')
-CAL_COM_API_KEY = os.getenv('CAL_COM_API_KEY') # Required
-AWS_REGION = os.getenv('AWS_REGION', 'us-east-1')
-SENDER_EMAIL = os.getenv('SENDER_EMAIL', 'noreply@assetarc.com')
-ANALYTICS_SERVICE_URL = os.getenv('ENG_ANALYTICS_URL', 'http://localhost:5007')
+DRAFTING_SERVICE_URL = get_secret('drafting-service-url') or 'http://localhost:5001'
+BILLING_SERVICE_URL = get_secret('billing-service-url') or 'http://localhost:5003'
+CAL_COM_BASE_URL = get_secret('cal-com-base-url') or 'https://api.cal.com/v2'
+CAL_COM_API_KEY = get_secret('cal-com-api-key') # Required
+AWS_REGION = get_secret('aws-region') or 'us-east-1'
+SENDER_EMAIL = get_secret('sender-email') or 'noreply@assetarc.com'
+ANALYTICS_SERVICE_URL = get_secret('eng-analytics-url') or 'http://localhost:5007'
 
 
 # Initialize Boto3 client for SES

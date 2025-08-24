@@ -1,4 +1,5 @@
 import os
+import sys
 import bcrypt
 import uuid
 import functools
@@ -17,17 +18,21 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}}) # Adjust origins as needed
 
+# --- Add common module to path ---
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'common')))
+from secrets import get_secret
+
 # --- Configuration ---
-JWT_SECRET = os.getenv('JWT_SECRET', 'a-super-secret-key-that-should-be-changed')
-ACCESS_TOKEN_TTL_MIN = int(os.getenv('ACCESS_TOKEN_TTL_MIN', '15'))
-REFRESH_TOKEN_TTL_DAYS = int(os.getenv('REFRESH_TOKEN_TTL_DAYS', '30'))
-OTP_TTL_MIN = int(os.getenv('OTP_TTL_MIN', '10'))
-COOKIE_SECURE = os.getenv('COOKIE_SECURE', 'False').lower() == 'true'
-COOKIE_DOMAIN = None if os.getenv('COOKIE_DOMAIN', 'localhost') == 'localhost' else os.getenv('COOKIE_DOMAIN')
-DB_URI = os.getenv('POSTGRES_URI') or os.getenv('SQLALCHEMY_DATABASE_URI', 'sqlite:///eng_identity.db')
-SENDER_EMAIL = os.getenv('SENDER_EMAIL', 'noreply@assetarc.com')
-AWS_REGION = os.getenv('AWS_REGION', 'us-east-1')
-ANALYTICS_SERVICE_URL = os.getenv('ENG_ANALYTICS_URL', 'http://localhost:5007')
+JWT_SECRET = get_secret('jwt-secret') or 'a-super-secret-key-that-should-be-changed'
+ACCESS_TOKEN_TTL_MIN = int(get_secret('access-token-ttl-min') or '15')
+REFRESH_TOKEN_TTL_DAYS = int(get_secret('refresh-token-ttl-days') or '30')
+OTP_TTL_MIN = int(get_secret('otp-ttl-min') or '10')
+COOKIE_SECURE = (get_secret('cookie-secure') or 'False').lower() == 'true'
+COOKIE_DOMAIN = None if (get_secret('cookie-domain') or 'localhost') == 'localhost' else get_secret('cookie-domain')
+DB_URI = get_secret('postgres-uri') or get_secret('sqlalchemy-database-uri') or 'sqlite:///eng_identity.db'
+SENDER_EMAIL = get_secret('sender-email') or 'noreply@assetarc.com'
+AWS_REGION = get_secret('aws-region') or 'us-east-1'
+ANALYTICS_SERVICE_URL = get_secret('eng-analytics-url') or 'http://localhost:5007'
 
 # --- Services ---
 signer = URLSafeTimedSerializer(JWT_SECRET)
@@ -120,6 +125,7 @@ def request_otp():
         conn.execute(text('INSERT INTO otps(email, hash, exp) VALUES (:e, :h, :x)'), {'e': email, 'h': hashed_code, 'x': expires_at})
 
     # Send OTP via email
+    app.logger.info(f"OTP for {email}: {code}") # Added for testing
     email_subject = "Your AssetArc Login OTP"
     email_body = f"Your one-time password is: {code}\nIt will expire in {OTP_TTL_MIN} minutes."
     try:
@@ -299,8 +305,8 @@ def require_api_key(f):
     @functools.wraps(f)
     def decorated_function(*args, **kwargs):
         api_key = request.headers.get('x-api-key')
-        # Ensure INTERNAL_SERVICE_API_KEY is loaded from .env
-        if not api_key or api_key != os.getenv('INTERNAL_SERVICE_API_KEY'):
+        internal_api_key = get_secret('internal-service-api-key')
+        if not internal_api_key or not api_key or api_key != internal_api_key:
             return jsonify({'ok': False, 'error': 'Unauthorized'}), 401
         return f(*args, **kwargs)
     return decorated_function

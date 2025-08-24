@@ -1,4 +1,5 @@
 Flask>=2.0
 docxtpl
 gunicorn>=20.0
+google-cloud-secret-manager>=2.0
 Jinja2>=3.0

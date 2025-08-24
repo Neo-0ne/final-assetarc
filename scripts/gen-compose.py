@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 import sys
 from pathlib import Path
 
@@ -15,28 +16,14 @@ GLOBAL_ENV = ROOT / ".env.global"
 
 # Default ports for known services (override by .env.example PORT or hard-coded app.py)
 default_ports = {
-  "assetarc-auth": 5001,
-  "assetarc-llm": 5002,
-  "assetarc-fx": 5003,
-  "assetarc-doc-engine": 5014,
-  "assetarc-admin": 5011,
-  "assetarc-analytics": 5012,
-  "assetarc-review": 5016,
-  "assetarc-subscriptions": 5017,
-  "assetarc-vault-features": 8027,
-  "assetarc-leadmagnet": 8029,
-  "assetarc-content": 8030,
-  "assetarc-education": 8031,
-  "assetarc-marketing-automation": 8032,
-  "assetarc-filemgmt": 8033,
-  "assetarc-legal-healthcheck": 8034,
-  "assetarc-doc-annotation": 8035,
-  "assetarc-advisor-kpi": 8036,
-  "assetarc-submission-checker": 8037,
-  "assetarc-bbbee": 8038,
-  "assetarc-trustee-services": 8039,
-  "assetarc-newsletter-logic": 8040,
-  "assetarc-utm-metrics": 8041
+  "eng-identity": 5000,
+  "eng-drafting": 5001,
+  "eng-vault": 5002,
+  "eng-billing": 5003,
+  "eng-compliance": 5004,
+  "eng-lifecycle": 5005,
+  "eng-engagement": 5006,
+  "eng-analytics": 5007
 }
 
 def sniff_service_root(pdir: Path):
@@ -53,7 +40,7 @@ def sniff_service_root(pdir: Path):
         return candidates[0]
     return None
 
-def derive_port(service_root: Path):
+def derive_port(pdir: Path, service_root: Path):
     # Try .env.example's PORT, otherwise default table.
     envex = service_root / ".env.example"
     if envex.exists():
@@ -63,7 +50,7 @@ def derive_port(service_root: Path):
                     return int(line.strip().split("=",1)[1])
                 except Exception:
                     pass
-    return default_ports.get(service_root.name, None)
+    return default_ports.get(pdir.name, None)
 
 def load_global_env():
     out = {}
@@ -97,7 +84,7 @@ def main():
         sroot = sniff_service_root(p)
         if not sroot:
             continue
-        port = derive_port(sroot)
+        port = derive_port(p, sroot)
         name = p.name
         envfile = sroot / ".env"
         # inject shared vars (non-destructive)
@@ -119,22 +106,40 @@ def main():
             "NOWPAYMENTS_API_KEY",
             "CALENDLY_ORG_URI",
             "GOOGLE_SERVICE_ACCOUNT_JSON_PATH",
+            "GCP_PROJECT_ID",
+            "ENG_IDENTITY_URL",
+            "ENG_DRAFTING_URL",
+            "ENG_VAULT_URL",
+            "ENG_BILLING_URL",
+            "ENG_COMPLIANCE_URL",
+            "ENG_LIFECYCLE_URL",
+            "ENG_ENGAGEMENT_URL",
+            "ENG_ANALYTICS_URL",
         ):
             if k in globs:
                 inject[k] = globs[k]
         upsert_envfile(envfile, inject)
 
-        services[name] = {
+        dockerfile_path = sroot.relative_to(ROOT) / "Dockerfile"
+        service_config = {
             "build": {
-                "context": str(p),
-                "dockerfile": str(sroot.relative_to(p) / "Dockerfile")
+                "context": ".",
+                "dockerfile": str(dockerfile_path)
             },
             "container_name": name,
             "env_file": [str(envfile)],
             "restart": "unless-stopped",
         }
+
+        gcp_creds_path = os.getenv('GCP_CREDS_PATH')
+        if gcp_creds_path and os.path.exists(gcp_creds_path):
+            service_config["volumes"] = [f"{gcp_creds_path}:/etc/gcloud/credentials.json:ro"]
+            service_config["environment"] = {"GOOGLE_APPLICATION_CREDENTIALS": "/etc/gcloud/credentials.json"}
+
         if port:
-            services[name]["ports"] = [f"{port}:{port}"]
+            service_config["ports"] = [f"{port}:{port}"]
+
+        services[name] = service_config
 
     compose = {"version": "3.9", "services": services}
     OUT.write_text(yaml.safe_dump(compose, sort_keys=True), encoding="utf-8")

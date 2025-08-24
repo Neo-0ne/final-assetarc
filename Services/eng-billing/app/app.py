@@ -1,4 +1,5 @@
 import os
+import sys
 import requests
 import stripe
 import uuid
@@ -11,17 +12,21 @@ from auth_decorator import require_auth_from_identity
 
 app = Flask(__name__)
 
+# --- Add common module to path ---
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'common')))
+from secrets import get_secret
+
 # --- Configuration ---
-STRIPE_API_KEY = os.getenv('STRIPE_API_KEY', 'sk_test_YOUR_KEY')
-STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET', 'whsec_YOUR_SECRET')
-REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
-ANALYTICS_SERVICE_URL = os.getenv('ENG_ANALYTICS_URL', 'http://localhost:5007')
+STRIPE_API_KEY = get_secret('stripe-api-key') or 'sk_test_YOUR_KEY'
+STRIPE_WEBHOOK_SECRET = get_secret('stripe-webhook-secret') or 'whsec_YOUR_SECRET'
+REDIS_URL = get_secret('redis-url') or 'redis://localhost:6379/0'
+ANALYTICS_SERVICE_URL = get_secret('eng-analytics-url') or 'http://localhost:5007'
 stripe.api_key = STRIPE_API_KEY
 
 from sqlalchemy import create_engine, text
 
 # --- Database Setup ---
-DB_URI = os.getenv('SQLALCHEMY_DATABASE_URI', 'sqlite:///eng_billing.db')
+DB_URI = get_secret('sqlalchemy-database-uri') or 'sqlite:///eng_billing.db'
 engine = create_engine(DB_URI, future=True)
 
 def init_db():
@@ -263,7 +268,8 @@ def require_api_key(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         api_key = request.headers.get('x-api-key')
-        if not api_key or api_key != os.getenv('INTERNAL_SERVICE_API_KEY'):
+        internal_api_key = get_secret('internal-service-api-key')
+        if not internal_api_key or not api_key or api_key != internal_api_key:
             return jsonify({'ok': False, 'error': 'Unauthorized'}), 401
         return f(*args, **kwargs)
     return decorated_function
