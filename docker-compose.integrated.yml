@@ -1,0 +1,58 @@
+services:
+  eng-analytics:
+    build:
+      context: /app/Services/eng-analytics/app
+    container_name: eng-analytics
+    env_file:
+    - /app/Services/eng-analytics/app/.env
+    restart: unless-stopped
+  eng-billing:
+    build:
+      context: /app/Services/eng-billing/app
+    container_name: eng-billing
+    env_file:
+    - /app/Services/eng-billing/app/.env
+    restart: unless-stopped
+  eng-compliance:
+    build:
+      context: /app/Services/eng-compliance/app
+    container_name: eng-compliance
+    env_file:
+    - /app/Services/eng-compliance/app/.env
+    restart: unless-stopped
+  eng-drafting:
+    build:
+      context: /app/Services/eng-drafting/app
+    container_name: eng-drafting
+    env_file:
+    - /app/Services/eng-drafting/app/.env
+    restart: unless-stopped
+  eng-engagement:
+    build:
+      context: /app/Services/eng-engagement/app
+    container_name: eng-engagement
+    env_file:
+    - /app/Services/eng-engagement/app/.env
+    restart: unless-stopped
+  eng-identity:
+    build:
+      context: /app/Services/eng-identity/app
+    container_name: eng-identity
+    env_file:
+    - /app/Services/eng-identity/app/.env
+    restart: unless-stopped
+  eng-lifecycle:
+    build:
+      context: /app/Services/eng-lifecycle/app
+    container_name: eng-lifecycle
+    env_file:
+    - /app/Services/eng-lifecycle/app/.env
+    restart: unless-stopped
+  eng-vault:
+    build:
+      context: /app/Services/eng-vault/app
+    container_name: eng-vault
+    env_file:
+    - /app/Services/eng-vault/app/.env
+    restart: unless-stopped
+version: '3.9'
