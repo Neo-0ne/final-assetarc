@@ -125,7 +125,10 @@ def main():
         upsert_envfile(envfile, inject)
 
         services[name] = {
-            "build": {"context": str(sroot)},
+            "build": {
+                "context": str(p),
+                "dockerfile": str(sroot.relative_to(p) / "Dockerfile")
+            },
             "container_name": name,
             "env_file": [str(envfile)],
             "restart": "unless-stopped",
