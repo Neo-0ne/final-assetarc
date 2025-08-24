@@ -1,9 +1,14 @@
 import os
+import sys
 import functools
 from flask import request, jsonify
 import requests
 
-IDENTITY_SERVICE_URL = os.getenv('ENG_IDENTITY_URL', 'http://localhost:5000')
+# --- Add common module to path ---
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'common')))
+from secrets import get_secret
+
+IDENTITY_SERVICE_URL = get_secret('eng-identity-url') or 'http://localhost:5000'
 
 def require_auth_from_identity(role=None):
     def decorator(f):

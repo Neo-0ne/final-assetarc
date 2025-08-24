@@ -1,4 +1,5 @@
 import os
+import sys
 import requests
 import zipfile
 import io
@@ -12,16 +13,20 @@ from modules import design_corporate_structure, STRUCTURE_TEMPLATE_MAP
 
 app = Flask(__name__)
 
+# --- Add common module to path ---
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'common')))
+from secrets import get_secret
+
 # --- Engine Service URLs ---
-DRAFTING_SERVICE_URL = os.getenv('DRAFTING_SERVICE_URL', 'http://localhost:5001')
-VAULT_SERVICE_URL = os.getenv('VAULT_SERVICE_URL', 'http://localhost:5002')
-ANALYTICS_SERVICE_URL = os.getenv('ENG_ANALYTICS_URL', 'http://localhost:5007')
+DRAFTING_SERVICE_URL = get_secret('drafting-service-url') or 'http://localhost:5001'
+VAULT_SERVICE_URL = get_secret('vault-service-url') or 'http://localhost:5002'
+ANALYTICS_SERVICE_URL = get_secret('eng-analytics-url') or 'http://localhost:5007'
 
 
 from sqlalchemy import create_engine, text
 
 # --- Database Setup ---
-DB_URI = os.getenv('SQLALCHEMY_DATABASE_URI', 'sqlite:///eng_lifecycle.db')
+DB_URI = get_secret('sqlalchemy-database-uri') or 'sqlite:///eng_lifecycle.db'
 engine = create_engine(DB_URI, future=True)
 
 def init_db():
@@ -172,7 +177,8 @@ def require_api_key(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         api_key = request.headers.get('x-api-key')
-        if not api_key or api_key != os.getenv('INTERNAL_SERVICE_API_KEY'):
+        internal_api_key = get_secret('internal-service-api-key')
+        if not internal_api_key or not api_key or api_key != internal_api_key:
             return jsonify({'ok': False, 'error': 'Unauthorized'}), 401
         return f(*args, **kwargs)
     return decorated_function
@@ -193,8 +199,8 @@ def handle_contact_form():
 
     # 2. Delegate email sending to eng-identity
     try:
-        identity_service_url = os.getenv('ENG_IDENTITY_URL', 'http://localhost:5000')
-        admin_email = os.getenv('ADMIN_EMAIL', 'admin@assetarc.com')
+        identity_service_url = get_secret('eng-identity-url') or 'http://localhost:5000'
+        admin_email = get_secret('admin-email') or 'admin@assetarc.com'
 
         email_payload = {
             "recipient": admin_email,
@@ -203,7 +209,7 @@ def handle_contact_form():
         }
 
         # This endpoint will be protected by the same internal API key
-        headers = {'x-api-key': os.getenv('INTERNAL_SERVICE_API_KEY')}
+        headers = {'x-api-key': get_secret('internal-service-api-key')}
 
         response = requests.post(
             f"{identity_service_url}/api/v1/send-system-email",

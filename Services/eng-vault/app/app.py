@@ -1,4 +1,5 @@
 import os
+import sys
 import uuid
 import datetime
 from flask import Flask, jsonify, request
@@ -8,9 +9,13 @@ from auth_decorator import require_auth_from_identity
 
 app = Flask(__name__)
 
+# --- Add common module to path ---
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'common')))
+from secrets import get_secret
+
 # --- Configuration ---
-GCS_BUCKET_NAME = os.getenv('GCS_BUCKET_NAME', 'assetarc-vault-dev')
-DB_URI = os.getenv('POSTGRES_URI') or os.getenv('SQLALCHEMY_DATABASE_URI', 'sqlite:///eng_vault.db')
+GCS_BUCKET_NAME = get_secret('gcs-bucket-name') or 'assetarc-vault-dev'
+DB_URI = get_secret('postgres-uri') or get_secret('sqlalchemy-database-uri') or 'sqlite:///eng_vault.db'
 
 # --- Service Initialization ---
 try:

@@ -51,6 +51,21 @@ Each service has its own detailed `README.md` file with information about its AP
     ```
     This will build the Docker images for each service and start them. The services will be available on their respective ports (e.g., `eng-identity` on `localhost:5000`, `eng-billing` on `localhost:5003`, etc.).
 
+### Google Cloud Secret Manager Integration
+
+This project uses Google Cloud Secret Manager to handle sensitive data like API keys and database credentials in a production environment. To use this feature, you will need to:
+
+1.  **Create a Google Cloud Service Account:**
+    *   In the Google Cloud Console, create a new service account.
+    *   Grant this service account the "Secret Manager Secret Accessor" IAM role.
+    *   Create and download a JSON key for this service account.
+
+2.  **Set Environment Variables:**
+    *   Set the `GCP_PROJECT_ID` environment variable to your Google Cloud project ID.
+    *   Set the `GCP_CREDS_PATH` environment variable to the absolute path of the JSON key file you downloaded.
+
+The application will automatically use these credentials to fetch secrets from Secret Manager. If these variables are not set, the application will fall back to using environment variables defined in the `.env` files, which is suitable for local development without a connection to GCP.
+
 ### Running Tests
 
 To run the tests for all services, you can run the following command from the root of the repository. This will discover and run all tests in the `eng-*/tests/` directories.
