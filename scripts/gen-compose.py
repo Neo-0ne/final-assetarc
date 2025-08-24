@@ -6,7 +6,7 @@ ROOT = Path(__file__).resolve().parent.parent
 # Service folders may live directly under the repo root in some distributions
 # or inside a dedicated "services" directory.  Fall back to the root if the
 # "services" folder is missing so the generator still works.
-SERVICES = ROOT / "services"
+SERVICES = ROOT / "Services"
 if not SERVICES.exists():
     SERVICES = ROOT
 
@@ -98,7 +98,7 @@ def main():
         if not sroot:
             continue
         port = derive_port(sroot)
-        name = sroot.name.replace("assetarc-", "")
+        name = p.name
         envfile = sroot / ".env"
         # inject shared vars (non-destructive)
         inject = {}
@@ -126,7 +126,7 @@ def main():
 
         services[name] = {
             "build": {"context": str(sroot)},
-            "container_name": f"assetarc-{name}",
+            "container_name": name,
             "env_file": [str(envfile)],
             "restart": "unless-stopped",
         }
