@@ -10,43 +10,44 @@ get_header();
     <div class="max-w-screen-xl mx-auto">
         <h1 class="text-4xl lg:text-5xl font-semibold mb-10 text-gold">Pricing & Access</h1>
 
+        <!-- Jules: Synthesized content for review -->
         <p class="text-lg mb-10 max-w-3xl">
-            Whether you’re a private client looking to structure your legacy or a licensed advisor scaling your impact, AssetArc offers flexible pricing tailored to your role.
+            Our pricing is designed for two distinct paths: direct structuring for founders and HNWIs, and a scalable, recurring model for professional advisors who wish to leverage our platform for their own clients.
         </p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 text-white">
 
             <!-- Private Clients -->
-            <div class="bg-gray-900 rounded-2xl p-6 shadow-lg">
-                <h2 class="text-2xl font-bold text-gold mb-4">Private Clients</h2>
-                <p class="mb-6">
-                    Explore our structuring suite and only pay when you're ready to generate documents or consult with a human advisor.
+            <div class="card p-6 flex flex-col">
+                <h2 class="text-2xl font-bold text-gold mb-4">For Founders & Individuals</h2>
+                <p class="mb-6 flex-grow">
+                    Engage with our automated workflows to design your structure. You only pay for the generation of final, human-reviewed document packs or for dedicated consultations with structuring professionals.
                 </p>
                 <ul class="space-y-2 mb-6 list-disc list-inside text-gray-300">
-                    <li>Free exploration of structuring bots</li>
-                    <li>Pay-per-document (pricing varies by jurisdiction)</li>
-                    <li>Optional one-on-one consultations</li>
-                    <li>Secure client vault with document access</li>
+                    <li>Free access to explore all structuring workflows</li>
+                    <li>Pay-per-document generation with transparent pricing</li>
+                    <li>Direct access to book one-on-one consultations</li>
+                    <li>A secure, personal vault for all your final documents</li>
                 </ul>
-                <a href="/consultation" class="inline-block bg-gold text-black font-semibold px-6 py-3 rounded-full hover:bg-yellow-400 transition">
-                    Begin Your Journey
+                <a href="/assessment" class="btn btn-gold mt-auto">
+                    Start Your Free Assessment
                 </a>
             </div>
 
             <!-- Advisor Subscriptions -->
-            <div class="bg-gray-900 rounded-2xl p-6 shadow-lg">
-                <h2 class="text-2xl font-bold text-gold mb-4">Advisors & Firms</h2>
-                <p class="mb-6">
-                    Scale your practice with automation, tokenised access for clients, and your own white-labeled version of AssetArc.
+            <div class="card p-6 flex flex-col">
+                <h2 class="text-2xl font-bold text-gold mb-4">For Advisors & Firms</h2>
+                <p class="mb-6 flex-grow">
+                    Transform your practice with our "Structuring-as-a-Service" model. Move beyond one-off fees to a scalable, recurring revenue stream, powered by our compliant, white-label ready platform.
                 </p>
                 <ul class="space-y-2 mb-6 list-disc list-inside text-gray-300">
-                    <li>Monthly or annual subscription tiers</li>
-                    <li>Token packs for document generation</li>
-                    <li>White-label branding and dashboard</li>
-                    <li>Secure client intake and compliance tools</li>
+                    <li>Subscription tiers for predictable, recurring revenue</li>
+                    <li>Token packs for client document generation</li>
+                    <li>A fully white-labeled portal with your firm's branding</li>
+                    <li>Integrated compliance and client management tools</li>
                 </ul>
-                <a href="/advisor" class="inline-block bg-gold text-black font-semibold px-6 py-3 rounded-full hover:bg-yellow-400 transition">
-                    Join as an Advisor
+                <a href="/advisor" class="btn btn-outline mt-auto">
+                    Learn About the Advisor Platform
                 </a>
             </div>
         </div>
@@ -56,44 +57,45 @@ get_header();
             <h2 class="text-3xl font-semibold text-center mb-12">Advisor Subscription Tiers</h2>
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- Tier 1: Starter -->
-                <div class="pricing-tier bg-gray-800 p-8 rounded-lg text-center">
+                <div class="card p-8 text-center flex flex-col">
                     <h4 class="text-xl font-semibold text-gold">Starter Advisor</h4>
                     <p class="text-4xl font-bold my-4">R499<span class="text-lg font-normal">/mo</span></p>
-                    <ul class="text-left space-y-2 mb-6">
-                        <li>Up to 10 structures/month</li>
-                        <li>Client Vault Access</li>
-                        <li>Standard Support</li>
+                    <ul class="text-left space-y-2 mb-6 flex-grow">
+                        <li>Up to 10 structure generations/month</li>
+                        <li>Shared Client Vault Access</li>
+                        <li>Standard Email Support</li>
                     </ul>
-                    <a href="/subscribe/starter" class="btn btn-outline">Subscribe</a>
+                    <a href="/subscribe/starter" class="btn btn-outline mt-auto">Subscribe</a>
                 </div>
                 <!-- Tier 2: Professional -->
-                <div class="pricing-tier bg-gray-900 p-8 rounded-lg text-center border-2 border-gold shadow-lg">
+                <div class="card p-8 text-center border-2 border-gold shadow-lg flex flex-col">
                     <h4 class="text-xl font-semibold text-gold">Professional</h4>
                     <p class="text-4xl font-bold my-4">R999<span class="text-lg font-normal">/mo</span></p>
-                    <ul class="text-left space-y-2 mb-6">
-                        <li>Up to 50 structures/month</li>
-                        <li>Profitability Dashboard</li>
-                        <li>Priority Support</li>
+                    <ul class="text-left space-y-2 mb-6 flex-grow">
+                        <li>Up to 50 structure generations/month</li>
+                        <li>Advisor Profitability Dashboard</li>
+                        <li>Priority Support & Onboarding</li>
                     </ul>
-                    <a href="/subscribe/professional" class="btn btn-gold">Subscribe</a>
+                    <a href="/subscribe/professional" class="btn btn-gold mt-auto">Subscribe</a>
                 </div>
                 <!-- Tier 3: White-Label -->
-                <div class="pricing-tier bg-gray-800 p-8 rounded-lg text-center">
-                    <h4 class="text-xl font-semibold text-gold">White-Label</h4>
+                <div class="card p-8 text-center flex flex-col">
+                    <h4 class="text-xl font-semibold text-gold">White-Label Partner</h4>
                     <p class="text-4xl font-bold my-4">R1999<span class="text-lg font-normal">/mo</span></p>
-                    <ul class="text-left space-y-2 mb-6">
-                        <li>Unlimited structures</li>
-                        <li>Your Branding</li>
-                        <li>Client Token Generation</li>
+                    <ul class="text-left space-y-2 mb-6 flex-grow">
+                        <li>Unlimited structure generations</li>
+                        <li>Custom Branding & Domain</li>
+                        <li>Client Token & Access Management</li>
                     </ul>
-                    <a href="/subscribe/white-label" class="btn btn-outline">Subscribe</a>
+                    <a href="/subscribe/white-label" class="btn btn-outline mt-auto">Subscribe</a>
                 </div>
             </div>
-            <p class="text-center text-sm text-gray-500 mt-8">* IBC Structuring and other premium services are billed separately on a pay-per-use basis.</p>
+            <p class="text-center text-sm text-gray-500 mt-8">* Premium services like cross-jurisdictional structuring are billed on a pay-per-use basis. All prices are VAT exclusive.</p>
         </section>
 
         <div class="mt-16 max-w-4xl mx-auto text-center">
-            <h3 class="text-2xl font-bold text-white mb-4">Need a Custom Setup?</h3>
+            <h3 class="text-2xl font-bold text-white mb-4">Bespoke Structuring for Family Offices & HNWIs</h3>
+        <!-- End synthesized content -->
             <p class="mb-6 text-gray-400">
                 We work with high-net-worth individuals, family offices, and specialist firms on bespoke structuring and legacy projects.
             </p>
