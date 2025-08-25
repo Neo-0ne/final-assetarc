@@ -66,3 +66,36 @@ You can verify the frontend change manually by following these steps.
     -   If you **did** seed the database, they will show **R 250.00** and **2**.
 
 This confirms that the JavaScript in the file is successfully calling the backend API and displaying the data.
+
+---
+
+## Part 3: Verifying the Advisor KPI Dashboard
+
+This dashboard was found to be already implemented. The following steps can be used to verify its functionality. This requires multiple backend services to be running.
+
+### Steps:
+
+1.  **Start the required backend services:** The advisor dashboard aggregates data from multiple services.
+    ```bash
+    sudo docker compose -f docker-compose.integrated.yml up -d --build eng-identity eng-billing eng-lifecycle
+    ```
+
+2.  **Create an Advisor User:** The dashboard is only visible to users with the `advisor` role. You can create one directly in the database with the following command.
+    ```bash
+    sudo docker compose -f docker-compose.integrated.yml exec eng-identity sqlite3 eng_identity.db "INSERT INTO users (email, role, is_active, created_at) VALUES ('test-advisor@asset-arc.com', 'advisor', 1, '2023-01-01 10:00:00');"
+    ```
+
+3.  **Log In as the Advisor:**
+    - Navigate to your WordPress site's login page.
+    - Use the OTP flow to log in with the email `test-advisor@asset-arc.com`. You can find the OTP code in the logs of the `eng-identity` container (`sudo docker compose logs eng-identity`).
+
+4.  **Navigate to the Advisor Dashboard:** Once logged in, navigate to the page that uses the "Advisor Dashboard" template. The URL is typically `/advisor-dashboard/`.
+
+### Expected Outcome:
+
+-   The page should display the title **"Advisor Dashboard"**.
+-   You will see three cards: **"Active Clients"**, **"Pending Reviews"**, and **"Tokens Remaining"**.
+-   Since this is a new advisor with no clients, these cards will all display **0**.
+-   You will see an empty table under **"My Clients"**.
+
+This confirms that the page is loading and successfully communicating with the backend services.
