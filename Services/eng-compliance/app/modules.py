@@ -6,6 +6,24 @@ from pydantic import ValidationError
 from .bbee import OwnershipStructure, calculate_ownership_scorecard
 from .estate_calculator import EstateInput, calculate_estate_duty
 from .insurance_wrapper_calculator import InsuranceWrapperInput, calculate_wrapper_benefit
+from .residency_planner import ResidencyPlannerInput, determine_residency_status
+
+def run_residency_planner_check(inputs: dict) -> dict:
+    """
+    Parses user data and runs the Tax Residency Planner.
+    """
+    try:
+        planner_input = ResidencyPlannerInput(**inputs)
+        result = determine_residency_status(planner_input)
+        return {
+            "status": "completed",
+            "summary": f"Your determined tax residency status is: {result['status']}",
+            "details": result
+        }
+    except ValidationError as e:
+        return {"status": "error", "summary": "Input data is invalid.", "details": e.errors()}
+    except Exception as e:
+        return {"status": "error", "summary": "An unexpected error occurred.", "details": str(e)}
 
 def run_insurance_wrapper_check(inputs: dict) -> dict:
     """
