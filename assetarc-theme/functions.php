@@ -18,6 +18,60 @@ function assetarc_theme_setup() {
 }
 add_action('after_setup_theme', 'assetarc_theme_setup');
 
+/**
+ * Fetches branding assets for a white-labeled site.
+ *
+ * Checks for a custom header (X-AssetArc-Brand-ID) passed from the reverse proxy,
+ * then calls the backend API to get the logo URL and other branding details.
+ * The result is cached in a global variable for the duration of the request.
+ *
+ * @return array|null The brand data or null if not found or an error occurs.
+ */
+function get_assetarc_brand_assets() {
+    // Check if we've already cached the data for this request
+    if (isset($GLOBALS['assetarc_brand_assets'])) {
+        return $GLOBALS['assetarc_brand_assets'];
+    }
+
+    // Check for the custom header from Nginx
+    $brand_id = '';
+    if (isset($_SERVER['HTTP_X_ASSETARC_BRAND_ID'])) {
+        $brand_id = sanitize_text_field($_SERVER['HTTP_X_ASSETARC_BRAND_ID']);
+    }
+
+    if (empty($brand_id)) {
+        $GLOBALS['assetarc_brand_assets'] = null;
+        return null;
+    }
+
+    // In a real production environment, the API key should be stored securely
+    // and not hardcoded. For this implementation, we use the mock key.
+    $api_key = 'mock-internal-api-key';
+    $api_url = 'http://localhost:5000/api/v1/brands/' . $brand_id;
+
+    $response = wp_remote_get($api_url, array(
+        'headers' => array('x-api-key' => $api_key),
+        'timeout' => 10,
+    ));
+
+    if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
+        error_log('Failed to fetch brand assets for brand: ' . $brand_id);
+        $GLOBALS['assetarc_brand_assets'] = null;
+        return null;
+    }
+
+    $body = wp_remote_retrieve_body($response);
+    $data = json_decode($body, true);
+
+    if (isset($data['ok']) && $data['ok'] && isset($data['brand'])) {
+        $GLOBALS['assetarc_brand_assets'] = $data['brand'];
+        return $data['brand'];
+    }
+
+    $GLOBALS['assetarc_brand_assets'] = null;
+    return null;
+}
+
 // Enqueue styles and scripts
 function assetarc_enqueue_assets() {
   wp_enqueue_style('assetarc-style', get_stylesheet_uri());

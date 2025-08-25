@@ -9,6 +9,7 @@ from datetime import datetime, timedelta, timezone
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../app')))
 
 from app import app, signer
+from common.secrets import get_secret
 
 # Use a mock engine for all tests
 mock_engine = MagicMock()
@@ -129,6 +130,60 @@ class AuthTestCase(unittest.TestCase):
         response = self.app.get('/auth/user')
         self.assertEqual(response.status_code, 401)
         self.assertEqual(response.get_json()['error'], 'Authentication required')
+
+@patch('app.engine', mock_engine)
+class BrandApiTestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.app = app.test_client()
+        self.app.testing = True
+        self.mock_conn = MagicMock()
+        mock_engine.connect.return_value.__enter__.return_value = self.mock_conn
+        self.mock_conn.execute.reset_mock()
+
+    def test_get_brand_details_success(self):
+        # Mock the database response
+        brand_id = 'acme-inc'
+        # The database returns a Row object, which can be accessed like a tuple or dict
+        mock_brand_row = MagicMock()
+        mock_brand_row._mapping = {
+            "id": brand_id,
+            "name": "ACME Inc.",
+            "logo_url": "http://example.com/logo.png",
+            "primary_color": "#FF0000"
+        }
+        self.mock_conn.execute.return_value.first.return_value = mock_brand_row
+
+        # Make the request with a valid API key
+        api_key = get_secret('internal-service-api-key')
+        headers = {'x-api-key': api_key}
+        response = self.app.get(f'/api/v1/brands/{brand_id}', headers=headers)
+
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertTrue(data['ok'])
+        self.assertEqual(data['brand']['id'], brand_id)
+        self.assertEqual(data['brand']['name'], "ACME Inc.")
+
+    def test_get_brand_details_not_found(self):
+        # Mock the database to return no record
+        brand_id = 'non-existent-brand'
+        self.mock_conn.execute.return_value.first.return_value = None
+
+        api_key = get_secret('internal-service-api-key')
+        headers = {'x-api-key': api_key}
+        response = self.app.get(f'/api/v1/brands/{brand_id}', headers=headers)
+
+        self.assertEqual(response.status_code, 404)
+        data = response.get_json()
+        self.assertFalse(data['ok'])
+        self.assertEqual(data['error'], "Brand not found")
+
+    def test_get_brand_details_unauthorized(self):
+        brand_id = 'acme-inc'
+        response = self.app.get(f'/api/v1/brands/{brand_id}') # No API key
+        self.assertEqual(response.status_code, 401)
+
 
 if __name__ == '__main__':
     unittest.main()
