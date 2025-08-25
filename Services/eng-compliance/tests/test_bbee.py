@@ -1,5 +1,5 @@
 import unittest
-from ..app.bbee import OwnershipStructure, calculate_ownership_scorecard, Shareholder
+from app.bbee import OwnershipStructure, calculate_ownership_scorecard, Shareholder
 
 class TestBBEECalculator(unittest.TestCase):
 

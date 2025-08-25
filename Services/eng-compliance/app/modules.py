@@ -5,6 +5,24 @@ Each function will take an 'inputs' dictionary and return a result dictionary.
 from pydantic import ValidationError
 from .bbee import OwnershipStructure, calculate_ownership_scorecard
 from .estate_calculator import EstateInput, calculate_estate_duty
+from .insurance_wrapper_calculator import InsuranceWrapperInput, calculate_wrapper_benefit
+
+def run_insurance_wrapper_check(inputs: dict) -> dict:
+    """
+    Parses investment data and runs the Insurance Wrapper Benefit calculator.
+    """
+    try:
+        wrapper_input = InsuranceWrapperInput(**inputs)
+        calculation = calculate_wrapper_benefit(wrapper_input)
+        return {
+            "status": "completed",
+            "summary": f"Potential tax saving with wrapper: ZAR {calculation['results']['summary']['tax_saving_with_wrapper']:,.2f}",
+            "details": calculation
+        }
+    except ValidationError as e:
+        return {"status": "error", "summary": "Input data is invalid.", "details": e.errors()}
+    except Exception as e:
+        return {"status": "error", "summary": "An unexpected error occurred.", "details": str(e)}
 
 def run_estate_duty_check(inputs: dict) -> dict:
     """
