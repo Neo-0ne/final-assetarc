@@ -3,10 +3,6 @@ from unittest.mock import patch, MagicMock
 import os
 import sys
 
-# Set the required environment variables for the tests BEFORE importing the app
-# This ensures that get_secret('cal-com-api-key') finds the value.
-os.environ['CAL-COM-API-KEY'] = 'test_api_key'
-
 # Add the app directory to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../app')))
 
@@ -19,10 +15,11 @@ class BookingTestCase(unittest.TestCase):
         self.app.testing = True
 
     @patch('app._emit_event')
-    @patch('app._send_email_logic')
+    @patch('app._send_booking_confirmation_email')
     @patch('requests.post')
     @patch('requests.get')
-    def test_book_slot_success(self, mock_get, mock_post, mock_send_email, mock_emit_event):
+    @patch('app.CAL_COM_API_KEY', 'test-api-key')
+    def test_book_slot_success(self, mock_get, mock_post, mock_send_booking_confirmation_email, mock_emit_event):
         # Set a valid auth cookie
         self.app.set_cookie('access_token', 'valid_token')
 
@@ -41,7 +38,7 @@ class BookingTestCase(unittest.TestCase):
         mock_cal_response.json.return_value = {'url': 'https://cal.com/booking/test-link'}
         mock_post.return_value = mock_cal_response
 
-        mock_send_email.return_value = "mock_message_id"
+        mock_send_booking_confirmation_email.return_value = None # It's a fire-and-forget call
 
         booking_data = {
             'name': 'John Doe', 'email': 'john.doe@example.com',
@@ -52,7 +49,7 @@ class BookingTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         json_data = response.get_json()
         self.assertTrue(json_data['ok'])
-        mock_send_email.assert_called_once()
+        mock_send_booking_confirmation_email.assert_called_once()
 
         # Assert that the event was emitted
         mock_emit_event.assert_called_once_with("booking.link.created", {
