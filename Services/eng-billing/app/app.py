@@ -410,5 +410,34 @@ def get_token_balance():
 
     return jsonify({"ok": True, "balance": balance})
 
+
+@app.route('/api/v1/metrics', methods=['GET'])
+@require_api_key
+def get_metrics():
+    try:
+        with engine.connect() as conn:
+            # Calculate total revenue from successful transactions
+            total_revenue_result = conn.execute(
+                text("SELECT SUM(amount_total) FROM transactions WHERE transaction_status = 'completed'")
+            ).scalar_one_or_none() or 0
+
+            # Calculate total number of successful transactions
+            total_transactions_result = conn.execute(
+                text("SELECT COUNT(*) FROM transactions WHERE transaction_status = 'completed'")
+            ).scalar_one_or_none() or 0
+
+            # Note: amount_total is in cents, so we divide by 100 for the response
+            metrics = {
+                "total_revenue": total_revenue_result / 100,
+                "total_transactions": total_transactions_result,
+                "currency": "ZAR" # Assuming ZAR for now, would need more logic for multi-currency
+            }
+            return jsonify({"ok": True, "metrics": metrics})
+
+    except Exception as e:
+        app.logger.error(f"Failed to retrieve metrics: {e}")
+        return jsonify({"ok": False, "error": "Failed to retrieve metrics."}), 500
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5003)

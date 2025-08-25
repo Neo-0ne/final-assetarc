@@ -158,5 +158,39 @@ class YocoIntegrationTestCase(unittest.TestCase):
             tokens2 = conn.execute(text("SELECT token_balance FROM advisor_tokens WHERE advisor_email = 'new_user@example.com'")).scalar_one()
             self.assertEqual(tokens2, 100)
 
+    def test_get_metrics_success(self):
+        # 1. Seed the database with sample transactions
+        with self.engine.connect() as conn:
+            # The .begin() method is not needed for individual inserts if using a connection
+            # but we need to commit if the engine is not in autocommit mode.
+            # For simplicity in testing, we can often rely on the test framework's transaction management,
+            # but explicit is better than implicit.
+            conn.execute(text("""
+                INSERT INTO transactions (id, user_id, yoco_checkout_id, amount_total, currency, product_description, transaction_status, created_at)
+                VALUES
+                    ('pay_1', 'user1', 'co_1', 10000, 'ZAR', 'p1', 'completed', '2023-01-01 10:00:00'),
+                    ('pay_2', 'user2', 'co_2', 15000, 'ZAR', 'p2', 'completed', '2023-01-01 11:00:00'),
+                    ('pay_3', 'user1', 'co_3', 5000, 'ZAR', 'p3', 'failed', '2023-01-01 12:00:00')
+            """))
+            conn.commit()
+
+        # 2. Make request with valid API key
+        api_key = get_secret('internal-service-api-key')
+        headers = {'x-api-key': api_key}
+        response = self.app.get('/api/v1/metrics', headers=headers)
+
+        # 3. Assert the response
+        self.assertEqual(response.status_code, 200)
+        data = response.get_json()
+        self.assertTrue(data['ok'])
+        metrics = data['metrics']
+        # 10000 + 15000 = 25000 cents -> 250.00
+        self.assertEqual(metrics['total_revenue'], 250.0)
+        self.assertEqual(metrics['total_transactions'], 2)
+
+    def test_get_metrics_unauthorized(self):
+        response = self.app.get('/api/v1/metrics') # No API key
+        self.assertEqual(response.status_code, 401)
+
 if __name__ == '__main__':
     unittest.main()
