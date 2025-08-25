@@ -8,6 +8,7 @@ os.environ['ESTATE_CALCULATOR_ENABLED'] = 'true'
 os.environ['SUCCESSION_PLANNER_ENABLED'] = 'true'
 os.environ['INSURANCE_WRAPPER_CALCULATOR_ENABLED'] = 'true'
 os.environ['RESIDENCY_PLANNER_ENABLED'] = 'true'
+os.environ['ROLLOVER_PLANNER_ENABLED'] = 'true'
 
 from app.app import app
 

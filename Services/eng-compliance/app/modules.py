@@ -7,6 +7,30 @@ from .bbee import OwnershipStructure, calculate_ownership_scorecard
 from .estate_calculator import EstateInput, calculate_estate_duty
 from .insurance_wrapper_calculator import InsuranceWrapperInput, calculate_wrapper_benefit
 from .residency_planner import ResidencyPlannerInput, determine_residency_status
+from .rollover_planner import RolloverPlannerInput, run_rollover_planner
+
+def run_rollover_planner_check(inputs: dict) -> dict:
+    """
+    Parses user data and runs the Rollover Relief Planner.
+    """
+    try:
+        planner_input = RolloverPlannerInput(**inputs)
+        result = run_rollover_planner(planner_input)
+        # Determine a high-level summary message
+        eligibility = result['eligibility']
+        tax_comp = result['tax_comparison']
+        summary = f"Eligibility: {'Yes' if eligibility['eligible'] else 'No'}. "
+        summary += f"Potential tax deferral: ZAR {tax_comp['net_deferral_benefit']:,.2f}."
+
+        return {
+            "status": "completed",
+            "summary": summary,
+            "details": result
+        }
+    except ValidationError as e:
+        return {"status": "error", "summary": "Input data is invalid.", "details": e.errors()}
+    except Exception as e:
+        return {"status": "error", "summary": "An unexpected error occurred.", "details": str(e)}
 
 def run_residency_planner_check(inputs: dict) -> dict:
     """
