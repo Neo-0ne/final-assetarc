@@ -18,9 +18,8 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}}) # Adjust origins as needed
 
-# --- Add common module to path ---
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'common')))
-from secrets import get_secret
+# --- common module is now loaded via PYTHONPATH ---
+from common.secrets import get_secret
 
 # --- Configuration ---
 JWT_SECRET = get_secret('jwt-secret') or 'a-super-secret-key-that-should-be-changed'

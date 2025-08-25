@@ -8,9 +8,8 @@ from datetime import datetime, timezone, timedelta
 
 app = Flask(__name__)
 
-# --- Add common module to path ---
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'common')))
-from secrets import get_secret
+# --- common module is now loaded via PYTHONPATH ---
+from common.secrets import get_secret
 
 # --- Configuration ---
 DB_URI = get_secret('postgres-uri') or get_secret('analytics-db-uri') or 'sqlite:///eng_analytics.db'
