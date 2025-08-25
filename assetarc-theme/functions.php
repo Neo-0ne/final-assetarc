@@ -98,6 +98,9 @@ require get_template_directory() . '/inc/upload-review-handler.php';
 // Load token request handler logic
 require get_template_directory() . '/inc/token-request-handler.php';
 
+// Load course handler logic
+require get_template_directory() . '/inc/course-handler.php';
+
 // Load any optional review routing logic
 require get_template_directory() . '/parts/review-flag-router.php';
 
@@ -125,15 +128,19 @@ function assetarc_register_post_types() {
 }
 add_action('init', 'assetarc_register_post_types');
 
-// Add rewrite rule for vault downloads
+// Add rewrite rules
 function assetarc_add_rewrite_rules() {
+    // Rule for vault downloads
     add_rewrite_rule('^vault/download/([^/]+)/?$', 'index.php?assetarc_download_file=$matches[1]', 'top');
+    // Rule for course lessons
+    add_rewrite_rule('^lesson/([0-9]+)/?$', 'index.php?pagename=lesson&lesson_id=$matches[1]', 'top');
 }
 add_action('init', 'assetarc_add_rewrite_rules');
 
-// Add the query var so WordPress recognizes it
+// Add query vars so WordPress recognizes them
 function assetarc_add_query_vars($vars) {
     $vars[] = 'assetarc_download_file';
+    $vars[] = 'lesson_id';
     return $vars;
 }
 add_filter('query_vars', 'assetarc_add_query_vars');

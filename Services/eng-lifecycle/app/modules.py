@@ -1,6 +1,7 @@
 """
 This file contains the business logic for the lifecycle engine's modules.
 """
+from sqlalchemy import text
 
 # This is a simplified representation of which templates are needed for which structure.
 # In a real system, this might be more complex or stored in a database.
@@ -91,3 +92,98 @@ def design_corporate_structure(goals: list[str], jurisdiction: str) -> dict:
             "jurisdiction": jurisdiction
         }
     }
+
+# --- Course Management Logic ---
+
+def get_course_structure(engine, course_id: int):
+    """Fetches the full structure of a course, including modules and lessons."""
+    with engine.connect() as conn:
+        # Fetch course details
+        course = conn.execute(text("SELECT id, title, description FROM courses WHERE id = :id"), {"id": course_id}).first()
+        if not course:
+            return None
+
+        # Fetch modules and lessons
+        modules_query = text("""
+            SELECT id, title, module_order
+            FROM modules
+            WHERE course_id = :course_id
+            ORDER BY module_order
+        """)
+        modules_result = conn.execute(modules_query, {"course_id": course_id}).fetchall()
+
+        modules = []
+        for mod in modules_result:
+            lessons_query = text("""
+                SELECT id, title, lesson_order
+                FROM lessons
+                WHERE module_id = :module_id
+                ORDER BY lesson_order
+            """)
+            lessons_result = conn.execute(lessons_query, {"module_id": mod.id}).fetchall()
+            lessons = [{"id": l.id, "title": l.title, "order": l.lesson_order} for l in lessons_result]
+            modules.append({"id": mod.id, "title": mod.title, "order": mod.module_order, "lessons": lessons})
+
+    return {"id": course.id, "title": course.title, "description": course.description, "modules": modules}
+
+def get_lesson_content(engine, lesson_id: int):
+    """Fetches the content for a single lesson, including its quiz."""
+    with engine.connect() as conn:
+        lesson = conn.execute(text("SELECT id, title, content FROM lessons WHERE id = :id"), {"id": lesson_id}).first()
+        if not lesson:
+            return None
+
+        quiz_query = text("SELECT id, question FROM quizzes WHERE lesson_id = :lesson_id")
+        quiz = conn.execute(quiz_query, {"lesson_id": lesson_id}).first()
+
+        options = []
+        if quiz:
+            options_query = text("SELECT id, option_text, is_correct FROM quiz_options WHERE quiz_id = :quiz_id")
+            options_result = conn.execute(options_query, {"quiz_id": quiz.id}).fetchall()
+            options = [{"id": o.id, "text": o.option_text, "is_correct": o.is_correct} for o in options_result]
+
+        quiz_data = {"id": quiz.id, "question": quiz.question, "options": options} if quiz else None
+
+    return {"id": lesson.id, "title": lesson.title, "content": lesson.content, "quiz": quiz_data}
+
+
+def mark_lesson_complete(engine, user_email: str, lesson_id: int):
+    """Marks a lesson as complete for a given user."""
+    from datetime import datetime, timezone
+    with engine.begin() as conn:
+        query = text("""
+            INSERT OR IGNORE INTO user_progress (user_email, lesson_id, completed_at)
+            VALUES (:email, :lesson, :now)
+        """)
+        conn.execute(query, {"email": user_email, "lesson": lesson_id, "now": datetime.now(timezone.utc)})
+    return True
+
+def get_user_progress(engine, user_email: str, course_id: int):
+    """Retrieves a list of completed lesson IDs for a user in a specific course."""
+    with engine.connect() as conn:
+        query = text("""
+            SELECT up.lesson_id
+            FROM user_progress up
+            JOIN lessons l ON up.lesson_id = l.id
+            JOIN modules m ON l.module_id = m.id
+            WHERE up.user_email = :email AND m.course_id = :course_id
+        """)
+        result = conn.execute(query, {"email": user_email, "course_id": course_id}).fetchall()
+        return [row.lesson_id for row in result]
+
+def is_user_enrolled(engine, user_email: str, course_id: int) -> bool:
+    """Checks if a user is enrolled in a specific course."""
+    with engine.connect() as conn:
+        query = text("SELECT 1 FROM course_enrollments WHERE user_email = :email AND course_id = :course_id")
+        return conn.execute(query, {"email": user_email, "course_id": course_id}).scalar() == 1
+
+def enroll_user_in_course(engine, user_email: str, course_id: int):
+    """Enrolls a user in a course."""
+    from datetime import datetime, timezone
+    with engine.begin() as conn:
+        query = text("""
+            INSERT OR IGNORE INTO course_enrollments (user_email, course_id, enrolled_at)
+            VALUES (:email, :course, :now)
+        """)
+        conn.execute(query, {"email": user_email, "course": course_id, "now": datetime.now(timezone.utc)})
+    return True

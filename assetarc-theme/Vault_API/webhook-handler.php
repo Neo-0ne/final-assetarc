@@ -1,30 +1,77 @@
 <?php
-// webhook-handler.php
+/**
+ * Webhook handler for external services like payment gateways.
+ */
 
-$secret = 'your-shared-secret-token'; // Replace with your secure token
+// It's better to include WordPress functions if available, but this can run standalone.
+// We won't use wp_remote_post here to keep it simple and dependency-free, using cURL instead.
 
-// Validate incoming request
+header("Content-Type: application/json");
+
+// --- Configuration ---
+// This should be a secure, long, random string.
+$webhook_secret = 'your-shared-secret-token'; // This should match what the payment gateway sends.
+$internal_api_key = 'mock-internal-api-key'; // API key for communicating with our backend services.
+$lifecycle_service_url = 'http://localhost:5005/api/v1/internal/enroll';
+$course_id_to_enroll = 1;
+
+// --- Security Check ---
 $headers = getallheaders();
-if (!isset($headers['X-Webhook-Signature']) || $headers['X-Webhook-Signature'] !== $secret) {
+$signature = isset($headers['X-Webhook-Signature']) ? $headers['X-Webhook-Signature'] : '';
+
+if (!hash_equals($webhook_secret, $signature)) {
     http_response_code(403);
-    exit('Forbidden');
+    echo json_encode(['error' => 'Forbidden: Invalid signature']);
+    exit();
 }
 
-// Parse JSON input
+// --- Parse Input ---
 $input = json_decode(file_get_contents('php://input'), true);
 
-// Handle events
-if (isset($input['event']) && $input['event'] === 'bot_completed') {
-    $user_email = $input['email'];
-    $bot_name = $input['bot'];
-    $doc_url = $input['document_url'];
-
-    // Do something (e.g., log or notify user)
-    error_log("Bot $bot_name completed for $user_email. Result: $doc_url");
-
-    http_response_code(200);
-    echo 'Received';
-} else {
+if (!$input || !isset($input['event']) || !isset($input['client_id'])) {
     http_response_code(400);
-    echo 'Invalid payload';
+    echo json_encode(['error' => 'Invalid payload']);
+    exit();
+}
+
+// --- Event Handling ---
+$event_type = $input['event'];
+$user_email = $input['client_id']; // Assuming client_id holds the user's email.
+
+if ($event_type === 'course_paid') {
+    error_log("Received 'course_paid' event for user: " . $user_email);
+
+    $payload = json_encode([
+        'user_email' => $user_email,
+        'course_id'  => $course_id_to_enroll,
+    ]);
+
+    $ch = curl_init($lifecycle_service_url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        'x-api-key: ' . $internal_api_key,
+    ]);
+
+    $response = curl_exec($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($http_code >= 200 && $http_code < 300) {
+        error_log("Successfully enrolled user " . $user_email . " in course " . $course_id_to_enroll);
+        http_response_code(200);
+        echo json_encode(['status' => 'success', 'message' => 'User enrollment processed.']);
+    } else {
+        error_log("Error enrolling user " . $user_email . ". Lifecycle service returned status " . $http_code . " and response: " . $response);
+        http_response_code(502); // Bad Gateway, indicates an issue with the downstream service
+        echo json_encode(['error' => 'Failed to process enrollment due to an internal error.']);
+    }
+
+} else {
+    // Handle other events or just acknowledge them
+    error_log("Received unhandled event type: " . $event_type);
+    http_response_code(200);
+    echo json_encode(['status' => 'success', 'message' => 'Event received but not actioned.']);
 }
