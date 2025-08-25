@@ -3,18 +3,23 @@ from flask import Flask, jsonify, request
 from pydantic import BaseModel, ValidationError
 
 # Import the compliance modules
-from modules import run_s42_47_check
+from modules import run_s42_47_check, run_bbee_scorecard_check
 
 app = Flask(__name__)
+
+# --- Feature Flags ---
+BEE_CALCULATOR_ENABLED = os.getenv('BEE_CALCULATOR_ENABLED', 'false').lower() == 'true'
 
 # --- Module Router ---
 # This dictionary maps a module_id to the function that implements its logic.
 # This makes it easy to add new compliance checks in the future.
 COMPLIANCE_MODULES = {
     "s42_47": run_s42_47_check,
-    # Add other modules here as they are implemented, e.g.:
-    # "fica": run_fica_check,
 }
+
+# Add modules behind feature flags
+if BEE_CALCULATOR_ENABLED:
+    COMPLIANCE_MODULES["bbee_ownership"] = run_bbee_scorecard_check
 
 # --- Models for Request Validation ---
 class ComplianceRunBody(BaseModel):
