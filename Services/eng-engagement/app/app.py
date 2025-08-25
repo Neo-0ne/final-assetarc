@@ -11,9 +11,8 @@ from auth_decorator import require_auth_from_identity
 
 app = Flask(__name__)
 
-# --- Add common module to path ---
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'common')))
-from secrets import get_secret
+# --- common module is now loaded via PYTHONPATH ---
+from common.secrets import get_secret
 
 # --- Configuration ---
 DRAFTING_SERVICE_URL = get_secret('drafting-service-url') or 'http://localhost:5001'
