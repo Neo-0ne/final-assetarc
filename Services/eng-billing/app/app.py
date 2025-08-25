@@ -1,10 +1,12 @@
 import os
 import sys
 import requests
-import stripe
 import uuid
 import redis
 import json
+import hmac
+import hashlib
+import base64
 from flask import Flask, jsonify, request, redirect
 from functools import lru_cache
 from datetime import datetime, timedelta, UTC
@@ -12,16 +14,14 @@ from auth_decorator import require_auth_from_identity
 
 app = Flask(__name__)
 
-# --- Add common module to path ---
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'common')))
-from secrets import get_secret
+# --- common module is now loaded via PYTHONPATH ---
+from common.secrets import get_secret
 
 # --- Configuration ---
-STRIPE_API_KEY = get_secret('stripe-api-key') or 'sk_test_YOUR_KEY'
-STRIPE_WEBHOOK_SECRET = get_secret('stripe-webhook-secret') or 'whsec_YOUR_SECRET'
+YOCO_SECRET_KEY = get_secret('yoco_secret_key')
+YOCO_WEBHOOK_SECRET = get_secret('yoco_webhook_secret')
 REDIS_URL = get_secret('redis-url') or 'redis://localhost:6379/0'
 ANALYTICS_SERVICE_URL = get_secret('eng-analytics-url') or 'http://localhost:5007'
-stripe.api_key = STRIPE_API_KEY
 
 from sqlalchemy import create_engine, text
 
@@ -31,11 +31,25 @@ engine = create_engine(DB_URI, future=True)
 
 def init_db():
     with engine.begin() as conn:
+        # Table for advisor token balances
         conn.execute(text("""
             CREATE TABLE IF NOT EXISTS advisor_tokens (
                 advisor_email TEXT PRIMARY KEY,
                 token_balance INTEGER NOT NULL DEFAULT 0,
                 updated_at DATETIME NOT NULL
+            )
+        """))
+        # Table for financial transactions
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS transactions (
+                id TEXT PRIMARY KEY,
+                user_id TEXT,
+                yoco_checkout_id TEXT NOT NULL,
+                amount_total INTEGER NOT NULL,
+                currency TEXT NOT NULL,
+                product_description TEXT,
+                transaction_status TEXT NOT NULL,
+                created_at DATETIME NOT NULL
             )
         """))
 
@@ -110,57 +124,159 @@ def get_quote():
 @app.route('/checkout/session', methods=['POST'])
 def create_checkout_session():
     data = request.get_json() or {}
-    line_items = data.get('items')
-    if not line_items:
-        return jsonify({"error": "Missing 'items' for checkout"}), 400
+    amount = data.get('amount') # amount in cents
+    currency = data.get('currency', 'ZAR')
+    user_id = data.get('user_id') # The user making the purchase
+
+    if not amount:
+        return jsonify({"error": "Missing 'amount' for checkout"}), 400
+    if not user_id:
+        return jsonify({"error": "Missing 'user_id' for checkout"}), 400
+
+    headers = {
+        "Authorization": f"Bearer {YOCO_SECRET_KEY}",
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "amount": amount,
+        "currency": currency,
+        "metadata": {
+            "user_id": user_id
+        },
+        # Per docs, these URLs are for redirect, not for fulfillment logic
+        "successUrl": request.url_root + 'success',
+        "cancelUrl": request.url_root + 'cancel'
+    }
 
     try:
-        # For simplicity, this example assumes the items are already formatted for Stripe.
-        # A real implementation would have more robust validation and formatting.
-        checkout_session = stripe.checkout.Session.create(
-            line_items=line_items,
-            mode='payment',
-            success_url=request.url_root + 'success?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url=request.url_root + 'cancel',
-        )
-        return jsonify({"payment_url": checkout_session.url})
-    except Exception as e:
-        app.logger.error(f"Stripe checkout session creation failed: {e}")
-        return jsonify({'error': str(e)}), 403
+        response = requests.post('https://payments.yoco.com/api/checkouts', headers=headers, json=payload, timeout=10)
+        response.raise_for_status() # Raise an exception for bad status codes
+        yoco_checkout_data = response.json()
+
+        # The URL to redirect the user to
+        redirect_url = yoco_checkout_data.get('redirectUrl')
+
+        if not redirect_url:
+            app.logger.error("Yoco checkout response did not contain a redirectUrl")
+            return jsonify({"error": "Failed to create checkout session"}), 500
+
+        return jsonify({"payment_url": redirect_url})
+    except requests.exceptions.RequestException as e:
+        app.logger.error(f"Yoco checkout session creation failed: {e}")
+        return jsonify({'error': str(e)}), 502 # 502 Bad Gateway, as we failed to talk to an upstream service
 
 
-@app.route('/webhooks/stripe', methods=['POST'])
-def handle_stripe_webhook():
-    payload = request.data
-    sig_header = request.headers.get('Stripe-Signature')
-    if not sig_header:
-        return 'Missing Stripe-Signature header', 400
+@app.route('/webhooks/yoco', methods=['POST'])
+def handle_yoco_webhook():
+    # 1. Get headers and raw body
+    headers = request.headers
+    request_body_bytes = request.get_data()
+    request_body = request_body_bytes.decode('utf-8')
+
+    # 2. Check timestamp for replay attacks
+    timestamp_str = headers.get('webhook-timestamp')
+    if not timestamp_str:
+        app.logger.warning("Yoco webhook missing timestamp.")
+        return 'Missing webhook-timestamp header', 400
+    try:
+        event_timestamp = datetime.fromtimestamp(int(timestamp_str), tz=UTC)
+        if datetime.now(UTC) - event_timestamp > timedelta(minutes=3):
+            app.logger.warning("Received Yoco webhook with old timestamp. Ignoring.")
+            return 'Timestamp too old', 400
+    except (ValueError, TypeError):
+        return 'Invalid timestamp format', 400
+
+    # 3. Construct the signed content
+    webhook_id = headers.get('webhook-id')
+    if not webhook_id:
+        app.logger.warning("Yoco webhook missing id.")
+        return 'Missing webhook-id header', 400
+
+    signed_content = f"{webhook_id}.{timestamp_str}.{request_body}"
+
+    # 4. Determine the expected signature
+    secret_bytes = base64.b64decode(YOCO_WEBHOOK_SECRET.split('_')[1])
+    hmac_signature = hmac.new(secret_bytes, signed_content.encode('utf-8'), hashlib.sha256).digest()
+    expected_signature = base64.b64encode(hmac_signature).decode()
+
+    # 5. Compare signatures
+    signature_header = headers.get('webhook-signature')
+    if not signature_header:
+        app.logger.warning("Yoco webhook missing signature.")
+        return 'Missing webhook-signature header', 400
 
     try:
-        event = stripe.Webhook.construct_event(
-            payload=payload, sig_header=sig_header, secret=STRIPE_WEBHOOK_SECRET
-        )
-    except ValueError as e:
-        # Invalid payload
-        return 'Invalid payload', 400
-    except stripe.error.SignatureVerificationError as e:
-        # Invalid signature
-        return 'Invalid signature', 400
+        actual_signature = signature_header.split(',')[1]
+    except IndexError:
+        return 'Invalid signature format', 400
 
-    # Handle the event
-    if event['type'] == 'checkout.session.completed':
-        session = event['data']['object']
-        app.logger.info(f"Payment successful for session: {session['id']}")
-        # Here you would grant tokens or fulfill the order.
-        # For example, extract user email from metadata and grant tokens:
-        # user_email = session.get('metadata', {}).get('user_email')
-        # if user_email:
-        #     lock_db[user_email] = lock_db.get(user_email, 0) + 100 # Grant 100 tokens
+    if not hmac.compare_digest(actual_signature, expected_signature):
+        app.logger.error("Yoco webhook signature verification failed.")
+        return 'Invalid signature', 403
 
+    # --- Signature is valid, process the event ---
+    app.logger.info(f"Yoco webhook {webhook_id} signature verified successfully.")
+
+    event_data = json.loads(request_body)
+
+    # Logic to record transaction and grant tokens.
+    if event_data.get('type') == 'payment.succeeded':
+        payment_data = event_data.get('payload', {})
+        payment_id = payment_data.get('id')
+        metadata = payment_data.get('metadata', {})
+        user_id = metadata.get('user_id')
+        checkout_id = metadata.get('checkoutId')
+
+        if not all([payment_id, user_id, checkout_id]):
+            app.logger.error(f"Yoco webhook {webhook_id} missing essential data (payment_id, user_id, or checkoutId).")
+            return jsonify(status='error', reason='missing_data'), 400
+
+        try:
+            with engine.begin() as conn:
+                # Idempotency check using payment ID
+                result = conn.execute(
+                    text("SELECT id FROM transactions WHERE id = :id"),
+                    {'id': payment_id}
+                ).scalar_one_or_none()
+
+                if result:
+                    app.logger.info(f"Transaction for payment {payment_id} already processed.")
+                    return jsonify(status='success', reason='already_processed')
+
+                # 1. Record the transaction
+                conn.execute(text("""
+                    INSERT INTO transactions (id, user_id, yoco_checkout_id, amount_total, currency, product_description, transaction_status, created_at)
+                    VALUES (:id, :user_id, :yoco_checkout_id, :amount_total, :currency, :product_description, :transaction_status, :created_at)
+                """), {
+                    "id": payment_id,
+                    "user_id": user_id,
+                    "yoco_checkout_id": checkout_id,
+                    "amount_total": payment_data.get('amount'),
+                    "currency": payment_data.get('currency'),
+                    "product_description": "Token Purchase", # Placeholder
+                    "transaction_status": "completed",
+                    "created_at": datetime.now(UTC)
+                })
+                app.logger.info(f"Recorded transaction for payment {payment_id}")
+
+                # 2. Grant tokens
+                # Using an "upsert" pattern for SQLite
+                conn.execute(text("""
+                    INSERT INTO advisor_tokens (advisor_email, token_balance, updated_at)
+                    VALUES (:email, 100, :now)
+                    ON CONFLICT(advisor_email) DO UPDATE SET
+                    token_balance = token_balance + 100,
+                    updated_at = :now
+                """), {'email': user_id, 'now': datetime.now(UTC)})
+                app.logger.info(f"Granted 100 tokens to {user_id}")
+
+        except Exception as e:
+            app.logger.error(f"Error processing payment {payment_id}: {e}")
+            return jsonify(status='error', error=str(e)), 500
     else:
-        app.logger.info(f"Unhandled event type {event['type']}")
+        app.logger.info(f"Unhandled Yoco event type {event_data.get('type')}")
 
-    return jsonify(status='success')
+    return jsonify(status='success'), 200
 
 
 
@@ -253,12 +369,6 @@ def get_price_lock(lock_id):
 
 # --- Deprecated endpoints from old services ---
 # These are placeholders to show where the old logic would map.
-
-@app.route('/webhooks/<string:provider>', methods=['POST'])
-def handle_other_webhooks(provider):
-    if provider.lower() == 'stripe':
-        return handle_stripe_webhook()
-    return jsonify({"error": f"Provider '{provider}' not supported"}), 404
 
 
 # --- API Key Decorator ---
