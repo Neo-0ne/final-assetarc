@@ -16,7 +16,9 @@ _mock_secrets = {
     "sender-email": "noreply@localhost.dev",
     "aws-region": "us-east-1",
     "eng-analytics-url": "http://localhost:5007",
-    "internal-service-api-key": "mock-internal-api-key"
+    "internal-service-api-key": "mock-internal-api-key",
+    "yoco_secret_key": "sk_test_yoco_key",
+    "yoco_webhook_secret": "whsec_yoco_secret"
 }
 
 def get_secret(secret_id: str, project_id: str = None) -> str | None:
