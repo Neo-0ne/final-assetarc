@@ -8,7 +8,7 @@ This document provides a list of all the third-party services and APIs that the 
 *   **Purpose:** Used by various services for AI-powered logic, such as in the NLP Intent Helper and for summarizing complex legal text.
 *   **Website:** [https://www.openai.com/](https://www.openai.com/)
 *   **API Key:** You will need an API key from the OpenAI developer platform.
-*   **Environment Variable:** `OPENAI_API_KEY`
+*   **Environment Variable:** `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`
 
 ### 2. Amazon Web Services (AWS)
 *   **Purpose:** The platform uses Amazon Simple Email Service (SES) for sending all emails (OTPs, notifications, etc.).
@@ -27,8 +27,8 @@ This document provides a list of all the third-party services and APIs that the 
 *   **Website:** [https://www.yoco.com/](https://www.yoco.com/)
 *   **API Key:** You will need a Public Key and a Secret Key from your Yoco developer dashboard.
 *   **Environment Variables:**
-    *   `YOCO_PUBLIC_KEY`
-    *   `YOCO_SECRET_KEY`
+    *   `pk_live_a6ac9fc34VJLzrX92674`
+    *   `sk_live_f6bd3d0e1L3BYrb2912424e83b90`
 
 ### 4. Stripe
 *   **Purpose:** An alternative payment gateway, primarily for international (USD) payments.
@@ -42,7 +42,9 @@ This document provides a list of all the third-party services and APIs that the 
 *   **Purpose:** For processing cryptocurrency payments (BTC, ETH, USDT).
 *   **Website:** [https://nowpayments.io/](https://nowpayments.io/)
 *   **API Key:** You will need an API key from your NOWPayments account.
-*   **Environment Variable:** `NOWPAYMENTS_API_KEY`
+*   **Environment Variable:** Private HY0ZF3Z-E67MSFZ-KA0T933-ABW1Q8X
+*                         Public  d245e563-17a6-42a3-b23e-b1ab0a6edbe4
+*                           IPN   oi/+tLSJTsh7DJfOnWiB41i/NiYJjbFC
 
 ## Other Integrations
 
@@ -50,7 +52,7 @@ This document provides a list of all the third-party services and APIs that the 
 *   **Purpose:** Used by the `eng-engagement` service to create and manage booking links for consultations.
 *   **Website:** [https://cal.com/](https://cal.com/)
 *   **API Key:** You will need an API key from your Cal.com account settings.
-*   **Environment Variable:** `CAL_COM_API_KEY`
+*   **Environment Variable:** `cal_live_8c45ad43e8ec4732834598fff8c51acd`
 
 ### 7. Notion
 *   **Purpose:** Used as the backend for the review queue, marketing calendar, and other internal dashboards.
