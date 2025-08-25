@@ -45,6 +45,23 @@ def init_db():
         conn.execute(text('CREATE TABLE IF NOT EXISTS otps(email TEXT, hash BLOB, exp DATETIME)'))
         conn.execute(text('CREATE TABLE IF NOT EXISTS refresh_tokens(jti TEXT PRIMARY KEY, email TEXT, exp DATETIME)'))
         conn.execute(text('CREATE TABLE IF NOT EXISTS client_tokens(token TEXT PRIMARY KEY, client_email TEXT, advisor_email TEXT, reason TEXT, created_at DATETIME, exp DATETIME)'))
+        # Tables for White-Labeling
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS brands (
+                id TEXT PRIMARY KEY,
+                name TEXT NOT NULL,
+                logo_url TEXT,
+                primary_color TEXT
+            )
+        """))
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS advisor_brands (
+                user_id TEXT PRIMARY KEY,
+                brand_id TEXT NOT NULL,
+                FOREIGN KEY (user_id) REFERENCES users(email),
+                FOREIGN KEY (brand_id) REFERENCES brands(id)
+            )
+        """))
 
 @app.before_request
 def setup_db():
@@ -451,6 +468,27 @@ def get_advisor_dashboard():
     }
 
     return jsonify({"ok": True, "dashboard_data": dashboard_data})
+
+@app.route('/api/v1/brands/<string:brand_id>', methods=['GET'])
+@require_api_key
+def get_brand_details(brand_id):
+    try:
+        with engine.connect() as conn:
+            brand = conn.execute(
+                text("SELECT id, name, logo_url, primary_color FROM brands WHERE id = :brand_id"),
+                {'brand_id': brand_id}
+            ).first()
+
+        if brand:
+            # ._mapping provides a dict-like view of the row
+            return jsonify({"ok": True, "brand": dict(brand._mapping)})
+        else:
+            return jsonify({"ok": False, "error": "Brand not found"}), 404
+
+    except Exception as e:
+        app.logger.error(f"Failed to retrieve brand details for {brand_id}: {e}")
+        return jsonify({"ok": False, "error": "Failed to retrieve brand details."}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

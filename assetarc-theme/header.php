@@ -28,10 +28,21 @@
   <div class="container header-container">
     <div class="site-logo">
       <?php
-      if (has_custom_logo()) {
-          the_custom_logo();
+      // Attempt to get white-label brand assets
+      $brand_assets = get_assetarc_brand_assets();
+
+      if (isset($brand_assets['logo_url']) && !empty($brand_assets['logo_url'])) {
+          // If a white-label logo exists, display it
+          echo '<a href="' . esc_url(home_url('/')) . '" rel="home">';
+          echo '<img src="' . esc_url($brand_assets['logo_url']) . '" alt="' . esc_attr($brand_assets['name']) . ' Logo" style="height: 60px; width: auto;">';
+          echo '</a>';
       } else {
-          echo '<h1 style="color:#FFD700;">' . get_bloginfo('name') . '</h1>';
+          // Fallback to the default WordPress custom logo or site title
+          if (has_custom_logo()) {
+              the_custom_logo();
+          } else {
+              echo '<h1 style="color:#FFD700;">' . get_bloginfo('name') . '</h1>';
+          }
       }
       ?>
     </div>
