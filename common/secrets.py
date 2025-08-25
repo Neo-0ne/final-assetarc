@@ -1,32 +1,34 @@
-import os
-from google.cloud import secretmanager
+# common/secrets.py
 
-# In-memory cache for secrets
-_cache = {}
+import os
+
+# In-memory cache for mock secrets
+_mock_secrets = {
+    "jwt-secret": "mock-jwt-secret-key-for-dev",
+    "access-token-ttl-min": "15",
+    "refresh-token-ttl-days": "30",
+    "otp-ttl-min": "10",
+    "cookie-secure": "False",
+    "cookie-domain": "localhost",
+    "postgres-uri": "sqlite:///eng_identity.db",
+    "sqlalchemy-database-uri": "sqlite:///eng_identity.db",
+    "analytics-db-uri": "sqlite:///eng_analytics.db",
+    "sender-email": "noreply@localhost.dev",
+    "aws-region": "us-east-1",
+    "eng-analytics-url": "http://localhost:5007",
+    "internal-service-api-key": "mock-internal-api-key"
+}
 
 def get_secret(secret_id: str, project_id: str = None) -> str | None:
     """
-    Retrieves a secret from Google Cloud Secret Manager.
-    Caches the secret in memory to avoid repeated API calls.
+    Retrieves a secret from the mock secret store.
+    This function is a mock for local development and testing.
+    It completely bypasses Google Cloud Secret Manager.
     """
-    if secret_id in _cache:
-        return _cache[secret_id]
+    # For development, we can also check environment variables as a fallback,
+    # which can be useful for overriding specific mock values without changing the code.
+    value = os.getenv(secret_id.upper())
+    if value:
+        return value
 
-    gcp_project_id = project_id or os.getenv('GCP_PROJECT_ID')
-    if not gcp_project_id:
-        # This allows the app to function locally without real secrets
-        # by falling back to environment variables if the project ID isn't set.
-        return os.getenv(secret_id.upper())
-
-    try:
-        client = secretmanager.SecretManagerServiceClient()
-        name = f"projects/{gcp_project_id}/secrets/{secret_id}/versions/latest"
-        response = client.access_secret_version(request={"name": name})
-        secret_value = response.payload.data.decode("UTF-8")
-        _cache[secret_id] = secret_value
-        return secret_value
-    except Exception as e:
-        # In a real application, you'd want more robust logging here.
-        print(f"Could not retrieve secret '{secret_id}'. Error: {e}")
-        # Fallback to environment variable if secret retrieval fails
-        return os.getenv(secret_id.upper())
+    return _mock_secrets.get(secret_id)
