@@ -2,6 +2,40 @@
 This file contains the logic for various compliance modules.
 Each function will take an 'inputs' dictionary and return a result dictionary.
 """
+from pydantic import ValidationError
+from .bbee import OwnershipStructure, calculate_ownership_scorecard
+
+def run_bbee_scorecard_check(inputs: dict) -> dict:
+    """
+    Parses ownership data and runs the B-BBEE scorecard calculator.
+    """
+    try:
+        # Validate the input data using the Pydantic model
+        ownership_structure = OwnershipStructure(**inputs)
+
+        # Run the calculation
+        scorecard = calculate_ownership_scorecard(ownership_structure)
+
+        return {
+            "status": "completed",
+            "summary": f"B-BBEE Ownership Score: {scorecard['total_ownership_points']} points.",
+            "details": scorecard
+        }
+
+    except ValidationError as e:
+        # Return a structured error if input validation fails
+        return {
+            "status": "error",
+            "summary": "Input data is invalid.",
+            "details": e.errors()
+        }
+    except Exception as e:
+        # Catch any other unexpected errors during calculation
+        return {
+            "status": "error",
+            "summary": "An unexpected error occurred during calculation.",
+            "details": str(e)
+        }
 
 def run_s42_47_check(inputs: dict) -> dict:
     """
