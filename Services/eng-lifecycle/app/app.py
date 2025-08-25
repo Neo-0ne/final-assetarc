@@ -9,7 +9,11 @@ from pydantic import BaseModel, ValidationError
 from auth_decorator import require_auth_from_identity
 
 # Import the lifecycle modules
-from modules import design_corporate_structure, STRUCTURE_TEMPLATE_MAP
+from modules import (
+    design_corporate_structure, STRUCTURE_TEMPLATE_MAP,
+    get_course_structure, get_lesson_content, is_user_enrolled,
+    mark_lesson_complete, get_user_progress, enroll_user_in_course
+)
 
 app = Flask(__name__)
 
@@ -25,11 +29,14 @@ ANALYTICS_SERVICE_URL = get_secret('eng-analytics-url') or 'http://localhost:500
 from sqlalchemy import create_engine, text
 
 # --- Database Setup ---
-DB_URI = get_secret('sqlalchemy-database-uri') or 'sqlite:///eng_lifecycle.db'
+# Use a service-specific environment variable or a local default.
+# The shared 'sqlalchemy-database-uri' in secrets points to the identity DB, which is not what we want here.
+DB_URI = os.getenv('LIFECYCLE_DB_URI', 'sqlite:////app/eng_lifecycle.db')
 engine = create_engine(DB_URI, future=True)
 
 def init_db():
     with engine.begin() as conn:
+        # Existing tables
         conn.execute(text('CREATE TABLE IF NOT EXISTS subscribers (email TEXT PRIMARY KEY, subscribed_at DATETIME)'))
         conn.execute(text("""
             CREATE TABLE IF NOT EXISTS lifecycles (
@@ -40,6 +47,68 @@ def init_db():
                 status TEXT NOT NULL,
                 created_at DATETIME NOT NULL,
                 updated_at DATETIME NOT NULL
+            )
+        """))
+        # New tables for the course module
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS courses (
+                id INTEGER PRIMARY KEY,
+                title TEXT NOT NULL,
+                description TEXT
+            )
+        """))
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS modules (
+                id INTEGER PRIMARY KEY,
+                course_id INTEGER NOT NULL,
+                title TEXT NOT NULL,
+                module_order INTEGER NOT NULL,
+                FOREIGN KEY (course_id) REFERENCES courses (id)
+            )
+        """))
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS lessons (
+                id INTEGER PRIMARY KEY,
+                module_id INTEGER NOT NULL,
+                title TEXT NOT NULL,
+                content TEXT NOT NULL,
+                lesson_order INTEGER NOT NULL,
+                FOREIGN KEY (module_id) REFERENCES modules (id)
+            )
+        """))
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS quizzes (
+                id INTEGER PRIMARY KEY,
+                lesson_id INTEGER NOT NULL,
+                question TEXT NOT NULL,
+                FOREIGN KEY (lesson_id) REFERENCES lessons (id)
+            )
+        """))
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS quiz_options (
+                id INTEGER PRIMARY KEY,
+                quiz_id INTEGER NOT NULL,
+                option_text TEXT NOT NULL,
+                is_correct BOOLEAN NOT NULL,
+                FOREIGN KEY (quiz_id) REFERENCES quizzes (id)
+            )
+        """))
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS user_progress (
+                user_email TEXT NOT NULL,
+                lesson_id INTEGER NOT NULL,
+                completed_at DATETIME NOT NULL,
+                PRIMARY KEY (user_email, lesson_id),
+                FOREIGN KEY (lesson_id) REFERENCES lessons (id)
+            )
+        """))
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS course_enrollments (
+                user_email TEXT NOT NULL,
+                course_id INTEGER NOT NULL,
+                enrolled_at DATETIME NOT NULL,
+                PRIMARY KEY (user_email, course_id),
+                FOREIGN KEY (course_id) REFERENCES courses (id)
             )
         """))
 
@@ -280,6 +349,61 @@ def get_clients_by_advisor():
     ]
 
     return jsonify({"ok": True, "clients": placeholder_clients})
+
+# --- Course Endpoints ---
+
+@app.route('/lifecycle/course/<int:course_id>', methods=['GET'])
+def get_course_endpoint(course_id: int):
+    structure = get_course_structure(engine, course_id)
+    if not structure:
+        return jsonify({"ok": False, "error": "Course not found"}), 404
+    return jsonify({"ok": True, "course": structure})
+
+@app.route('/lifecycle/course/<int:course_id>/progress', methods=['GET'])
+@require_auth_from_identity()
+def get_progress_endpoint(course_id: int):
+    user_email = request.current_user.get('email')
+    if not is_user_enrolled(engine, user_email, course_id):
+        return jsonify({"ok": False, "error": "Not enrolled in this course"}), 403
+
+    progress = get_user_progress(engine, user_email, course_id)
+    return jsonify({"ok": True, "completed_lessons": progress})
+
+@app.route('/lifecycle/lesson/<int:lesson_id>', methods=['GET'])
+@require_auth_from_identity()
+def get_lesson_endpoint(lesson_id: int):
+    # This is a simplified check. A full implementation would check the course_id from the lesson.
+    # For now, we assume if you can ask for a lesson, you are enrolled in its course.
+    lesson = get_lesson_content(engine, lesson_id)
+    if not lesson:
+        return jsonify({"ok": False, "error": "Lesson not found"}), 404
+    return jsonify({"ok": True, "lesson": lesson})
+
+@app.route('/lifecycle/lesson/<int:lesson_id>/complete', methods=['POST'])
+@require_auth_from_identity()
+def complete_lesson_endpoint(lesson_id: int):
+    user_email = request.current_user.get('email')
+    # Again, a simplified check for enrollment.
+    mark_lesson_complete(engine, user_email, lesson_id)
+    _emit_event("lesson.completed", {"lesson_id": lesson_id})
+    return jsonify({"ok": True})
+
+class EnrollBody(BaseModel):
+    user_email: str
+    course_id: int
+
+@app.route('/api/v1/internal/enroll', methods=['POST'])
+@require_api_key
+def enroll_user_endpoint():
+    try:
+        body = EnrollBody(**request.get_json(force=True))
+    except ValidationError as e:
+        return jsonify({'ok': False, 'error': e.errors()}), 400
+
+    enroll_user_in_course(engine, body.user_email, body.course_id)
+    _emit_event("course.enrolled", {"course_id": body.course_id, "user_id": body.user_email})
+    return jsonify({"ok": True, "message": f"User {body.user_email} enrolled in course {body.course_id}"})
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5005)

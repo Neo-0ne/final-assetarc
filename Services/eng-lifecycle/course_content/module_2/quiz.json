@@ -1,0 +1,32 @@
+[
+  {
+    "question": "What is the primary purpose of separating an 'OpCo' from an 'IPCo'?",
+    "options": [
+      "To make accounting more difficult.",
+      "To isolate valuable assets (like a brand) from the risks of day-to-day operations.",
+      "To double the amount of tax you have to pay.",
+      "It is required by international law for all businesses."
+    ],
+    "correct_option": 1
+  },
+  {
+    "question": "In a standard HoldCo-OpCo stack, what does the HoldCo own?",
+    "options": [
+      "The company's vehicles and equipment.",
+      "The shares of the Operating Company (OpCo).",
+      "The company's inventory.",
+      "Nothing, it's just a name."
+    ],
+    "correct_option": 1
+  },
+  {
+    "question": "Which of these is NOT one of the '3 Pillars of Asset Protection'?",
+    "options": [
+      "Risk Segregation",
+      "Ownership Control",
+      "Compliance Immunity",
+      "Profit Maximization"
+    ],
+    "correct_option": 3
+  }
+]
