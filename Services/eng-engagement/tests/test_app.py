@@ -4,7 +4,8 @@ import os
 import sys
 
 # Set the required environment variables for the tests BEFORE importing the app
-os.environ['CAL_COM_API_KEY'] = 'test_api_key'
+# This ensures that get_secret('cal-com-api-key') finds the value.
+os.environ['CAL-COM-API-KEY'] = 'test_api_key'
 
 # Add the app directory to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../app')))

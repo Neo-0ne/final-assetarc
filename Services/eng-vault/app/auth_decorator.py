@@ -4,9 +4,8 @@ import functools
 from flask import request, jsonify
 import requests
 
-# --- Add common module to path ---
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'common')))
-from secrets import get_secret
+# --- common module is now loaded via PYTHONPATH ---
+from common.secrets import get_secret
 
 IDENTITY_SERVICE_URL = get_secret('eng-identity-url') or 'http://localhost:5000'
 

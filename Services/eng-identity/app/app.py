@@ -16,8 +16,6 @@ from itsdangerous import URLSafeTimedSerializer, BadSignature
 # --- App Initialization ---
 load_dotenv()
 app = Flask(__name__)
-CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}}) # Adjust origins as needed
-
 # --- common module is now loaded via PYTHONPATH ---
 from common.secrets import get_secret
 
@@ -26,8 +24,13 @@ JWT_SECRET = get_secret('jwt-secret') or 'a-super-secret-key-that-should-be-chan
 ACCESS_TOKEN_TTL_MIN = int(get_secret('access-token-ttl-min') or '15')
 REFRESH_TOKEN_TTL_DAYS = int(get_secret('refresh-token-ttl-days') or '30')
 OTP_TTL_MIN = int(get_secret('otp-ttl-min') or '10')
+
+# Production security settings
 COOKIE_SECURE = (get_secret('cookie-secure') or 'False').lower() == 'true'
-COOKIE_DOMAIN = None if (get_secret('cookie-domain') or 'localhost') == 'localhost' else get_secret('cookie-domain')
+COOKIE_DOMAIN = get_secret('cookie-domain') # For production, set to ".asset-arc.com"
+CORS_ORIGINS = get_secret('cors_origins') or 'http://localhost:8080' # Comma-separated list for production
+
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": CORS_ORIGINS.split(',')}})
 DB_URI = get_secret('postgres-uri') or get_secret('sqlalchemy-database-uri') or 'sqlite:///eng_identity.db'
 SENDER_EMAIL = get_secret('sender-email') or 'noreply@assetarc.com'
 AWS_REGION = get_secret('aws-region') or 'us-east-1'
