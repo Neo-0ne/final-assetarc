@@ -1,5 +1,5 @@
 import unittest
-from ..app.estate_calculator import EstateInput, Asset, calculate_estate_duty
+from app.estate_calculator import EstateInput, Asset, calculate_estate_duty
 
 class TestEstateCalculator(unittest.TestCase):
 

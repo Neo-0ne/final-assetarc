@@ -3,9 +3,10 @@ from flask import Flask, jsonify, request
 from pydantic import BaseModel, ValidationError
 
 # Import the compliance modules
-from modules import (
+from .modules import (
     run_s42_47_check, run_bbee_scorecard_check,
-    run_estate_duty_check, run_succession_check
+    run_estate_duty_check, run_succession_check,
+    run_insurance_wrapper_check
 )
 
 app = Flask(__name__)
@@ -14,6 +15,7 @@ app = Flask(__name__)
 BEE_CALCULATOR_ENABLED = os.getenv('BEE_CALCULATOR_ENABLED', 'false').lower() == 'true'
 ESTATE_CALCULATOR_ENABLED = os.getenv('ESTATE_CALCULATOR_ENABLED', 'false').lower() == 'true'
 SUCCESSION_PLANNER_ENABLED = os.getenv('SUCCESSION_PLANNER_ENABLED', 'false').lower() == 'true'
+INSURANCE_WRAPPER_CALCULATOR_ENABLED = os.getenv('INSURANCE_WRAPPER_CALCULATOR_ENABLED', 'false').lower() == 'true'
 
 
 # --- Module Router ---
@@ -30,6 +32,8 @@ if ESTATE_CALCULATOR_ENABLED:
     COMPLIANCE_MODULES["estate_duty_calculator"] = run_estate_duty_check
 if SUCCESSION_PLANNER_ENABLED:
     COMPLIANCE_MODULES["succession_planner"] = run_succession_check
+if INSURANCE_WRAPPER_CALCULATOR_ENABLED:
+    COMPLIANCE_MODULES["insurance_wrapper_calculator"] = run_insurance_wrapper_check
 
 # --- Models for Request Validation ---
 class ComplianceRunBody(BaseModel):
@@ -61,9 +65,13 @@ def run_compliance_check():
         # Execute the module's logic
         result = module_function(inputs)
 
+        # The 'ok' status should reflect the outcome of the module's execution.
+        # We check if the result dictionary has a 'status' key and if it's 'error'.
+        is_ok = result.get("status") != "error"
+
         # Add some metadata to the response
         response_data = {
-            "ok": True,
+            "ok": is_ok,
             "module_id": module_id,
             "result": result
         }
