@@ -30,25 +30,26 @@ We recommend a three-phase rollout to mitigate risk, demonstrate value early, an
     2.  **Training:** Train the Sapient model on this dataset.
     3.  **Integration:** Build a new `eng-reasoning` service to host the model. Modify `eng-lifecycle` to call this new service, protected by a feature flag.
 
-### **Phase 2: AI-Powered Tax Rulings (Advanced Reasoning)**
+### **Phase 2: AI-Powered Tax & Compliance Rulings (Advanced Reasoning)**
 
-*   **Goal:** Replace the complex eligibility-checking logic in the `Rollover Relief Planner` with an AI model.
-*   **Complexity:** Medium. The input data is highly structured and complex, requiring a more sophisticated dataset.
-*   **Value:** Solves a more complex reasoning problem, demonstrating the AI's ability to handle intricate, real-world legal and tax rules. This adds significant value and flexibility to the compliance tools.
-*   **Implementation Plan:**
-    1.  **Dataset:** Create a dataset where the input is the `RolloverPlannerInput` object and the output is the `eligibility_result` object.
-    2.  **Training:** Train a new version of the Sapient model on this tax-specific dataset.
-    3.  **Integration:** Add a new endpoint to the `eng-reasoning` service for this task. Modify `eng-compliance` to call this endpoint.
+*   **Goal:** Replace complex, rule-based eligibility and status checks with an AI model. This phase demonstrates the AI's ability to handle intricate, real-world legal and tax rules.
+*   **Example Use-Cases:**
+    *   **Rollover Relief Planner:** The AI would determine eligibility for corporate rollover relief (s42, s45, etc.) based on a complex transaction's details.
+    *   **Residency Planner:** The AI would determine a user's tax residency status based on the physical presence test rules.
+*   **Implementation Plan (per use-case):**
+    1.  **Dataset:** Create a use-case specific dataset (e.g., `(Transaction_Details) -> {eligibility_status}`).
+    2.  **Training:** Train or fine-tune the Sapient model on the new dataset.
+    3.  **Integration:** Add a new endpoint to the `eng-reasoning` service. Modify the corresponding `eng-compliance` function to call the AI service.
 
 ### **Phase 3: AI-Powered Document Blueprint Generation (Long-Term Vision)**
 
 *   **Goal:** Replace the entire static `.docx` template system with a dynamic, AI-driven document generation pipeline.
 *   **Complexity:** High. This requires extensive training data and a two-stage AI process.
-*   **Value:** This is a transformative step. It would enable the creation of highly dynamic and customized legal documents on the fly, providing a significant competitive advantage and drastically reducing the overhead of template maintenance.
+*   **Value:** This is a transformative step, enabling the creation of highly dynamic and customized legal documents, providing a significant competitive advantage.
 *   **Implementation Plan (Hybrid AI Approach):**
-    1.  **Structuring (Sapient HRM):** Train the Sapient model to generate a structured JSON "blueprint" of a legal document based on a high-level requirement.
-    2.  **Drafting (LLM - OpenAI):** Feed the generated blueprint to a Large Language Model (like OpenAI's GPT) to write the final, human-readable prose of the document.
-    3.  **Integration:** This would likely involve a significant rework of the `eng-drafting` service to orchestrate this new two-step AI workflow.
+    1.  **Structuring (Sapient HRM):** Train the Sapient model to generate a structured JSON "blueprint" of a legal document.
+    2.  **Drafting (LLM - OpenAI):** Feed the generated blueprint to a Large Language Model to write the final, human-readable prose.
+    3.  **Integration:** This would likely involve a significant rework of the `eng-drafting` service.
 
 ---
 
