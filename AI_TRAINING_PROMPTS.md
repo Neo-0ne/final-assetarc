@@ -16,20 +16,25 @@ This document provides a set of structured prompts to be used with a Large Langu
 **Prompts:**
 *   `"Generate a list of 30 diverse scenarios for individuals or businesses in South Africa ('za'). For each, specify a single primary goal from this list: ['liability_protection', 'asset_protection', 'international_trade', 'tax_efficiency']. Then, provide the single, most appropriate structure ID from this list: ['za_pty_ltd', 'za_trust', 'mu_ibc']."`
 *   `"Create 20 advanced scenarios for high-net-worth individuals in South Africa ('za') who have a complex set of goals (e.g., liability_protection and asset_protection). Provide a list of all the structure IDs that would be required to meet those goals."`
-*   `"Generate 20 scenarios for businesses operating outside of South Africa (use jurisdictions like 'us', 'uk', 'ae'). Their goals will be 'international_trade' or 'tax_efficiency'. The recommended structure should always be 'mu_ibc'."`
 *   `"For the following scenario, format the output as a JSON object with 'input' and 'output' keys as described in the feasibility report: 'A tech startup in the UK wants tax_efficiency for its European sales.'"`
 
 ---
 
-## Phase 2: AI-Powered Tax Rulings (Rollover Relief)
+## Phase 2: AI-Powered Tax & Compliance Rulings
 
-**Goal:** To train the Sapient AI to determine eligibility for corporate rollover relief based on a complex set of transaction details.
+**Goal:** To train the Sapient AI to determine eligibility or status based on a complex set of rules.
 
-**Prompts:**
+### 2.1 Rollover Relief Planner Prompts
+
 *   `"Generate a scenario for a Section 42 (Asset-for-Share) transaction that should be ELIGIBLE for rollover relief. Describe the transferor, transferee, the asset, and the consideration. The output should be a JSON object with 'eligible: true' and an empty 'failed_reasons' array."`
 *   `"Generate a scenario for a Section 42 transaction that should be INELIGIBLE because the transferee company is not a South African resident. The output should be a JSON object with 'eligible: false' and a 'failed_reasons' array containing the specific reason."`
 *   `"Create a detailed scenario for a Section 45 (Intra-group) transaction that fails the eligibility check because the companies are not part of the same group (less than 70% shareholding). Provide the JSON output with 'eligible: false' and the correct failure reason."`
-*   `"Generate 10 varied and complex scenarios for Section 47 (Liquidation) transactions. Some should be eligible, and some should be ineligible for different reasons (e.g., failure to deregister, holding company not SA resident). For each, provide the full JSON output showing the eligibility status and a list of reasons for failure, if any."`
+
+### 2.2 Residency Planner Prompts
+
+*   `"Generate a scenario for a person who IS a tax resident of South Africa based on the physical presence test. Provide the number of days they were present in the current year and the preceding 5 years. The output should be a JSON object with 'is_resident: true'."`
+*   `"Generate a scenario for a person who is NOT a tax resident of South Africa because they fail the first part of the physical presence test (less than 91 days in the current year). Provide the days present for all 6 years. The output should be a JSON object with 'is_resident: false' and a 'reason' field explaining the failure."`
+*   `"Generate a scenario for a person who is NOT a tax resident because they fail the second part of the physical presence test (less than 915 days in the preceding 5 years), even though they were present for more than 91 days in the current year. Provide the days present for all 6 years and the JSON output with 'is_resident: false' and the correct reason."`
 
 ---
 
