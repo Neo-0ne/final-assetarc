@@ -18,7 +18,9 @@ _mock_secrets = {
     "eng-analytics-url": "http://localhost:5007",
     "internal-service-api-key": "mock-internal-api-key",
     "yoco_secret_key": "sk_test_yoco_key",
-    "yoco_webhook_secret": "whsec_yoco_secret"
+    "yoco_webhook_secret": "whsec_yoco_secret",
+    "nowpayments_api_key": "MOCK-NOWPAYMENTS-API-KEY",
+    "nowpayments_ipn_secret": "MOCK-NOWPAYMENTS-IPN-SECRET"
 }
 
 def get_secret(secret_id: str, project_id: str = None) -> str | None:

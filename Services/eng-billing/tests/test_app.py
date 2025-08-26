@@ -100,21 +100,44 @@ class YocoIntegrationTestCase(unittest.TestCase):
     def tearDown(self):
         self.db_patcher.stop()
 
+    @patch('app.PRICES', {
+        "TEST_PRODUCT": {"price": 250.00, "currency": "ZAR", "description": "A test product"}
+    })
     @patch('requests.post')
     def test_create_checkout_session_success(self, mock_post):
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {"id": "ch_12345", "redirectUrl": "https://pay.yoco.com/checkout_12345"}
         mock_post.return_value = mock_response
-        response = self.app.post('/checkout/session', json={'amount': 15000, 'currency': 'ZAR', 'user_id': 'test@example.com'})
+
+        response = self.app.post('/checkout/session', json={'product_id': 'TEST_PRODUCT', 'user_id': 'test@example.com'})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.get_json()['payment_url'], "https://pay.yoco.com/checkout_12345")
+
+        # Check that Yoco was called with the correct amount in cents
         mock_post.assert_called_once()
+        called_payload = mock_post.call_args.kwargs['json']
+        self.assertEqual(called_payload['amount'], 25000) # 250.00 * 100
+        self.assertEqual(called_payload['currency'], 'ZAR')
+        self.assertEqual(called_payload['metadata']['product_id'], 'TEST_PRODUCT')
+
+    @patch('app.PRICES', {
+        "TEST_PRODUCT": {"price": 250.00, "currency": "ZAR", "description": "A test product"}
+    })
+    def test_create_checkout_session_invalid_product(self):
+        response = self.app.post('/checkout/session', json={'product_id': 'NON_EXISTENT_PRODUCT', 'user_id': 'test@example.com'})
+        self.assertEqual(response.status_code, 404)
 
     def test_create_checkout_session_missing_data(self):
-        response = self.app.post('/checkout/session', json={'amount': 15000}) # Missing user_id
+        # Test missing user_id
+        response = self.app.post('/checkout/session', json={'product_id': 'TEST_PRODUCT'})
         self.assertEqual(response.status_code, 400)
         self.assertIn('Missing \'user_id\'', response.get_json()['error'])
+
+        # Test missing product_id
+        response = self.app.post('/checkout/session', json={'user_id': 'test@example.com'})
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('Missing \'product_id\'', response.get_json()['error'])
 
     def test_yoco_webhook_invalid_signature(self):
         headers = {'webhook-id': 'wh_test_123', 'webhook-timestamp': str(int(datetime.now(UTC).timestamp())), 'webhook-signature': 'v1,invalid_signature'}
@@ -166,11 +189,11 @@ class YocoIntegrationTestCase(unittest.TestCase):
             # For simplicity in testing, we can often rely on the test framework's transaction management,
             # but explicit is better than implicit.
             conn.execute(text("""
-                INSERT INTO transactions (id, user_id, yoco_checkout_id, amount_total, currency, product_description, transaction_status, created_at)
+                INSERT INTO transactions (id, user_id, payment_gateway, yoco_checkout_id, amount_total, currency, product_description, transaction_status, created_at)
                 VALUES
-                    ('pay_1', 'user1', 'co_1', 10000, 'ZAR', 'p1', 'completed', '2023-01-01 10:00:00'),
-                    ('pay_2', 'user2', 'co_2', 15000, 'ZAR', 'p2', 'completed', '2023-01-01 11:00:00'),
-                    ('pay_3', 'user1', 'co_3', 5000, 'ZAR', 'p3', 'failed', '2023-01-01 12:00:00')
+                    ('pay_1', 'user1', 'yoco', 'co_1', 10000, 'ZAR', 'p1', 'completed', '2023-01-01 10:00:00'),
+                    ('pay_2', 'user2', 'yoco', 'co_2', 15000, 'ZAR', 'p2', 'completed', '2023-01-01 11:00:00'),
+                    ('pay_3', 'user1', 'yoco', 'co_3', 5000, 'ZAR', 'p3', 'failed', '2023-01-01 12:00:00')
             """))
             conn.commit()
 
@@ -192,5 +215,106 @@ class YocoIntegrationTestCase(unittest.TestCase):
         response = self.app.get('/api/v1/metrics') # No API key
         self.assertEqual(response.status_code, 401)
 
+    @patch('app.PRICES', {
+        "CRYPTO_PRODUCT": {"price": 125.50, "currency": "USD", "description": "A crypto product"}
+    })
+    @patch('requests.post')
+    def test_create_nowpayments_checkout_success(self, mock_post):
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"payment_id": "np_12345", "invoice_url": "https://nowpayments.io/invoice/np_12345"}
+        mock_post.return_value = mock_response
+
+        response = self.app.post('/checkout/nowpayments', json={
+            'product_id': 'CRYPTO_PRODUCT',
+            'user_id': 'crypto_user@example.com',
+            'pay_currency': 'btc'
+        })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.get_json()['payment_url'], "https://nowpayments.io/invoice/np_12345")
+
+        # Check that NOWPayments API was called correctly
+        mock_post.assert_called_once()
+        called_payload = mock_post.call_args.kwargs['json']
+        self.assertEqual(called_payload['price_amount'], 125.50)
+        self.assertEqual(called_payload['pay_currency'], 'btc')
+        self.assertIn('/webhooks/nowpayments', called_payload['ipn_callback_url'])
+
+        # Check that the transaction was recorded in the DB
+        with self.engine.connect() as conn:
+            trans = conn.execute(text("SELECT * FROM transactions WHERE id = 'np_12345'")).first()
+            self.assertIsNotNone(trans)
+            self.assertEqual(trans.user_id, 'crypto_user@example.com')
+            self.assertEqual(trans.payment_gateway, 'nowpayments')
+            self.assertEqual(trans.transaction_status, 'waiting')
+            self.assertEqual(trans.amount_total, 12550) # Stored in cents
+
+    def test_create_nowpayments_checkout_missing_data(self):
+        response = self.app.post('/checkout/nowpayments', json={
+            'product_id': 'CRYPTO_PRODUCT',
+            'user_id': 'crypto_user@example.com'
+            # Missing pay_currency
+        })
+        self.assertEqual(response.status_code, 400)
+
+
 if __name__ == '__main__':
     unittest.main()
+
+    def test_nowpayments_webhook_invalid_signature(self):
+        headers = {'x-nowpayments-sig': 'invalid_signature'}
+        response = self.app.post('/webhooks/nowpayments', headers=headers, json={'payment_id': 'np_test_1'})
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('Invalid signature', response.get_data(as_text=True))
+
+    def test_nowpayments_webhook_success(self):
+        # 1. First, create a pending transaction in the DB
+        with self.engine.begin() as conn:
+            conn.execute(text("""
+                INSERT INTO transactions (id, user_id, payment_gateway, transaction_status, amount_total, currency, product_description, created_at)
+                VALUES ('np_test_success', 'crypto_user@example.com', 'nowpayments', 'waiting', 15000, 'USD', 'Test', :now)
+            """), {'now': datetime.now(UTC)})
+            # Also seed the user in advisor_tokens to check the update
+            conn.execute(text("""
+                INSERT OR IGNORE INTO advisor_tokens (advisor_email, token_balance, updated_at) VALUES ('crypto_user@example.com', 0, :now)
+            """), {'now': datetime.now(UTC)})
+
+        # 2. Create a valid signature for the payload
+        payload = {
+            "payment_id": "np_test_success",
+            "payment_status": "finished",
+            "price_amount": 150.0,
+            "pay_amount": 0.005,
+            "pay_currency": "btc"
+        }
+        ipn_secret = get_secret('nowpayments_ipn_secret')
+
+        sorted_payload = {k: payload[k] for k in sorted(payload.keys())}
+        serialized_string = json.dumps(sorted_payload, separators=(',', ':'))
+
+        hmac_obj = hmac.new(ipn_secret.encode('utf-8'), serialized_string.encode('utf-8'), hashlib.sha512)
+        expected_signature = hmac_obj.hexdigest()
+
+        headers = {'x-nowpayments-sig': expected_signature}
+        response = self.app.post('/webhooks/nowpayments', headers=headers, data=json.dumps(payload), content_type='application/json')
+
+        # 3. Assert the results
+        self.assertEqual(response.status_code, 200)
+
+        with self.engine.connect() as conn:
+            trans = conn.execute(text("SELECT transaction_status FROM transactions WHERE id = 'np_test_success'")).scalar_one()
+            self.assertEqual(trans, 'finished')
+
+            # Check that tokens were granted
+            tokens = conn.execute(text("SELECT token_balance FROM advisor_tokens WHERE advisor_email = 'crypto_user@example.com'")).scalar_one()
+            self.assertEqual(tokens, 100)
+
+        # 4. Test Idempotency: send the same webhook again
+        response2 = self.app.post('/webhooks/nowpayments', headers=headers, data=json.dumps(payload), content_type='application/json')
+        self.assertEqual(response2.status_code, 200)
+        self.assertEqual(response2.get_json()['reason'], 'already_processed')
+        # And ensure tokens were not granted a second time
+        with self.engine.connect() as conn:
+            tokens2 = conn.execute(text("SELECT token_balance FROM advisor_tokens WHERE advisor_email = 'crypto_user@example.com'")).scalar_one()
+            self.assertEqual(tokens2, 100)
