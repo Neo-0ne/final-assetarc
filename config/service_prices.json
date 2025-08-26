@@ -1,0 +1,17 @@
+{
+  "BEE_CERTIFICATE": {
+    "price": 2000.00,
+    "currency": "ZAR",
+    "description": "B-BBEE Affidavit/Certificate Service"
+  },
+  "IBC_FORMATION": {
+    "price": 5000.00,
+    "currency": "USD",
+    "description": "International Business Company Formation"
+  },
+  "PREMIUM_COURSE_ACCESS": {
+    "price": 1500.00,
+    "currency": "ZAR",
+    "description": "Full access to the premium educational course"
+  }
+}

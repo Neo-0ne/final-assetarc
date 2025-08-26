@@ -17,9 +17,27 @@ app = Flask(__name__)
 # --- common module is now loaded via PYTHONPATH ---
 from common.secrets import get_secret
 
+# --- Price Configuration ---
+def load_prices():
+    """Loads service prices from the JSON config file."""
+    try:
+        # Construct path relative to this file's location
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        prices_path = os.path.join(base_dir, '..', '..', '..', 'config', 'service_prices.json')
+        with open(prices_path, 'r') as f:
+            app.logger.info(f"Successfully loaded prices from {prices_path}")
+            return json.load(f)
+    except (IOError, json.JSONDecodeError) as e:
+        app.logger.error(f"FATAL: Could not load service_prices.json: {e}")
+        return {}
+
+PRICES = load_prices()
+
 # --- Configuration ---
 YOCO_SECRET_KEY = get_secret('yoco_secret_key')
 YOCO_WEBHOOK_SECRET = get_secret('yoco_webhook_secret')
+NOWPAYMENTS_API_KEY = get_secret('nowpayments_api_key')
+NOWPAYMENTS_IPN_SECRET = get_secret('nowpayments_ipn_secret')
 REDIS_URL = get_secret('redis-url') or 'redis://localhost:6379/0'
 ANALYTICS_SERVICE_URL = get_secret('eng-analytics-url') or 'http://localhost:5007'
 
@@ -44,11 +62,12 @@ def init_db():
             CREATE TABLE IF NOT EXISTS transactions (
                 id TEXT PRIMARY KEY,
                 user_id TEXT,
-                yoco_checkout_id TEXT NOT NULL,
+                payment_gateway TEXT NOT NULL,
+                transaction_status TEXT NOT NULL,
                 amount_total INTEGER NOT NULL,
                 currency TEXT NOT NULL,
                 product_description TEXT,
-                transaction_status TEXT NOT NULL,
+                yoco_checkout_id TEXT, -- Specific to Yoco, can be NULL
                 created_at DATETIME NOT NULL
             )
         """))
@@ -124,24 +143,41 @@ def get_quote():
 @app.route('/checkout/session', methods=['POST'])
 def create_checkout_session():
     data = request.get_json() or {}
-    amount = data.get('amount') # amount in cents
-    currency = data.get('currency', 'ZAR')
-    user_id = data.get('user_id') # The user making the purchase
+    product_id = data.get('product_id')
+    user_id = data.get('user_id')
 
-    if not amount:
-        return jsonify({"error": "Missing 'amount' for checkout"}), 400
+    if not product_id:
+        return jsonify({"error": "Missing 'product_id' for checkout"}), 400
     if not user_id:
         return jsonify({"error": "Missing 'user_id' for checkout"}), 400
+
+    # Look up price from our config file
+    if not PRICES:
+        app.logger.error("Service pricing configuration is missing or failed to load.")
+        return jsonify({"error": "Service pricing is not configured."}), 500
+
+    product_info = PRICES.get(product_id)
+    if not product_info:
+        return jsonify({"error": f"Invalid product_id: {product_id}"}), 404
+
+    # Yoco API expects amount in cents
+    amount_in_cents = int(product_info.get('price', 0) * 100)
+    currency = product_info.get('currency', 'ZAR')
+
+    if amount_in_cents <= 0:
+        app.logger.error(f"Invalid price for product_id {product_id}. Price must be positive.")
+        return jsonify({"error": f"Invalid price configured for product_id: {product_id}"}), 500
 
     headers = {
         "Authorization": f"Bearer {YOCO_SECRET_KEY}",
         "Content-Type": "application/json"
     }
     payload = {
-        "amount": amount,
+        "amount": amount_in_cents,
         "currency": currency,
         "metadata": {
-            "user_id": user_id
+            "user_id": user_id,
+            "product_id": product_id
         },
         # Per docs, these URLs are for redirect, not for fulfillment logic
         "successUrl": request.url_root + 'success',
@@ -245,16 +281,17 @@ def handle_yoco_webhook():
 
                 # 1. Record the transaction
                 conn.execute(text("""
-                    INSERT INTO transactions (id, user_id, yoco_checkout_id, amount_total, currency, product_description, transaction_status, created_at)
-                    VALUES (:id, :user_id, :yoco_checkout_id, :amount_total, :currency, :product_description, :transaction_status, :created_at)
+                    INSERT INTO transactions (id, user_id, payment_gateway, transaction_status, amount_total, currency, product_description, yoco_checkout_id, created_at)
+                    VALUES (:id, :user_id, :payment_gateway, :transaction_status, :amount_total, :currency, :product_description, :yoco_checkout_id, :created_at)
                 """), {
                     "id": payment_id,
                     "user_id": user_id,
-                    "yoco_checkout_id": checkout_id,
+                    "payment_gateway": "yoco",
+                    "transaction_status": "completed",
                     "amount_total": payment_data.get('amount'),
                     "currency": payment_data.get('currency'),
                     "product_description": "Token Purchase", # Placeholder
-                    "transaction_status": "completed",
+                    "yoco_checkout_id": checkout_id,
                     "created_at": datetime.now(UTC)
                 })
                 app.logger.info(f"Recorded transaction for payment {payment_id}")
@@ -279,6 +316,82 @@ def handle_yoco_webhook():
     return jsonify(status='success'), 200
 
 
+@app.route('/checkout/nowpayments', methods=['POST'])
+def create_nowpayments_checkout():
+    data = request.get_json() or {}
+    product_id = data.get('product_id')
+    user_id = data.get('user_id')
+    pay_currency = data.get('pay_currency') # e.g., 'btc', 'eth', 'usdt'
+
+    if not all([product_id, user_id, pay_currency]):
+        return jsonify({"error": "Missing 'product_id', 'user_id', or 'pay_currency'"}), 400
+
+    if not PRICES:
+        app.logger.error("Service pricing configuration is missing or failed to load.")
+        return jsonify({"error": "Service pricing is not configured."}), 500
+
+    product_info = PRICES.get(product_id)
+    if not product_info:
+        return jsonify({"error": f"Invalid product_id: {product_id}"}), 404
+
+    price_amount = product_info.get('price')
+    price_currency = product_info.get('currency')
+    description = product_info.get('description', 'Service Purchase')
+
+    if not price_amount or price_amount <= 0:
+        app.logger.error(f"Invalid price configured for product_id: {product_id}")
+        return jsonify({"error": "Invalid price configured"}), 500
+
+    # Create a unique order ID for our internal tracking
+    order_id = str(uuid.uuid4())
+
+    headers = {
+        "x-api-key": NOWPAYMENTS_API_KEY,
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "price_amount": price_amount,
+        "price_currency": price_currency,
+        "pay_currency": pay_currency,
+        "ipn_callback_url": request.url_root + "webhooks/nowpayments", # Placeholder URL
+        "order_id": order_id,
+        "order_description": description,
+    }
+
+    try:
+        response = requests.post('https://api.nowpayments.io/v1/payment', headers=headers, json=payload, timeout=10)
+        response.raise_for_status()
+        nowpayments_data = response.json()
+
+        payment_id = nowpayments_data.get('payment_id')
+        invoice_url = nowpayments_data.get('invoice_url')
+
+        if not all([payment_id, invoice_url]):
+            app.logger.error("NOWPayments response missing payment_id or invoice_url")
+            return jsonify({"error": "Failed to create NOWPayments session"}), 500
+
+        # Record the transaction attempt
+        with engine.begin() as conn:
+            conn.execute(text("""
+                INSERT INTO transactions (id, user_id, payment_gateway, transaction_status, amount_total, currency, product_description, created_at)
+                VALUES (:id, :user_id, :payment_gateway, :transaction_status, :amount_total, :currency, :product_description, :created_at)
+            """), {
+                "id": payment_id,
+                "user_id": user_id,
+                "payment_gateway": "nowpayments",
+                "transaction_status": "waiting", # NOWPayments status
+                "amount_total": int(price_amount * 100), # Store in cents for consistency
+                "currency": price_currency,
+                "product_description": description,
+                "created_at": datetime.now(UTC)
+            })
+
+        return jsonify({"payment_url": invoice_url})
+
+    except requests.exceptions.RequestException as e:
+        app.logger.error(f"NOWPayments session creation failed: {e}")
+        return jsonify({'error': str(e)}), 502
+
 
 # Dummy success/cancel pages for Stripe redirect
 @app.route('/success')
@@ -288,6 +401,94 @@ def success():
 @app.route('/cancel')
 def cancel():
     return "<h1>Payment Canceled.</h1>"
+
+
+@app.route('/webhooks/nowpayments', methods=['POST'])
+def handle_nowpayments_webhook():
+    # 1. Verify the signature
+    signature_header = request.headers.get('x-nowpayments-sig')
+    if not signature_header:
+        app.logger.warning("NOWPayments webhook missing signature.")
+        return 'Missing x-nowpayments-sig header', 400
+
+    try:
+        request_body_bytes = request.get_data()
+        data = json.loads(request_body_bytes)
+
+        # To verify the signature, we must recreate the exact string that was signed.
+        # NOWPayments requires sorting the keys of the JSON payload alphabetically.
+        sorted_data = {k: data[k] for k in sorted(data.keys())}
+
+        # Then, we serialize this sorted dictionary into a compact JSON string.
+        # Using separators=(',', ':') removes whitespace and ensures consistency.
+        serialized_string = json.dumps(sorted_data, separators=(',', ':'))
+
+        ipn_secret = get_secret('nowpayments_ipn_secret')
+        if not ipn_secret:
+             app.logger.error("NOWPayments IPN secret is not configured.")
+             return 'Configuration error', 500
+
+        hmac_obj = hmac.new(ipn_secret.encode('utf-8'), serialized_string.encode('utf-8'), hashlib.sha512)
+        expected_signature = hmac_obj.hexdigest()
+
+        if not hmac.compare_digest(signature_header, expected_signature):
+            app.logger.warning(f"NOWPayments webhook signature verification failed. Received: {signature_header}, Expected: {expected_signature}")
+            return 'Invalid signature', 400
+
+    except Exception as e:
+        app.logger.error(f"NOWPayments webhook signature verification error: {e}")
+        return 'Signature verification failed', 400
+
+    # 2. Process the event
+    app.logger.info(f"NOWPayments webhook signature verified successfully for payment {data.get('payment_id')}.")
+
+    payment_id = data.get('payment_id')
+    payment_status = data.get('payment_status')
+
+    if not payment_id or not payment_status:
+        return 'Missing payment_id or payment_status', 400
+
+    try:
+        with engine.begin() as conn:
+            # Find the transaction to ensure it exists
+            result = conn.execute(
+                text("SELECT transaction_status FROM transactions WHERE id = :id AND payment_gateway = 'nowpayments'"),
+                {'id': payment_id}
+            ).first()
+
+            if not result:
+                app.logger.warning(f"Received NOWPayments webhook for unknown transaction {payment_id}.")
+                return 'Transaction not found', 404
+
+            # Idempotency check: don't process the same status update twice
+            if result.transaction_status == payment_status:
+                 app.logger.info(f"Transaction {payment_id} already has status '{payment_status}'. Ignoring.")
+                 return jsonify(status='success', reason='already_processed')
+
+            # Update the status
+            conn.execute(
+                text("UPDATE transactions SET transaction_status = :status WHERE id = :id"),
+                {'status': payment_status, 'id': payment_id}
+            )
+            app.logger.info(f"Updated transaction {payment_id} to status '{payment_status}'.")
+
+            # Trigger downstream actions if payment is finished
+            if payment_status in ['confirmed', 'finished']:
+                user_id = conn.execute(text("SELECT user_id FROM transactions WHERE id = :id"), {'id': payment_id}).scalar_one()
+                conn.execute(text("""
+                    INSERT INTO advisor_tokens (advisor_email, token_balance, updated_at)
+                    VALUES (:email, 100, :now)
+                    ON CONFLICT(advisor_email) DO UPDATE SET
+                    token_balance = token_balance + 100,
+                    updated_at = :now
+                """), {'email': user_id, 'now': datetime.now(UTC)})
+                app.logger.info(f"Granted 100 tokens to {user_id} for NOWPayments transaction {payment_id}.")
+
+    except Exception as e:
+        app.logger.error(f"Error processing NOWPayments webhook for payment {payment_id}: {e}")
+        return jsonify(status='error', error=str(e)), 500
+
+    return jsonify(status='success'), 200
 
 
 # --- Price Lock Endpoints ---
