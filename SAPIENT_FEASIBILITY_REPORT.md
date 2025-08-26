@@ -1,127 +1,57 @@
-# Sapient AI Integration: Feasibility Report
+# Sapient AI Integration: A Phased Rollout Plan
 
-## 1. Introduction & Goal
+## 1. Executive Summary
 
-This document outlines a feasibility study on integrating the Sapient HRM (Hierarchical Reasoning Model) as an AI-powered logic engine within the AssetArc platform. The goal is to replace existing, hardcoded rule-based systems with a more flexible and powerful AI model. This report analyzes the potential use-cases, defines the technical requirements, and proposes a path for a pilot implementation.
-
----
-
-## 2. Analysis of Sapient HRM
-
-Based on a review of the Sapient HRM GitHub repository, the following has been determined:
-
-*   **Nature of the Model:** Sapient HRM is a highly specialized AI model designed for complex, rule-based reasoning tasks (e.g., logic puzzles). It is **not** a general-purpose conversational AI or a platform operations model.
-*   **Implementation Overhead:** Using this model requires significant effort. It is not a simple API call. The process involves:
-    1.  Creating a custom, structured training dataset.
-    2.  Setting up a specialized Python/CUDA environment.
-    3.  A potentially lengthy training process to produce a model checkpoint.
-    4.  Hosting the trained model in a dedicated inference service.
+This document outlines a strategic, phased approach for integrating the Sapient HRM (Hierarchical Reasoning Model) into the AssetArc platform. The ultimate goal is to replace hardcoded, rule-based systems with a more flexible and powerful AI logic engine. This plan breaks the integration into three manageable phases, starting with a high-value pilot project and progressively moving towards a more ambitious, fully AI-driven system.
 
 ---
 
-## 3. Analysis of Potential Use-Cases
+## 2. Core Technology: Sapient HRM
 
-Three existing features were analyzed as potential candidates for replacement by the AI model.
-
-### 3.1. Corporate Structure Design (`eng-lifecycle`)
-*   **Current Logic:** A simple, hardcoded `if/elif` rule engine that maps user goals and jurisdiction to predefined corporate structures.
-*   **Suitability:** **Excellent Pilot Project.** The logic is a clear reasoning task with well-defined inputs and outputs, making it ideal for creating a training dataset. The complexity is low enough for a successful first implementation.
-
-### 3.2. Estate Duty Calculator (`eng-compliance`)
-*   **Current Logic:** A deterministic mathematical formula that calculates tax liability based on fixed rates and tiers.
-*   **Suitability:** **Not Suitable.** This is a math problem, not a reasoning problem. An AI model would be less accurate and far more complex than the current, correct implementation.
-
-### 3.3. Rollover Relief Planner (`eng-compliance`)
-*   **Current Logic:** The eligibility checker (`check_eligibility`) is a complex, multi-layered rule engine that evaluates a transaction against dozens of criteria from tax law.
-*   **Suitability:** **Excellent Advanced Project.** This is a perfect example of a complex reasoning task that Sapient HRM is designed for. However, due to the complexity of the input data, this is better suited as a second project after a successful pilot.
+*   **Nature of the Model:** Sapient HRM is a specialized AI model designed for complex, rule-based reasoning tasks. It is not a general-purpose conversational AI.
+*   **Implementation Requirement:** Using this model requires a significant but achievable workflow:
+    1.  **Create a custom training dataset** of input-output examples.
+    2.  **Train the model** in a specialized environment to produce a model checkpoint.
+    3.  **Host the trained model** in a dedicated inference microservice.
 
 ---
 
-## 4. Proposed Pilot Project: AI-Powered Structure Design
+## 3. The Phased Rollout Strategy
 
-It is recommended to proceed with the **Corporate Structure Design** feature as the pilot project.
+We recommend a three-phase rollout to mitigate risk, demonstrate value early, and build institutional knowledge.
 
-### 4.1. Dataset Requirements
+### **Phase 1: AI-Powered Corporate Structure Design (Pilot Project)**
 
-A training dataset must be created. Each data point will be a JSON object in the following format:
+*   **Goal:** Replace the current simple, rule-based `design_corporate_structure` function with an AI model.
+*   **Complexity:** Low. The rules are simple and the data requirements are clear.
+*   **Value:** An excellent proof-of-concept to validate the entire workflow, from data creation to production integration, on a manageable scale.
+*   **Implementation Plan:**
+    1.  **Dataset:** Create a dataset of `(goals, jurisdiction) -> [structure_ids]` pairs.
+    2.  **Training:** Train the Sapient model on this dataset.
+    3.  **Integration:** Build a new `eng-reasoning` service to host the model. Modify `eng-lifecycle` to call this new service, protected by a feature flag.
 
-```json
-{
-  "input": {
-    "goals": ["list_of_strings"],
-    "jurisdiction": "string"
-  },
-  "output": {
-    "recommended_structures": ["list_of_structure_ids"]
-  }
-}
-```
-**Example:**
-```json
-{
-  "input": {
-    "goals": ["asset_protection", "liability_protection"],
-    "jurisdiction": "za"
-  },
-  "output": {
-    "recommended_structures": ["za_pty_ltd", "za_trust"]
-  }
-}
-```
-A robust dataset would require thousands of such examples to cover a wide range of combinations.
+### **Phase 2: AI-Powered Tax Rulings (Advanced Reasoning)**
 
-#### Proposed Data Generation Workflow
+*   **Goal:** Replace the complex eligibility-checking logic in the `Rollover Relief Planner` with an AI model.
+*   **Complexity:** Medium. The input data is highly structured and complex, requiring a more sophisticated dataset.
+*   **Value:** Solves a more complex reasoning problem, demonstrating the AI's ability to handle intricate, real-world legal and tax rules. This adds significant value and flexibility to the compliance tools.
+*   **Implementation Plan:**
+    1.  **Dataset:** Create a dataset where the input is the `RolloverPlannerInput` object and the output is the `eligibility_result` object.
+    2.  **Training:** Train a new version of the Sapient model on this tax-specific dataset.
+    3.  **Integration:** Add a new endpoint to the `eng-reasoning` service for this task. Modify `eng-compliance` to call this endpoint.
 
-To accelerate the creation of this large dataset, a "human-in-the-loop" approach is recommended:
+### **Phase 3: AI-Powered Document Blueprint Generation (Long-Term Vision)**
 
-1.  **Generate Draft Data:** Use a Large Language Model (LLM) like OpenAI's GPT to rapidly generate a large number of draft scenarios and their corresponding "correct" outputs.
-2.  **Expert Review:** Every single generated data point must be meticulously reviewed, corrected, and approved by a human legal or financial expert. This step is critical to ensure accuracy and remove any potential AI "hallucinations".
-3.  **Finalize for Training:** An engineer will format the expert-approved data into the final JSON structure required for training the Sapient HRM model.
-
-This workflow combines the speed of AI for data generation with the accuracy and accountability of human expertise.
-
-### 4.2. Proposed Integration Plan
-
-The integration can be broken down into three phases:
-
-**Phase 1: Model Training (Offline)**
-1.  **Dataset Generation:** Create a comprehensive training dataset (~1000+ examples).
-2.  **Environment Setup:** Provision a cloud GPU instance with the required CUDA and Python dependencies.
-3.  **Training:** Run the Sapient HRM training script to produce a trained model checkpoint file.
-
-**Phase 2: Create AI Inference Service**
-1.  **New Microservice:** Build a new, simple Python service (e.g., `eng-reasoning`).
-2.  **Model Hosting:** This service will load the trained model from Phase 1.
-3.  **API Endpoint:** Expose an endpoint (e.g., `/reasoning/design-structure`) that accepts `goals` and `jurisdiction` and returns the AI's recommendation.
-
-**Phase 3: Platform Integration**
-1.  **Update `eng-lifecycle`:** Modify the `design_corporate_structure` function to call the new `eng-reasoning` service instead of using its internal rules.
-2.  **Feature Flag:** Wrap the call to the new AI service in a feature flag. This will allow for safe testing in production and an instant rollback path to the old rule-based engine if needed.
+*   **Goal:** Replace the entire static `.docx` template system with a dynamic, AI-driven document generation pipeline.
+*   **Complexity:** High. This requires extensive training data and a two-stage AI process.
+*   **Value:** This is a transformative step. It would enable the creation of highly dynamic and customized legal documents on the fly, providing a significant competitive advantage and drastically reducing the overhead of template maintenance.
+*   **Implementation Plan (Hybrid AI Approach):**
+    1.  **Structuring (Sapient HRM):** Train the Sapient model to generate a structured JSON "blueprint" of a legal document based on a high-level requirement.
+    2.  **Drafting (LLM - OpenAI):** Feed the generated blueprint to a Large Language Model (like OpenAI's GPT) to write the final, human-readable prose of the document.
+    3.  **Integration:** This would likely involve a significant rework of the `eng-drafting` service to orchestrate this new two-step AI workflow.
 
 ---
 
-## 5. Conclusion & Recommendation
+## 4. Immediate Next Steps & Recommendation
 
-**Conclusion:** Replacing rule-based logic in AssetArc with the Sapient HRM AI model is a feasible but significant undertaking. It offers the potential for much greater flexibility and intelligence in the long term.
-
-**Recommendation:** Proceed with the proposed pilot project of replacing the **Corporate Structure Design** logic. The outlined three-phase plan provides a clear path forward. This approach will prove the value of the AI integration on a manageable scale before tackling more complex systems like the Rollover Relief Planner.
-
----
-
-## 6. Future Vision: AI-Powered Document Generation (Phase 2)
-
-Beyond the initial pilot project, the hybrid AI approach discussed can be extended to revolutionize document drafting itself, potentially replacing the static `.docx` template system entirely.
-
-### The Hybrid AI Workflow:
-
-1.  **Structuring (Sapient HRM):** The Sapient model would be trained on the legal rules and composition of various documents. When a document is needed (e.g., a Trust Deed), the model would generate a structured "blueprint" or "skeleton" in a format like JSON. This blueprint would define all the required clauses, sections, and data placeholders for that specific document and context.
-
-2.  **Drafting (Large Language Model - OpenAI):** This structured blueprint would then be passed to a Large Language Model (LLM). The LLM would use the blueprint as a precise set of instructions to draft the final, human-readable legal document with the correct prose and formatting.
-
-### Benefits:
-
-*   **Dynamic Content:** Documents could be dynamically generated and customized on the fly, far beyond the capabilities of simple template placeholders.
-*   **Reduced Maintenance:** Instead of maintaining dozens of `.docx` templates, the system would rely on a more robust, version-controlled training dataset for the AI.
-*   **Enhanced Flexibility:** New document types or variations could be introduced by training the AI on new rules, rather than creating new templates from scratch.
-
-This represents a significant long-term evolution for the platform and a compelling future direction for the AI integration.
+**Recommendation:** We strongly recommend beginning with **Phase 1**. It offers the best balance of low risk and high learning value, and its success will provide the foundation and confidence needed to proceed with the more advanced phases.
