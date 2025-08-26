@@ -1,101 +1,81 @@
 # Manual Testing Guide
 
-This guide provides instructions for manually testing the features developed, as the automated verification steps were blocked by issues in the sandbox environment.
+This document provides step-by-step instructions for manually testing the core features of the AssetArc platform from a user's perspective. These steps are designed for non-developers and focus on interactions with the user interface.
 
 ---
 
-## Part 1: Verifying the `eng-billing` Backend Unit Tests
+## Prerequisite: Accessing the Platform
 
-The new unit tests for the Yoco integration were failing in the development environment due to a suspected caching or file system issue, causing a persistent `NameError` even after the code was corrected.
-
-Please run the following commands to verify the tests in a clean environment.
-
-### Steps:
-
-1.  **Start the `eng-billing` service:**
-    ```bash
-    sudo docker compose -f docker-compose.integrated.yml up -d --build eng-billing
-    ```
-
-2.  **Execute the test suite:**
-    ```bash
-    sudo docker compose -f docker-compose.integrated.yml exec eng-billing python -m unittest discover tests
-    ```
-
-### Expected Outcome:
-
-The command should run and report that all **12 tests passed**.
-
-```
-............
-----------------------------------------------------------------------
-Ran 12 tests in ...s
-
-OK
-```
+Before you begin, ensure all the platform's services are running and you can access the main website in your browser.
 
 ---
 
-## Part 2: Verifying the Frontend KPI Dashboard
+## 1. User Registration and Login
 
-The automated Playwright screenshot generation was blocked because the sandbox environment is missing the required system dependencies to run browsers.
+**Goal:** Verify that a new user can register and log in successfully.
 
-You can verify the frontend change manually by following these steps.
+**Steps:**
+1.  Navigate to the website's homepage.
+2.  Click on the "Register" or "Sign Up" button.
+3.  Fill out the registration form with a new email address and password.
+4.  Click "Submit".
+5.  You may be asked to verify your email. Check your inbox for a verification link and click it.
+6.  Once verified, navigate to the "Login" page.
+7.  Enter the email and password you just registered with.
+8.  Click "Login".
 
-### Steps:
-
-1.  **Start the `eng-billing` backend service:** This service provides the API that the dashboard consumes.
-    ```bash
-    sudo docker compose -f docker-compose.integrated.yml up -d --build eng-billing
-    ```
-
-2.  **(Optional) Seed the database with sample data:** The dashboard will work with an empty database (showing R 0.00), but if you want to see it display values, you can execute the following command to insert two sample transactions.
-    ```bash
-    sudo docker compose -f docker-compose.integrated.yml exec eng-billing sqlite3 eng_billing.db "INSERT INTO transactions (id, user_id, yoco_checkout_id, amount_total, currency, product_description, transaction_status, created_at) VALUES ('pay_1', 'user1', 'co_1', 10000, 'ZAR', 'p1', 'completed', '2023-01-01 10:00:00'), ('pay_2', 'user2', 'co_2', 15000, 'ZAR', 'p2', 'completed', '2023-01-01 11:00:00');"
-    ```
-
-3.  **Open the PHP file in a browser:** This is a WordPress theme file, but for this verification, you can open it directly as a local file in your web browser (e.g., Chrome or Firefox). Navigate to the following path on your local machine:
-    `[path-to-your-project-folder]/assetarc-theme/templates/template-metrics.php`
-
-### Expected Outcome:
-
--   The page should display the title **"Platform Metrics Dashboard (MVP)"**.
--   You will see two cards: **"Total Revenue"** and **"Total Transactions"**.
--   After a brief "Loading..." message, the cards should update.
-    -   If you did **not** seed the database, they will show **R 0.00** and **0**.
-    -   If you **did** seed the database, they will show **R 250.00** and **2**.
-
-This confirms that the JavaScript in the file is successfully calling the backend API and displaying the data.
+**Expected Outcome:**
+*   You should be successfully logged into the platform and see your user dashboard or be redirected to the homepage as a logged-in user.
 
 ---
 
-## Part 3: Verifying the Advisor KPI Dashboard
+## 2. B-BBEE Calculator
 
-This dashboard was found to be already implemented. The following steps can be used to verify its functionality. This requires multiple backend services to be running.
+**Goal:** Verify that the B-BBEE calculator works correctly.
 
-### Steps:
+**Steps:**
+1.  Log in to the platform.
+2.  Navigate to the "Calculators" or "Tools" section and select the "B-BBEE Calculator".
+3.  Fill in the required fields (e.g., Total Staff, Black Employees, Black Female Employees, etc.).
+4.  Click the "Calculate" button.
 
-1.  **Start the required backend services:** The advisor dashboard aggregates data from multiple services.
-    ```bash
-    sudo docker compose -f docker-compose.integrated.yml up -d --build eng-identity eng-billing eng-lifecycle
-    ```
+**Expected Outcome:**
+*   The calculator should display a B-BBEE score and level based on the inputs provided. The results should update if you change the inputs and recalculate.
 
-2.  **Create an Advisor User:** The dashboard is only visible to users with the `advisor` role. You can create one directly in the database with the following command.
-    ```bash
-    sudo docker compose -f docker-compose.integrated.yml exec eng-identity sqlite3 eng_identity.db "INSERT INTO users (email, role, is_active, created_at) VALUES ('test-advisor@asset-arc.com', 'advisor', 1, '2023-01-01 10:00:00');"
-    ```
+---
 
-3.  **Log In as the Advisor:**
-    - Navigate to your WordPress site's login page.
-    - Use the OTP flow to log in with the email `test-advisor@asset-arc.com`. You can find the OTP code in the logs of the `eng-identity` container (`sudo docker compose logs eng-identity`).
+## 3. Estate Tools: Estate Duty Calculator
 
-4.  **Navigate to the Advisor Dashboard:** Once logged in, navigate to the page that uses the "Advisor Dashboard" template. The URL is typically `/advisor-dashboard/`.
+**Goal:** Verify that the Estate Duty calculator provides an accurate estimate.
 
-### Expected Outcome:
+**Steps:**
+1.  Log in to the platform.
+2.  Navigate to the "Estate Tools" section and select the "Estate Duty Calculator".
+3.  Enter values for assets (e.g., Property, Investments) and liabilities (e.g., Bonds, Loans).
+4.  Click "Calculate".
 
--   The page should display the title **"Advisor Dashboard"**.
--   You will see three cards: **"Active Clients"**, **"Pending Reviews"**, and **"Tokens Remaining"**.
--   Since this is a new advisor with no clients, these cards will all display **0**.
--   You will see an empty table under **"My Clients"**.
+**Expected Outcome:**
+*   The tool should display the calculated Gross Value, Net Value, and the estimated Estate Duty payable.
 
-This confirms that the page is loading and successfully communicating with the backend services.
+---
+
+## 4. Purchasing a Service with NOWPayments (Crypto)
+
+**Goal:** Verify that a user can successfully purchase a service using cryptocurrency via NOWPayments.
+
+**Steps:**
+1.  Log in to the platform.
+2.  Navigate to a service that requires payment (e.g., "Premium Course Access" or "B-BBEE Certificate").
+3.  Click the "Buy Now" or "Purchase" button.
+4.  On the checkout page, you should see payment options. Select "Pay with Crypto" or "NOWPayments".
+5.  Choose a cryptocurrency to pay with (e.g., BTC, ETH, USDT).
+6.  Click "Proceed to Payment".
+7.  You will be redirected to a NOWPayments invoice page. The page will show the amount due in the cryptocurrency you selected.
+8.  **For testing purposes, you can use a testnet wallet to send a small amount of test cryptocurrency to the address shown. Do not use real funds.** (Note: If a test environment is not available, this step can only be visually verified).
+9.  After making the "payment", wait on the invoice page.
+
+**Expected Outcome:**
+*   The NOWPayments invoice page should eventually update to show the payment as "Confirmed" or "Finished".
+*   You should be redirected back to a success page on the AssetArc platform.
+*   You should receive a confirmation email for your purchase.
+*   The feature you purchased (e.g., Premium Course) should now be unlocked and accessible on your account.

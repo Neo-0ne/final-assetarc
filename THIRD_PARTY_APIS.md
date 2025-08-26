@@ -20,6 +20,14 @@ This document provides a list of all the third-party services and APIs that the 
     *   `AWS_REGION`
     *   `SENDER_EMAIL` (The verified "From" address in SES).
 
+### 3. Google Cloud Secret Manager
+*   **Purpose:** Secure storage and management of all application secrets, including API keys, database credentials, and other sensitive configuration variables.
+*   **Website:** [https://cloud.google.com/secret-manager](https://cloud.google.com/secret-manager)
+*   **API Key:** Requires a GCP Service Account JSON key file.
+*   **Environment Variables:**
+    *   `GCP_PROJECT_ID`
+    *   `GOOGLE_APPLICATION_CREDENTIALS` (path to the service account key file)
+
 ## Payment Gateways
 
 ### 3. Yoco
