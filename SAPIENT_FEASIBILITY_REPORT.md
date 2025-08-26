@@ -70,6 +70,16 @@ A training dataset must be created. Each data point will be a JSON object in the
 ```
 A robust dataset would require thousands of such examples to cover a wide range of combinations.
 
+#### Proposed Data Generation Workflow
+
+To accelerate the creation of this large dataset, a "human-in-the-loop" approach is recommended:
+
+1.  **Generate Draft Data:** Use a Large Language Model (LLM) like OpenAI's GPT to rapidly generate a large number of draft scenarios and their corresponding "correct" outputs.
+2.  **Expert Review:** Every single generated data point must be meticulously reviewed, corrected, and approved by a human legal or financial expert. This step is critical to ensure accuracy and remove any potential AI "hallucinations".
+3.  **Finalize for Training:** An engineer will format the expert-approved data into the final JSON structure required for training the Sapient HRM model.
+
+This workflow combines the speed of AI for data generation with the accuracy and accountability of human expertise.
+
 ### 4.2. Proposed Integration Plan
 
 The integration can be broken down into three phases:
@@ -95,3 +105,23 @@ The integration can be broken down into three phases:
 **Conclusion:** Replacing rule-based logic in AssetArc with the Sapient HRM AI model is a feasible but significant undertaking. It offers the potential for much greater flexibility and intelligence in the long term.
 
 **Recommendation:** Proceed with the proposed pilot project of replacing the **Corporate Structure Design** logic. The outlined three-phase plan provides a clear path forward. This approach will prove the value of the AI integration on a manageable scale before tackling more complex systems like the Rollover Relief Planner.
+
+---
+
+## 6. Future Vision: AI-Powered Document Generation (Phase 2)
+
+Beyond the initial pilot project, the hybrid AI approach discussed can be extended to revolutionize document drafting itself, potentially replacing the static `.docx` template system entirely.
+
+### The Hybrid AI Workflow:
+
+1.  **Structuring (Sapient HRM):** The Sapient model would be trained on the legal rules and composition of various documents. When a document is needed (e.g., a Trust Deed), the model would generate a structured "blueprint" or "skeleton" in a format like JSON. This blueprint would define all the required clauses, sections, and data placeholders for that specific document and context.
+
+2.  **Drafting (Large Language Model - OpenAI):** This structured blueprint would then be passed to a Large Language Model (LLM). The LLM would use the blueprint as a precise set of instructions to draft the final, human-readable legal document with the correct prose and formatting.
+
+### Benefits:
+
+*   **Dynamic Content:** Documents could be dynamically generated and customized on the fly, far beyond the capabilities of simple template placeholders.
+*   **Reduced Maintenance:** Instead of maintaining dozens of `.docx` templates, the system would rely on a more robust, version-controlled training dataset for the AI.
+*   **Enhanced Flexibility:** New document types or variations could be introduced by training the AI on new rules, rather than creating new templates from scratch.
+
+This represents a significant long-term evolution for the platform and a compelling future direction for the AI integration.
