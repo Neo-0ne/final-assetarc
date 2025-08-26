@@ -215,6 +215,24 @@ class YocoIntegrationTestCase(unittest.TestCase):
         response = self.app.get('/api/v1/metrics') # No API key
         self.assertEqual(response.status_code, 401)
 
+if __name__ == '__main__':
+    unittest.main()
+
+
+class NOWPaymentsIntegrationTestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.app = app.test_client()
+        self.app.testing = True
+        self.db_patcher = patch('app.engine', create_engine('sqlite:///:memory:'))
+        self.engine = self.db_patcher.start()
+        from app import init_db
+        with app.app_context():
+            init_db()
+
+    def tearDown(self):
+        self.db_patcher.stop()
+
     @patch('app.PRICES', {
         "CRYPTO_PRODUCT": {"price": 125.50, "currency": "USD", "description": "A crypto product"}
     })
@@ -257,10 +275,6 @@ class YocoIntegrationTestCase(unittest.TestCase):
             # Missing pay_currency
         })
         self.assertEqual(response.status_code, 400)
-
-
-if __name__ == '__main__':
-    unittest.main()
 
     def test_nowpayments_webhook_invalid_signature(self):
         headers = {'x-nowpayments-sig': 'invalid_signature'}
