@@ -26,18 +26,23 @@ We recommend a three-phase rollout to mitigate risk, demonstrate value early, an
 *   **Complexity:** Low. The rules are simple and the data requirements are clear.
 *   **Value:** An excellent proof-of-concept to validate the entire workflow, from data creation to production integration, on a manageable scale.
 *   **Implementation Plan:**
-    1.  **Dataset:** Create a dataset of `(goals, jurisdiction) -> [structure_ids]` pairs.
-    2.  **Training:** Train the Sapient model on this dataset.
-    3.  **Integration:** Build a new `eng-reasoning` service to host the model. Modify `eng-lifecycle` to call this new service, protected by a feature flag.
+    1.  **Dataset Strategy:**
+        *   **Data Volume:** The Sapient HRM model is highly data-efficient. A high-quality, diverse dataset of **~1,000-2,000 examples** should be sufficient for this task.
+        *   **Data Generation:** To accelerate dataset creation, we recommend a "human-in-the-loop" workflow:
+            1.  Use a Large Language Model like **OpenAI's GPT-4o** (which is already integrated into the platform) to generate a large number of draft scenarios.
+            2.  Have a **human legal expert** review, correct, and approve every example for accuracy.
+            3.  An engineer will format the approved data into the final JSON structure for training.
+    2.  **Training:** Train the Sapient model on the expert-reviewed dataset in a specialized cloud environment with GPU support.
+    3.  **Integration:** Build a new `eng-reasoning` microservice to host the trained model. Modify the `eng-lifecycle` service to call this new service, protected by a feature flag for easy rollback.
 
 ### **Phase 2: AI-Powered Tax & Compliance Rulings (Advanced Reasoning)**
 
 *   **Goal:** Replace complex, rule-based eligibility and status checks with an AI model. This phase demonstrates the AI's ability to handle intricate, real-world legal and tax rules.
 *   **Example Use-Cases:**
-    *   **Rollover Relief Planner:** The AI would determine eligibility for corporate rollover relief (s42, s45, etc.) based on a complex transaction's details.
-    *   **Residency Planner:** The AI would determine a user's tax residency status based on the physical presence test rules.
+    *   **Rollover Relief Planner:** The AI would determine eligibility for corporate rollover relief (s42, s45, etc.).
+    *   **Residency Planner:** The AI would determine a user's tax residency status.
 *   **Implementation Plan (per use-case):**
-    1.  **Dataset:** Create a use-case specific dataset (e.g., `(Transaction_Details) -> {eligibility_status}`).
+    1.  **Dataset:** Follow the same "Generate, Review, Finalize" workflow to create a high-quality dataset for each specific task.
     2.  **Training:** Train or fine-tune the Sapient model on the new dataset.
     3.  **Integration:** Add a new endpoint to the `eng-reasoning` service. Modify the corresponding `eng-compliance` function to call the AI service.
 
