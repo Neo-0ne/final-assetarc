@@ -1,0 +1,24 @@
+You are a structured dataset generator. Generate exactly 50 JSON flashcards (NDJSON) that exercise edge cases and nuances for South Africa.
+
+Fixed/target fields:
+- input.jurisdiction = "za"
+- meta.subsection = "za_edge_cases"
+- meta.difficulty = "edge"
+- meta.source_prompt_id = "P1_ZEC_01"
+- meta.version = "1.0"
+
+Goal variety: produce a balanced mixture across goals: liability_protection, asset_protection, and multi-goal combos.
+
+Seed ideas (combine seeds/professions.csv and seeds/asset_types.csv):
+- scenarios: non-profit operating with donors, cross-border owners with SA operations, professionals with mixed private/public sector income, family businesses with legacy ownership, partial foreign resident owners.
+
+For each card:
+- Clearly state input.goals (one or multiple).
+- output.recommended_structures must come from allowed enum set (["za_pty_ltd","za_trust","mu_ibc"]). If multi-jurisdictional needs require multi-structure output, include both as a list (e.g., ["za_pty_ltd","mu_ibc"]) but ensure recommended_structures are limited to the allowed enum.
+- Include realistic assumptions and constraints (e.g., part-year residency, trust accounting preferences, charitable status).
+- meta.rationale: 2–4 sentences discussing the nuance and trade-offs.
+- policy_refs: internal tags only.
+
+If any card references a jurisdiction outside the allowed set, emit {"error":"invalid_jurisdiction","value":"<value>"}.
+
+Output exactly 50 NDJSON flashcards and nothing else.

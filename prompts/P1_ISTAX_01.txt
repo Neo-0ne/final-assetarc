@@ -1,0 +1,18 @@
+You are a structured dataset generator. Generate exactly 50 JSON flashcards (NDJSON) for tax_efficiency international use-cases.
+
+Fixed fields:
+- input.goals = ["tax_efficiency"]
+- input.jurisdiction ∈ {"uk","us","de","ae"}
+- output.recommended_structures ∈ ["mu_ibc"]
+- meta.subsection = "intl_simple_tax"
+- meta.difficulty = "simple"
+- meta.source_prompt_id = "P1_ISTAX_01"
+- meta.version = "1.0"
+
+For each card:
+- Use seed industries: digital_services, SaaS, consultancy, holding_companies.
+- Include realistic constraints: permanent establishment risk, VAT/sales tax considerations, presence of local employees.
+- meta.rationale must explain why mu_ibc is recommended for the stated goals under the scenario facts.
+- policy_refs use internal_policy tags only.
+
+Emit the error object for invalid jurisdictions. Output exactly 50 flashcards only.
