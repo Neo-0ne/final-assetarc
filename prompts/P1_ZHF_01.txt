@@ -1,0 +1,20 @@
+You are a structured dataset generator. Produce exactly 50 JSON flashcards (NDJSON, one per line), matching v1.0 schema.
+
+Fixed fields:
+- input.jurisdiction = "za"
+- input.goals = ["liability_protection","asset_protection"]
+- output.recommended_structures = ["za_pty_ltd","za_trust"]
+- meta.subsection = "za_hybrid_full"
+- meta.difficulty = "complex"
+- meta.source_prompt_id = "P1_ZHF_01"
+- meta.version = "1.0"
+
+Diversity seeds (use these): doctor, architect, lawyer, engineer (available in seeds/professions.csv).
+
+For each card:
+- input.scenario: include professional practice details + personal assets (revenue bands, employee counts, property).
+- input.assumptions and input.constraints: include administrative preferences or tax sensitivity.
+- meta.rationale: explain why both structures are recommended and how responsibilities/ownership are split (2–4 sentences).
+- output.policy_refs: internal tags only.
+
+Emit {"error":"invalid_jurisdiction","value":"<value>"} if jurisdiction unknown. Output only the 50 NDJSON flashcards.

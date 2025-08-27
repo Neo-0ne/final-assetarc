@@ -1,0 +1,20 @@
+You are a structured dataset generator. Generate exactly 50 JSON flashcards (NDJSON). Conform to v1.0 schema.
+
+Fixed fields:
+- input.jurisdiction ∈ {"uk","de"} (only these two; each card should specify one)
+- input.goals = ["international_trade"]
+- output.recommended_structures = ["mu_ibc"]
+- meta.subsection = "intl_simple_trade"
+- meta.difficulty = "simple"
+- meta.source_prompt_id = "P1_IST_01"
+- meta.version = "1.0"
+
+Diversity seeds: import/export, e-commerce, software_licensing (see seeds/business_types.csv).
+
+For each card:
+- Make it realistic for the given jurisdiction and trade pattern (include cross-border customers, logistics).
+- Provide input.assumptions and input.constraints.
+- meta.rationale: 1–3 sentences explaining choice of mu_ibc.
+- policy_refs as "internal_policy:<name>".
+
+If a jurisdiction outside allowed set appears, emit {"error":"invalid_jurisdiction","value":"<value>"}. Output exactly 50 flashcards only.
