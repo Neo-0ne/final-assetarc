@@ -1,51 +1,58 @@
-# AI Training Prompt Library (Phase 1: Structure Design)
+# AI Training Prompt Library (Comprehensive)
 
-This document provides a library of prompts for generating the training dataset for the **Phase 1: AI-Powered Corporate Structure Design** pilot project.
+This document provides a library of structured prompts to be used with a Large Language Model (LLM) like ChatGPT to generate a draft dataset for training the Sapient HRM model across a multi-phase rollout.
 
-## 1. Strategy Overview
-
-*   **Goal:** Generate ~2,000 high-quality, expert-reviewed training examples ("flashcards").
-*   **Format:** All flashcards must be in a structured JSON format: `{"input": {"goals": [...], "jurisdiction": "..."}, "output": {"recommended_structures": [...]}}`.
-*   **Method:** Use the diverse, specific prompts below to generate a wide range of scenarios. Do not rely on a single prompt.
-*   **Workflow:**
-    1.  **Generate:** Use the prompts to generate draft data.
-    2.  **Review:** A human expert must review and approve every single example.
-    3.  **Finalize:** An engineer will format the final, approved data for training.
+**Workflow Reminder:**
+1.  **Generate:** Use the prompts below to generate a large volume of draft "flashcards".
+2.  **Review:** A human legal/financial expert **must** review every single generated example for accuracy.
+3.  **Finalize:** An engineer will format the expert-approved data into the final JSON structure.
 
 ---
 
-## 2. Prompts for Data Generation
+## Phase 1: AI-Powered Corporate Structure Design (Pilot Project)
 
-### Category A: Simple, Single-Goal Scenarios (Target: ~800 examples)
+**Goal:** Train the AI to recommend the correct corporate structure(s) based on a user's goals and jurisdiction.
 
-**Objective:** To build the foundation of the dataset with common, straightforward cases.
+### Prompt Type 1.1: Basic Scenarios
+*   `"Generate 20 scenarios of small businesses in South Africa ('za') whose primary goal is 'liability_protection'. The required output structure ID is 'za_pty_ltd'. Format each as a complete JSON flashcard: {"input": {"goals": ["liability_protection"], "jurisdiction": "za"}, "output": {"recommended_structures": ["za_pty_ltd"]}}."`
 
-*   **Prompt 2.A.1 (ZA Liability):** `"Generate 20 scenarios of small businesses or sole proprietors in South Africa ('za') whose primary goal is 'liability_protection'. The required output is 'za_pty_ltd'. Format each as a complete JSON flashcard."`
-*   **Prompt 2.A.2 (ZA Asset Protection):** `"Generate 20 scenarios of individuals or families in South Africa ('za') whose primary goal is 'asset_protection'. The required output is 'za_trust'. Format each as a complete JSON flashcard."`
-*   **Prompt 2.A.3 (International Trade):** `"Generate 20 scenarios of import/export businesses based in various countries (e.g., 'us', 'uk', 'de') whose primary goal is 'international_trade'. The required output is 'mu_ibc'. Format each as a complete JSON flashcard."`
-*   **Prompt 2.A.4 (Tax Efficiency):** `"Generate 20 scenarios of tech startups or digital nomads in various international jurisdictions whose primary goal is 'tax_efficiency'. The required output is 'mu_ibc'. Format each as a complete JSON flashcard."`
+### Prompt Type 1.2: Multi-Goal Scenarios
+*   `"Generate 20 scenarios for established professionals in South Africa ('za') who require both 'liability_protection' for their practice and 'asset_protection' for their personal wealth. The required output must be a list containing both 'za_pty_ltd' and 'za_trust'. Format each as a complete JSON flashcard."`
 
-### Category B: Complex, Multi-Goal Scenarios (Target: ~800 examples)
-
-**Objective:** To teach the AI how to handle more realistic scenarios where clients have multiple, overlapping needs.
-
-*   **Prompt 2.B.1 (ZA Hybrid):** `"Generate 20 scenarios for established professionals in South Africa ('za') (e.g., doctors, architects, consultants) who require both 'liability_protection' for their practice and 'asset_protection' for their personal wealth. The required output must be a list containing both 'za_pty_ltd' and 'za_trust'. Format each as a complete JSON flashcard."`
-*   **Prompt 2.B.2 (ZA International Hybrid):** `"Generate 20 scenarios for South African business owners who run a local operation but also engage in 'international_trade'. Their goals are 'liability_protection' and 'international_trade'. The required output must be a list containing both 'za_pty_ltd' and 'mu_ibc'. Format each as a complete JSON flashcard."`
-
-### Category C: Edge Cases & Nuances (Target: ~400 examples)
-
-**Objective:** To make the AI more robust by training it on less common but important scenarios.
-
-*   **Prompt 2.C.1 (Non-Profit):** `"A non-profit organization in South Africa ('za') wants to protect its operational assets. What is the most appropriate structure? Based on legal best practices, this is often a 'za_trust'. Please generate 5 flashcards for different types of non-profits (e.g., animal shelter, community center) with this input and output format."`
-*   **Prompt 2.C.2 (Jurisdiction Mismatch):** `"Generate 10 scenarios where a user's goal is 'asset_protection' but their jurisdiction is international (e.g., 'us', 'uk'). While a trust is still the answer, the specific type is different. For our system's purpose, the output for now should still be 'mu_ibc' as the designated international solution. Format these as JSON flashcards."`
+### Prompt Type 1.3: International Scenarios
+*   `"Generate 20 scenarios for tech startups based in 'us' whose primary goal is 'tax_efficiency'. The recommended structure should always be 'mu_ibc'. Format each as a complete JSON flashcard."`
 
 ---
 
-## 3. Prompts for AI-Assisted Review
+## Phase 2: AI-Powered Tax & Compliance Rulings
 
-**Objective:** To help the human expert review the generated data more efficiently.
+**Goal:** Train the AI to determine eligibility or status based on complex rule-based systems.
 
-*   **Meta-Prompt 3.1 (Rule Check):** `"Given the following rule: 'If the goal is 'liability_protection' and the jurisdiction is 'za', the output must be 'za_pty_ltd'.' Does this flashcard conform to the rule? `[Paste Generated JSON Here]` Answer Yes or No and explain your reasoning."`
-*   **Meta-Prompt 3.2 (Plausibility Check):** `"Is the following scenario a plausible, real-world situation for someone seeking financial structuring advice? `[Paste Generated Scenario Description Here]`"`
+### 2.1 Rollover Relief Planner Prompts
 
-This library of prompts provides a comprehensive toolkit for generating the high-quality dataset required for Phase 1.
+*   `"Generate a complete JSON flashcard for a Section 45 Intra-group transaction that is INELIGIBLE because the companies are not part of the same group (set group_relationship.same_group to false). The input must be a valid RolloverPlannerInput object. The output must be {'eligible': false, 'failed_reasons': ['The transaction must be between companies in the same group (>= 70% shareholding).']}."`
+*   `"Generate a complete JSON flashcard for a Section 42 Asset-for-Share transaction that is ELIGIBLE. All rule conditions must be met (e.g., transferee is SA resident, shares were issued). The output must be {'eligible': true, 'failed_reasons': []}."`
+
+### 2.2 Residency Planner Prompts
+
+*   `"Generate a complete JSON flashcard for a person who IS a tax resident of South Africa based on the Physical Presence Test. The input object must have 'days_in_current_year' >= 91, 'days_each_of_prev_5_years' with all values >= 91, and the sum of 'days_each_of_prev_5_years' >= 915. The output should be {'status': 'Resident', 'reasoning': 'You meet the requirements of the physical presence test...'}."`
+*   `"Generate a complete JSON flashcard for a person who is NOT a tax resident because they fail the first part of the physical presence test (days_in_current_year < 91). The output should be {'status': 'Non-Resident', 'reasoning': 'You do not meet the requirements... Failures: Days in current year >= 91: Fail'}."`
+*   `"Generate a JSON flashcard for a person who IS considered 'Ordinarily Resident'. The input must have at least 3 of the 4 ordinary_residence_flags set to true. The output should be {'status': 'Resident', 'reasoning': 'You are considered ordinarily resident...'}."`
+
+---
+
+## Phase 3: AI-Powered Document Blueprint Generation
+
+**Goal:** Train the AI to generate a structured "blueprint" or "skeleton" of a legal document.
+
+### Prompt Type 3.1: Clause Identification
+*   `"For a standard South African Trust Deed, list all the mandatory clauses and at least 10 common optional clauses. Present this as a JSON array of strings, for example: [\"appointment_of_trustees\", \"beneficiary_nomination\", \"trustee_powers\", ...]"`
+
+### Prompt Type 3.2: Blueprint Generation
+*   `"I need a blueprint for a legal document. The requirement is: 'A board resolution for a South African company to approve the purchase of a major asset.' Please generate a JSON object representing this document's blueprint. The JSON should have a 'document_type' field and a 'sections' array. Each object in the 'sections' array should have a 'section_title' and a 'clauses' array."`
+*   `"Generate a new document blueprint for a 'Share Certificate' for a South African Pty Ltd. The blueprint should be a JSON object with placeholders for all key information (e.g., Company Name, Shareholder, Number of Shares, Class of Shares)."`
+
+---
+## 4. AI-Assisted Review Prompts
+
+*   `"Given the rule 'A person is a tax resident if they are present for more than 91 days in the current year, more than 91 days in each of the last 5 years, and more than 915 days in total over the last 5 years', does this flashcard correctly identify the person as a resident? [Paste Generated JSON Here] Answer Yes or No and explain why."`
