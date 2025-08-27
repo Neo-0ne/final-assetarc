@@ -1,4 +1,8 @@
 # scripts/generate_flashcards.py
+# This script provides a command-line interface to generate training data ("flashcards")
+# for the Sapient AI model by calling an LLM like OpenAI's GPT-4o.
+
+main
 import os
 import sys
 import json
