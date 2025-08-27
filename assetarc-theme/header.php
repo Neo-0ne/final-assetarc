@@ -41,7 +41,9 @@
           if (has_custom_logo()) {
               the_custom_logo();
           } else {
-              echo '<h1 style="color:#FFD700;">' . get_bloginfo('name') . '</h1>';
+              echo '<a href="' . esc_url(home_url('/')) . '" rel="home">';
+              echo '<img src="/Photos/Logo.png" alt="' . esc_attr(get_bloginfo('name')) . ' Logo" style="height: 60px; width: auto;">';
+              echo '</a>';
           }
       }
       ?>
