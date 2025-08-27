@@ -91,3 +91,23 @@ services:
     ports:
     - 5002:5002
     restart: unless-stopped
+
+  eng-reasoning:
+    build:
+      context: .
+      dockerfile: Services/eng-reasoning/app/Dockerfile
+    container_name: eng-reasoning
+    # This service requires a GPU, so we specify the nvidia runtime.
+    # This requires the host machine to have the NVIDIA Container Toolkit installed.
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: 1
+            capabilities: [gpu]
+    env_file:
+    - /app/Services/eng-reasoning/app/.env # Assuming env file will be created
+    ports:
+    - 5008:5008
+    restart: unless-stopped
