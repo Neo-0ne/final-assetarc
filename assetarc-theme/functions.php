@@ -102,7 +102,11 @@ require get_template_directory() . '/inc/token-request-handler.php';
 require get_template_directory() . '/inc/course-handler.php';
 
 // Load any optional review routing logic
-require get_template_directory() . '/parts/review-flag-router.php';
+function assetarc_handle_flag_review_request() {
+    require get_template_directory() . '/parts/review-flag-router.php';
+}
+add_action('admin_post_nopriv_assetarc_flag_review', 'assetarc_handle_flag_review_request');
+add_action('admin_post_assetarc_flag_review', 'assetarc_handle_flag_review_request');
 
 // Register Custom Post Types for Education Hub
 function assetarc_register_post_types() {
