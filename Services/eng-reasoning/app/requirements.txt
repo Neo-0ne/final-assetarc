@@ -1,0 +1,7 @@
+Flask>=2.0
+gunicorn>=20.0
+
+# The Sapient HRM model, installed directly from GitHub
+# Note: This has heavy dependencies like PyTorch and CUDA, which must be
+# present in the base Docker image for this to install correctly.
+git+https://github.com/sapientinc/HRM.git

@@ -1,0 +1,2 @@
+# This directory is for storing the NDJSON output from the AI data generation scripts.
+# This file ensures the empty directory is tracked by git.
