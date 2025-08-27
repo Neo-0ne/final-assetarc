@@ -114,3 +114,38 @@ a {
 .resource-card .text-gold {
   color: #B78628; /* Use the darker gold for better contrast on white */
 }
+
+/* Dashboard Page Styles */
+.dashboard-page .bg-gray-800 {
+  background-color: #FFFFFF;
+  color: #111;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-page h1,
+.dashboard-page h2,
+.dashboard-page h3,
+.dashboard-page p {
+  color: #111; /* Change main text to dark */
+}
+
+/* Override for gold text to ensure it's the dark gold variant for contrast */
+.dashboard-page .text-gold {
+  color: #B78628;
+}
+
+/* Table styles */
+.dashboard-page table th,
+.dashboard-page table td {
+  color: #333; /* Darker text for table content */
+}
+
+.dashboard-page table .border-gray-700 {
+  border-color: #e0e0e0; /* Lighter border for table rows */
+}
+
+/* Special override for yellow status text */
+.dashboard-page .text-yellow-400 {
+    color: #B78628; /* Use dark gold for status */
+}
