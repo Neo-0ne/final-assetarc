@@ -86,17 +86,23 @@ require get_template_directory() . '/inc/functions-security.php';
 // Load Customizer settings
 require get_template_directory() . '/inc/customizer.php';
 
-// Handlers are now loaded via admin-post hooks below
+// Load newsletter handler logic
+require get_template_directory() . '/inc/newsletter-handler.php';
+
+// Load contact form handler logic
+require get_template_directory() . '/inc/contact-handler.php';
+
+// Load upload review handler logic
+require get_template_directory() . '/inc/upload-review-handler.php';
+
+// Load token request handler logic
+require get_template_directory() . '/inc/token-request-handler.php';
 
 // Load course handler logic
 require get_template_directory() . '/inc/course-handler.php';
 
 // Load any optional review routing logic
-function assetarc_handle_flag_review_request() {
-    require get_template_directory() . '/parts/review-flag-router.php';
-}
-add_action('admin_post_nopriv_assetarc_flag_review', 'assetarc_handle_flag_review_request');
-add_action('admin_post_assetarc_flag_review', 'assetarc_handle_flag_review_request');
+require get_template_directory() . '/parts/review-flag-router.php';
 
 // Register Custom Post Types for Education Hub
 function assetarc_register_post_types() {
@@ -160,38 +166,3 @@ function assetarc_handle_newsletter_signup() {
 }
 add_action('admin_post_nopriv_assetarc_newsletter_signup', 'assetarc_handle_newsletter_signup');
 add_action('admin_post_assetarc_newsletter_signup', 'assetarc_handle_newsletter_signup');
-
-// Hook for contact form submission
-function assetarc_handle_contact_form() {
-    require get_template_directory() . '/inc/contact-handler.php';
-}
-add_action('admin_post_nopriv_assetarc_contact', 'assetarc_handle_contact_form');
-add_action('admin_post_assetarc_contact', 'assetarc_handle_contact_form');
-
-// Hook for upload review submission
-function assetarc_handle_upload_review() {
-    require get_template_directory() . '/inc/upload-review-handler.php';
-}
-add_action('admin_post_nopriv_assetarc_upload_review', 'assetarc_handle_upload_review');
-add_action('admin_post_assetarc_upload_review', 'assetarc_handle_upload_review');
-
-// Hook for token request submission
-function assetarc_handle_token_request() {
-    require get_template_directory() . '/inc/token-request-handler.php';
-}
-add_action('admin_post_nopriv_assetarc_token_request', 'assetarc_handle_token_request');
-add_action('admin_post_assetarc_token_request', 'assetarc_handle_token_request');
-
-/**
- * Flush rewrite rules on theme activation.
- *
- * This ensures that the rewrite rules for custom post types and other custom
- * URL structures are correctly registered when the theme is activated.
- */
-function assetarc_activate_theme() {
-    // Re-register the post types to ensure they are available to flush.
-    assetarc_register_post_types();
-    // Flush the rewrite rules.
-    flush_rewrite_rules();
-}
-add_action('after_switch_theme', 'assetarc_activate_theme');

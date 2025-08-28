@@ -34,7 +34,7 @@ if (is_wp_error($response)) {
 }
 ?>
 
-<main class="p-8 text-white max-w-6xl mx-auto dashboard-page">
+<main class="p-8 text-white max-w-6xl mx-auto">
   <h1 class="text-4xl font-bold mb-4">Advisor Dashboard</h1>
   <p class="mb-8">Manage your clients, review documents, and track your token usage.</p>
 
