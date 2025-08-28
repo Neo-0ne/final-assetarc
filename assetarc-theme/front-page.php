@@ -6,21 +6,30 @@
   <section class="hero-section py-20 px-6">
     <div class="container mx-auto grid md:grid-cols-2 gap-8 items-center">
       <div class="hero-left text-center md:text-left">
-        <h1 class="text-4xl md:text-6xl font-semibold mb-4">
-          Asset Protection & Tax Structuring, Automated — With Human Review
-        </h1>
-        <p class="text-base md:text-lg text-gray-300 max-w-xl mx-auto md:mx-0 mb-6">
-          Generate trusts, companies, and SARS s42–47 compliant drafts in minutes. All documents are verified by licensed professionals before delivery.
-        </p>
-        <a href="/assessment" class="btn btn-gold">Start Free Assessment</a>
-        <a href="#how-it-works" class="btn btn-outline ml-4">See How It Works</a>
+        <?php if( get_field('hero_headline') ): ?>
+          <h1 class="text-4xl md:text-6xl font-semibold mb-4"><?php the_field('hero_headline'); ?></h1>
+        <?php endif; ?>
+        <?php if( get_field('hero_subheading') ): ?>
+          <p class="text-base md:text-lg text-gray-300 max-w-xl mx-auto md:mx-0 mb-6"><?php the_field('hero_subheading'); ?></p>
+        <?php endif; ?>
+        <?php
+        $hero_primary_cta = get_field('hero_primary_cta');
+        if( $hero_primary_cta ): ?>
+          <a href="<?php echo esc_url($hero_primary_cta['url']); ?>" class="btn btn-gold"><?php echo esc_html($hero_primary_cta['title']); ?></a>
+        <?php endif; ?>
+        <?php
+        $hero_secondary_cta = get_field('hero_secondary_cta');
+        if( $hero_secondary_cta ): ?>
+          <a href="<?php echo esc_url($hero_secondary_cta['url']); ?>" class="btn btn-outline ml-4"><?php echo esc_html($hero_secondary_cta['title']); ?></a>
+        <?php endif; ?>
       </div>
       <div class="hero-right mt-8 md:mt-0">
         <div class="hero-video-wrapper">
-          <!-- The video will be populated dynamically via ACF or a similar method -->
-          <video autoplay muted loop playsinline class="hero-video rounded-lg shadow-lg">
-            <source src="<?php echo get_template_directory_uri(); ?>/assets/hero-video.mp4" type="video/mp4">
-          </video>
+          <?php if( get_field('hero_video') ): ?>
+            <video autoplay muted loop playsinline class="hero-video rounded-lg shadow-lg">
+              <source src="<?php the_field('hero_video'); ?>" type="video/mp4">
+            </video>
+          <?php endif; ?>
         </div>
       </div>
     </div>
@@ -29,58 +38,71 @@
   <!-- How It Works Section -->
   <section id="how-it-works" class="how-it-works-section py-20 px-6 bg-neutral-950">
     <div class="container mx-auto text-center">
-      <h2 class="text-3xl font-semibold mb-12">How It Works</h2>
-      <div class="grid md:grid-cols-4 gap-8">
-        <div class="step-card">
-          <div class="step-number text-gold text-4xl font-bold mb-4">1</div>
-          <h3 class="text-xl font-semibold mb-2">Choose your process</h3>
-          <p class="text-gray-400">Choose your process (Trust Setup, Company Registration, Compliance Check).</p>
+      <?php if( get_field('how_it_works_headline') ): ?>
+        <h2 class="text-3xl font-semibold mb-12"><?php the_field('how_it_works_headline'); ?></h2>
+      <?php endif; ?>
+      <?php if( have_rows('how_it_works_steps') ): ?>
+        <div class="grid md:grid-cols-4 gap-8">
+          <?php while( have_rows('how_it_works_steps') ): the_row(); ?>
+            <div class="step-card">
+              <div class="step-number text-gold text-4xl font-bold mb-4"><?php echo get_row_index(); ?></div>
+              <h3 class="text-xl font-semibold mb-2"><?php the_sub_field('step_title'); ?></h3>
+              <p class="text-gray-400"><?php the_sub_field('step_description'); ?></p>
+            </div>
+          <?php endwhile; ?>
         </div>
-        <div class="step-card">
-          <div class="step-number text-gold text-4xl font-bold mb-4">2</div>
-          <h3 class="text-xl font-semibold mb-2">Answer guided questions</h3>
-          <p class="text-gray-400">Answer guided questions to provide the necessary information.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-number text-gold text-4xl font-bold mb-4">3</div>
-          <h3 class="text-xl font-semibold mb-2">Draft documents are generated</h3>
-          <p class="text-gray-400">Your documents are instantly generated and held for verification.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-number text-gold text-4xl font-bold mb-4">4</div>
-          <h3 class="text-xl font-semibold mb-2">Human expert reviews them</h3>
-          <p class="text-gray-400">A human expert reviews them before release into your secure vault.</p>
-        </div>
-      </div>
+      <?php endif; ?>
     </div>
   </section>
 
   <!-- Trust Strip -->
   <section class="trust-strip bg-neutral-900 py-8 text-center">
     <div class="container mx-auto">
-      <p class="text-sm text-gray-400 tracking-wide uppercase mb-4">Trusted by South African founders, global entrepreneurs, and licensed advisors.</p>
-      <div class="flex justify-center space-x-8">
-        <span class="text-xs font-semibold text-gold">FICA Compliant</span>
-        <span class="text-xs font-semibold text-gold">SARS s42–47 Aware</span>
-        <span class="text-xs font-semibold text-gold">Human Reviewed</span>
-      </div>
+      <?php if( get_field('trust_strip_text') ): ?>
+        <p class="text-sm text-gray-400 tracking-wide uppercase mb-4"><?php the_field('trust_strip_text'); ?></p>
+      <?php endif; ?>
+      <?php if( have_rows('trust_strip_badges') ): ?>
+        <div class="flex justify-center space-x-8">
+          <?php while( have_rows('trust_strip_badges') ): the_row(); ?>
+            <span class="text-xs font-semibold text-gold"><?php the_sub_field('badge_text'); ?></span>
+          <?php endwhile; ?>
+        </div>
+      <?php endif; ?>
     </div>
   </section>
 
   <!-- Choose Your Path Section -->
   <section class="choose-your-path-section py-20 px-6">
     <div class="container mx-auto text-center">
-      <h2 class="text-3xl font-semibold mb-12">Choose Your Path</h2>
+      <?php if( get_field('path_section_headline') ): ?>
+        <h2 class="text-3xl font-semibold mb-12"><?php the_field('path_section_headline'); ?></h2>
+      <?php endif; ?>
       <div class="grid md:grid-cols-2 gap-8">
         <div class="path-card bg-neutral-800 p-8 rounded-lg text-center">
-          <h3 class="text-2xl font-semibold mb-4">I’m a Client</h3>
-          <p class="text-gray-400 mb-6">Start your assessment, generate your draft pack, and access compliance-ready templates.</p>
-          <a href="/assessment" class="btn btn-gold">Start Assessment</a>
+          <?php if( get_field('client_path_title') ): ?>
+            <h3 class="text-2xl font-semibold mb-4"><?php the_field('client_path_title'); ?></h3>
+          <?php endif; ?>
+          <?php if( get_field('client_path_description') ): ?>
+            <p class="text-gray-400 mb-6"><?php the_field('client_path_description'); ?></p>
+          <?php endif; ?>
+          <?php
+          $client_path_cta = get_field('client_path_cta');
+          if( $client_path_cta ): ?>
+            <a href="<?php echo esc_url($client_path_cta['url']); ?>" class="btn btn-gold"><?php echo esc_html($client_path_cta['title']); ?></a>
+          <?php endif; ?>
         </div>
         <div class="path-card bg-neutral-800 p-8 rounded-lg text-center">
-          <h3 class="text-2xl font-semibold mb-4">I’m an Advisor</h3>
-          <p class="text-gray-400 mb-6">Offer white-label automation, manage tokens, and deliver branded packs to clients.</p>
-          <a href="/advisor-portal" class="btn btn-outline">Explore Advisor Tools</a>
+          <?php if( get_field('advisor_path_title') ): ?>
+            <h3 class="text-2xl font-semibold mb-4"><?php the_field('advisor_path_title'); ?></h3>
+          <?php endif; ?>
+          <?php if( get_field('advisor_path_description') ): ?>
+            <p class="text-gray-400 mb-6"><?php the_field('advisor_path_description'); ?></p>
+          <?php endif; ?>
+          <?php
+          $advisor_path_cta = get_field('advisor_path_cta');
+          if( $advisor_path_cta ): ?>
+            <a href="<?php echo esc_url($advisor_path_cta['url']); ?>" class="btn btn-outline"><?php echo esc_html($advisor_path_cta['title']); ?></a>
+          <?php endif; ?>
         </div>
       </div>
     </div>
@@ -89,33 +111,19 @@
   <!-- Featured Workflows Section -->
   <section class="featured-workflows-section py-20 px-6 bg-neutral-950">
     <div class="container mx-auto text-center">
-      <h2 class="text-3xl font-semibold mb-12">Featured Workflows</h2>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
-        <div class="bot-card bg-neutral-800 p-6 rounded-lg">
-          <h4 class="font-semibold text-lg">Trust Setup</h4>
-          <p class="text-xs text-gray-400 mt-1">Local & Offshore</p>
+      <?php if( get_field('workflows_headline') ): ?>
+        <h2 class="text-3xl font-semibold mb-12"><?php the_field('workflows_headline'); ?></h2>
+      <?php endif; ?>
+      <?php if( have_rows('workflows') ): ?>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+          <?php while( have_rows('workflows') ): the_row(); ?>
+            <div class="bot-card bg-neutral-800 p-6 rounded-lg">
+              <h4 class="font-semibold text-lg"><?php the_sub_field('workflow_title'); ?></h4>
+              <p class="text-xs text-gray-400 mt-1"><?php the_sub_field('workflow_description'); ?></p>
+            </div>
+          <?php endwhile; ?>
         </div>
-        <div class="bot-card bg-neutral-800 p-6 rounded-lg">
-          <h4 class="font-semibold text-lg">Company Registration</h4>
-          <p class="text-xs text-gray-400 mt-1">CIPC, BVI, St. Kitts</p>
-        </div>
-        <div class="bot-card bg-neutral-800 p-6 rounded-lg">
-          <h4 class="font-semibold text-lg">SARS Section 47 Test</h4>
-          <p class="text-xs text-gray-400 mt-1">Compliance Check</p>
-        </div>
-        <div class="bot-card bg-neutral-800 p-6 rounded-lg">
-          <h4 class="font-semibold text-lg">FICA Intake</h4>
-          <p class="text-xs text-gray-400 mt-1">Risk Tiering</p>
-        </div>
-        <div class="bot-card bg-neutral-800 p-6 rounded-lg">
-          <h4 class="font-semibold text-lg">Intl. Structuring</h4>
-          <p class="text-xs text-gray-400 mt-1">FX-locked USD Quotes</p>
-        </div>
-        <div class="bot-card bg-neutral-800 p-6 rounded-lg">
-          <h4 class="font-semibold text-lg">Instant Quote</h4>
-          <p class="text-xs text-gray-400 mt-1">ZAR, USD, Crypto</p>
-        </div>
-      </div>
+      <?php endif; ?>
     </div>
   </section>
 
@@ -124,8 +132,12 @@
   <!-- Lead Magnet Section -->
   <section class="lead-magnet-section py-20 px-6">
     <div class="container mx-auto text-center bg-neutral-800 p-12 rounded-lg">
-      <h2 class="text-3xl font-semibold mb-4">Unlock the Asset Protection Starter Pack</h2>
-      <p class="text-gray-400 mb-8">Get our free checklist, a seat at our next webinar, and a sample compliance report.</p>
+      <?php if( get_field('lead_magnet_headline') ): ?>
+        <h2 class="text-3xl font-semibold mb-4"><?php the_field('lead_magnet_headline'); ?></h2>
+      <?php endif; ?>
+      <?php if( get_field('lead_magnet_description') ): ?>
+        <p class="text-gray-400 mb-8"><?php the_field('lead_magnet_description'); ?></p>
+      <?php endif; ?>
       <form id="lead-magnet-form" class="max-w-md mx-auto" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
         <input type="hidden" name="action" value="assetarc_newsletter_signup">
         <div class="flex items-center">
@@ -141,20 +153,28 @@
   <section class="compliance-security-section py-20 px-6">
     <div class="container mx-auto grid md:grid-cols-2 gap-12 items-center">
       <div>
-        <h3 class="text-2xl font-semibold mb-4">Compliance</h3>
-        <ul class="list-disc list-inside text-gray-400 space-y-2">
-            <li>Section 42–47 triggers built in</li>
-            <li>FICA risk-tiering (PEP/high-value flags)</li>
-            <li>Human review before release</li>
-        </ul>
+        <?php if( get_field('compliance_headline') ): ?>
+          <h3 class="text-2xl font-semibold mb-4"><?php the_field('compliance_headline'); ?></h3>
+        <?php endif; ?>
+        <?php if( have_rows('compliance_points') ): ?>
+          <ul class="list-disc list-inside text-gray-400 space-y-2">
+            <?php while( have_rows('compliance_points') ): the_row(); ?>
+              <li><?php the_sub_field('point'); ?></li>
+            <?php endwhile; ?>
+          </ul>
+        <?php endif; ?>
       </div>
       <div>
-        <h3 class="text-2xl font-semibold mb-4">Security</h3>
-        <ul class="list-disc list-inside text-gray-400 space-y-2">
-            <li>Tokenized access</li>
-            <li>Watermarked drafts</li>
-            <li>Resume anytime with secure vault</li>
-        </ul>
+        <?php if( get_field('security_headline') ): ?>
+          <h3 class="text-2xl font-semibold mb-4"><?php the_field('security_headline'); ?></h3>
+        <?php endif; ?>
+        <?php if( have_rows('security_points') ): ?>
+          <ul class="list-disc list-inside text-gray-400 space-y-2">
+            <?php while( have_rows('security_points') ): the_row(); ?>
+              <li><?php the_sub_field('point'); ?></li>
+            <?php endwhile; ?>
+          </ul>
+        <?php endif; ?>
       </div>
     </div>
   </section>
@@ -162,76 +182,92 @@
   <!-- Social Proof Section -->
   <section class="testimonials-section py-20 px-6 bg-neutral-950">
     <div class="container mx-auto text-center">
-      <h2 class="text-3xl font-semibold mb-12">Success Stories</h2>
-      <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-        <!-- Case Study -->
-        <div class="testimonial-card bg-neutral-800 p-6 rounded-lg">
-          <h4 class="font-semibold text-gold mb-2">Case Study: Family Restructure</h4>
-          <p class="text-gray-300">“High-net-worth family restructured holdings — 30% tax saving, SARS compliant.”</p>
+      <?php if( get_field('social_proof_headline') ): ?>
+        <h2 class="text-3xl font-semibold mb-12"><?php the_field('social_proof_headline'); ?></h2>
+      <?php endif; ?>
+      <?php if( have_rows('testimonials') ): ?>
+        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <?php while( have_rows('testimonials') ): the_row(); ?>
+            <div class="testimonial-card bg-neutral-800 p-6 rounded-lg">
+              <h4 class="font-semibold text-gold mb-2"><?php the_sub_field('testimonial_title'); ?></h4>
+              <p class="text-gray-300"><?php the_sub_field('testimonial_quote'); ?></p>
+              <?php if( get_sub_field('testimonial_attribution') ): ?>
+                <p class="text-xs text-gray-500 mt-3">– <?php the_sub_field('testimonial_attribution'); ?></p>
+              <?php endif; ?>
+            </div>
+          <?php endwhile; ?>
         </div>
-        <!-- Testimonial -->
-        <div class="testimonial-card bg-neutral-800 p-6 rounded-lg">
-          <h4 class="font-semibold text-gold mb-2">Advisor Testimonial</h4>
-          <p class="text-gray-300">“The only structuring system that actually understands SA compliance.”</p>
-          <p class="text-xs text-gray-500 mt-3">– J.B., Advisor</p>
-        </div>
-      </div>
+      <?php endif; ?>
     </div>
   </section>
 
   <!-- Pricing Snapshot Section -->
   <section class="pricing-snapshot-section py-20 px-6">
     <div class="container mx-auto text-center">
-      <h2 class="text-3xl font-semibold mb-12">Pricing Snapshot</h2>
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="pricing-card bg-neutral-800 p-8 rounded-lg">
-          <h4 class="text-xl font-semibold text-gold">Starter</h4>
-          <p class="text-gray-400">From R1,200</p>
-          <a href="/pricing" class="text-gold mt-4 inline-block">See details</a>
+      <?php if( get_field('pricing_snapshot_headline') ): ?>
+        <h2 class="text-3xl font-semibold mb-12"><?php the_field('pricing_snapshot_headline'); ?></h2>
+      <?php endif; ?>
+      <?php if( have_rows('pricing_tiers') ): ?>
+        <div class="grid md:grid-cols-3 gap-8">
+          <?php while( have_rows('pricing_tiers') ): the_row();
+            $tier_cta = get_sub_field('tier_cta');
+          ?>
+            <div class="pricing-card bg-neutral-800 p-8 rounded-lg">
+              <h4 class="text-xl font-semibold text-gold"><?php the_sub_field('tier_name'); ?></h4>
+              <p class="text-gray-400"><?php the_sub_field('tier_description'); ?></p>
+              <?php if( $tier_cta ): ?>
+                <a href="<?php echo esc_url($tier_cta['url']); ?>" class="text-gold mt-4 inline-block"><?php echo esc_html($tier_cta['title']); ?></a>
+              <?php endif; ?>
+            </div>
+          <?php endwhile; ?>
         </div>
-        <div class="pricing-card bg-neutral-800 p-8 rounded-lg">
-          <h4 class="text-xl font-semibold text-gold">Professional</h4>
-          <p class="text-gray-400">Multi-service bundles</p>
-          <a href="/pricing" class="text-gold mt-4 inline-block">See details</a>
-        </div>
-        <div class="pricing-card bg-neutral-800 p-8 rounded-lg">
-          <h4 class="text-xl font-semibold text-gold">Advisor / White-label</h4>
-          <p class="text-gray-400">Custom pricing, token allocation</p>
-          <a href="/pricing" class="text-gold mt-4 inline-block">See details</a>
-        </div>
-      </div>
-       <p class="text-xs text-gray-500 mt-8">Quotes valid 7 days. FX locks 24h for IBC.</p>
+      <?php endif; ?>
+      <?php if( get_field('pricing_snapshot_note') ): ?>
+        <p class="text-xs text-gray-500 mt-8"><?php the_field('pricing_snapshot_note'); ?></p>
+      <?php endif; ?>
     </div>
   </section>
 
   <!-- Resource Highlights Section -->
   <section class="resource-highlights-section py-20 px-6 bg-neutral-950">
     <div class="container mx-auto text-center">
-      <h2 class="text-3xl font-semibold mb-12">Resource Highlights</h2>
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="resource-card">
-          <h4 class="text-xl font-semibold text-gold">Latest Guide</h4>
-          <p class="text-gray-400">Structuring Trusts in 2025</p>
+      <?php if( get_field('resources_headline') ): ?>
+        <h2 class="text-3xl font-semibold mb-12"><?php the_field('resources_headline'); ?></h2>
+      <?php endif; ?>
+      <?php if( have_rows('resource_highlights') ): ?>
+        <div class="grid md:grid-cols-3 gap-8">
+          <?php while( have_rows('resource_highlights') ): the_row(); ?>
+            <div class="resource-card">
+              <h4 class="text-xl font-semibold text-gold"><?php the_sub_field('resource_title'); ?></h4>
+              <p class="text-gray-400"><?php the_sub_field('resource_description'); ?></p>
+            </div>
+          <?php endwhile; ?>
         </div>
-        <div class="resource-card">
-          <h4 class="text-xl font-semibold text-gold">Upcoming Webinar</h4>
-          <p class="text-gray-400">How to Stay s47 Compliant</p>
-        </div>
-        <div class="resource-card">
-          <h4 class="text-xl font-semibold text-gold">FAQ</h4>
-          <p class="text-gray-400">What triggers a SARS restructure test?</p>
-        </div>
-      </div>
-      <a href="/resources" class="btn btn-outline mt-12">See All Resources</a>
+      <?php endif; ?>
+      <?php
+      $resources_cta = get_field('resources_cta');
+      if( $resources_cta ): ?>
+        <a href="<?php echo esc_url($resources_cta['url']); ?>" class="btn btn-outline mt-12"><?php echo esc_html($resources_cta['title']); ?></a>
+      <?php endif; ?>
     </div>
   </section>
 
   <!-- Final CTA Strip -->
   <section class="final-cta-section py-16">
     <div class="container mx-auto text-center">
-      <h2 class="text-3xl font-semibold mb-4">Ready to structure with confidence?</h2>
-      <a href="/assessment" class="btn btn-gold mr-4">Start Free Assessment</a>
-      <a href="/contact" class="btn btn-outline">Talk to Us</a>
+      <?php if( get_field('final_cta_headline') ): ?>
+        <h2 class="text-3xl font-semibold mb-4"><?php the_field('final_cta_headline'); ?></h2>
+      <?php endif; ?>
+      <?php
+      $final_cta_primary = get_field('final_cta_primary');
+      if( $final_cta_primary ): ?>
+        <a href="<?php echo esc_url($final_cta_primary['url']); ?>" class="btn btn-gold mr-4"><?php echo esc_html($final_cta_primary['title']); ?></a>
+      <?php endif; ?>
+      <?php
+      $final_cta_secondary = get_field('final_cta_secondary');
+      if( $final_cta_secondary ): ?>
+        <a href="<?php echo esc_url($final_cta_secondary['url']); ?>" class="btn btn-outline"><?php echo esc_html($final_cta_secondary['title']); ?></a>
+      <?php endif; ?>
     </div>
   </section>
 
