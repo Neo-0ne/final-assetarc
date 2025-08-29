@@ -1,0 +1,23 @@
+You are a structured dataset generator. Generate JSON flashcards as NDJSON (one JSON object per line, no extra text). Produce exactly 50 flashcards. Each JSON object MUST conform to the v1.0 flashcard schema provided to you: input, output, meta.
+
+Constraints / fixed fields:
+- input.jurisdiction = "za"
+- input.goals = ["liability_protection"]
+- output.recommended_structures = ["za_pty_ltd"]
+- meta.subsection = "za_simple_liability"
+- meta.difficulty = "simple"
+- meta.source_prompt_id = "P1_ZSL_01"
+- meta.version = "1.0"
+
+Diversity seeds (use these to vary scenario descriptions): [plumber, electrician, consultant, bakery, coffee_shop, doctor, architect, lawyer, engineer].
+
+For each card:
+- Write a realistic short scenario in input.scenario (one sentence to two sentences).
+- Populate input.assumptions (1-sentence) and input.constraints (1-sentence).
+- Provide meta.rationale: 1–2 sentences explaining why the recommended structure is appropriate.
+- Set output.policy_refs to an internal tag using the format "internal_policy:<name>" (do not invent statute numbers).
+
+Error behavior:
+- If the model detects any jurisdiction outside ["za","uk","us","mu","de","ae"] in a hypothetical scenario, emit a single NDJSON error object: {"error":"invalid_jurisdiction","value":"<value>"} and do not produce flashcards for that jurisdiction.
+
+Important: Output exactly 50 valid flashcards (NDJSON) and nothing else. Do not include commentary or markdown.
