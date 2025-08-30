@@ -6,36 +6,50 @@ get_header(); ?>
 
 <main class="p-8 text-white max-w-6xl mx-auto">
     <div class="text-center mb-16">
-        <h1 class="text-4xl font-bold mb-4">Learn, Apply, and Stay Compliant</h1>
-        <p class="text-lg text-gray-400">Guides, webinars, and FAQs to help you stay ahead of compliance requirements.</p>
+        <?php if( get_field('education_headline') ): ?>
+            <h1 class="text-4xl font-bold mb-4"><?php the_field('education_headline'); ?></h1>
+        <?php endif; ?>
+        <?php if( get_field('education_intro') ): ?>
+            <p class="text-lg text-gray-400"><?php the_field('education_intro'); ?></p>
+        <?php endif; ?>
     </div>
 
     <section class="space-y-12">
         <!-- Guides Section -->
         <div>
-            <h2 class="text-3xl font-semibold text-gold mb-6 border-b border-gold pb-2">Guides</h2>
-            <p class="text-gray-300">Downloadable structuring PDFs. <!-- Placeholder for guide list --></p>
+            <?php if( get_field('guides_headline') ): ?>
+                <h2 class="text-3xl font-semibold text-gold mb-6 border-b border-gold pb-2"><?php the_field('guides_headline'); ?></h2>
+            <?php endif; ?>
+            <?php if( get_field('guides_content') ): ?>
+                <div class="text-gray-300"><?php the_field('guides_content'); ?></div>
+            <?php endif; ?>
         </div>
 
         <!-- Webinars Section -->
         <div>
-            <h2 class="text-3xl font-semibold text-gold mb-6 border-b border-gold pb-2">Webinars</h2>
-            <p class="text-gray-300">Upcoming dates + registration links. <!-- Placeholder for webinar list --></p>
+            <?php if( get_field('webinars_headline') ): ?>
+                <h2 class="text-3xl font-semibold text-gold mb-6 border-b border-gold pb-2"><?php the_field('webinars_headline'); ?></h2>
+            <?php endif; ?>
+            <?php if( get_field('webinars_content') ): ?>
+                <div class="text-gray-300"><?php the_field('webinars_content'); ?></div>
+            <?php endif; ?>
         </div>
 
         <!-- FAQ Section -->
         <div>
-            <h2 class="text-3xl font-semibold text-gold mb-6 border-b border-gold pb-2">FAQ</h2>
-            <div class="space-y-4">
-                <div class="faq-item">
-                    <h4 class="text-xl font-semibold">What is Section 47?</h4>
-                    <p class="text-gray-400">A provision in the Income Tax Act dealing with tax-neutral asset-for-share transactions.</p>
+            <?php if( get_field('faq_headline') ): ?>
+                <h2 class="text-3xl font-semibold text-gold mb-6 border-b border-gold pb-2"><?php the_field('faq_headline'); ?></h2>
+            <?php endif; ?>
+            <?php if( have_rows('faq_items') ): ?>
+                <div class="space-y-4">
+                    <?php while( have_rows('faq_items') ): the_row(); ?>
+                        <div class="faq-item">
+                            <h4 class="text-xl font-semibold"><?php the_sub_field('question'); ?></h4>
+                            <div class="text-gray-400"><?php the_sub_field('answer'); ?></div>
+                        </div>
+                    <?php endwhile; ?>
                 </div>
-                <div class="faq-item">
-                    <h4 class="text-xl font-semibold">What is a PEP?</h4>
-                    <p class="text-gray-400">A Politically Exposed Person, which requires enhanced due diligence under FICA.</p>
-                </div>
-            </div>
+            <?php endif; ?>
         </div>
     </section>
 </main>
