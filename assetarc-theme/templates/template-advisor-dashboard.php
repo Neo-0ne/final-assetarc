@@ -35,8 +35,12 @@ if (is_wp_error($response)) {
 ?>
 
 <main class="p-8 text-white max-w-6xl mx-auto dashboard-page">
-  <h1 class="text-4xl font-bold mb-4">Advisor Dashboard</h1>
-  <p class="mb-8">Manage your clients, review documents, and track your token usage.</p>
+  <?php if( get_field('dashboard_headline') ): ?>
+    <h1 class="text-4xl font-bold mb-4"><?php the_field('dashboard_headline'); ?></h1>
+  <?php endif; ?>
+  <?php if( get_field('dashboard_intro') ): ?>
+    <p class="mb-8"><?php the_field('dashboard_intro'); ?></p>
+  <?php endif; ?>
 
   <?php if (!empty($error_message)): ?>
     <div class="bg-red-500 text-white p-4 rounded-lg">

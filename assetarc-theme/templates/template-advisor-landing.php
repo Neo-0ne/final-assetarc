@@ -6,38 +6,42 @@ get_header(); ?>
 
 <main class="advisor-page bg-black text-white py-16 px-6 lg:px-24">
     <div class="max-w-screen-xl mx-auto text-center">
-        <h1 class="text-4xl lg:text-5xl font-semibold mb-6 text-gold">Power Your Advisory Practice with Automation</h1>
-        <p class="text-lg text-gray-300 max-w-3xl mx-auto mb-12">
-            White-label the AssetArc system, deliver branded outputs, and manage your clients with tokenized access.
-        </p>
+        <?php if( get_field('advisor_headline') ): ?>
+            <h1 class="text-4xl lg:text-5xl font-semibold mb-6 text-gold"><?php the_field('advisor_headline'); ?></h1>
+        <?php endif; ?>
+        <?php if( get_field('advisor_intro') ): ?>
+            <p class="text-lg text-gray-300 max-w-3xl mx-auto mb-12">
+                <?php the_field('advisor_intro'); ?>
+            </p>
+        <?php endif; ?>
     </div>
 
     <div class="max-w-screen-xl mx-auto grid md:grid-cols-2 gap-12 items-center mb-16">
         <div>
-            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/hanno-bekker-headshot.jpg" alt="Advisor presenting" class="rounded-lg shadow-lg">
+            <?php
+            $advisor_image = get_field('advisor_image');
+            if( $advisor_image ): ?>
+                <img src="<?php echo esc_url($advisor_image['url']); ?>" alt="<?php echo esc_attr($advisor_image['alt']); ?>" class="rounded-lg shadow-lg">
+            <?php endif; ?>
         </div>
-        <div class="space-y-8">
-            <div>
-                <h3 class="text-2xl font-bold text-gold mb-3">Manage Tokens</h3>
-                <p class="text-gray-400">Allocate, track, and recycle unused tokens for maximum efficiency and client billing.</p>
+        <?php if( have_rows('advisor_features') ): ?>
+            <div class="space-y-8">
+                <?php while( have_rows('advisor_features') ): the_row(); ?>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gold mb-3"><?php the_sub_field('feature_title'); ?></h3>
+                        <p class="text-gray-400"><?php the_sub_field('feature_description'); ?></p>
+                    </div>
+                <?php endwhile; ?>
             </div>
-            <div>
-                <h3 class="text-2xl font-bold text-gold mb-3">Branded Portals</h3>
-                <p class="text-gray-400">Add your logo, headers, and custom disclaimers to provide a seamless, white-glove experience for your clients.</p>
-            </div>
-            <div>
-                <h3 class="text-2xl font-bold text-gold mb-3">Profitability Dashboard</h3>
-                <p class="text-gray-400">Track revenue per client, cost per lead, and conversion rates to understand your business better.</p>
-            </div>
-            <div>
-                <h3 class="text-2xl font-bold text-gold mb-3">Compliance Built-in</h3>
-                <p class="text-gray-400">Leverage our Section 42–47 and FICA checks, with all outputs verified by a human professional.</p>
-            </div>
-        </div>
+        <?php endif; ?>
     </div>
 
     <div class="text-center">
-        <a href="/contact" class="btn btn-gold">Book a Demo</a>
+        <?php
+        $advisor_cta = get_field('advisor_cta');
+        if( $advisor_cta ): ?>
+            <a href="<?php echo esc_url($advisor_cta['url']); ?>" class="btn btn-gold"><?php echo esc_html($advisor_cta['title']); ?></a>
+        <?php endif; ?>
     </div>
 </main>
 
