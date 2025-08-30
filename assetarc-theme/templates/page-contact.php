@@ -6,32 +6,52 @@ get_header(); ?>
 
 <main class="p-8 text-white max-w-4xl mx-auto">
   <div class="text-center">
-      <h1 class="text-4xl font-bold mb-4">Get in Touch</h1>
-      <p class="mb-12 text-gray-400">For questions about our platform, advisor subscriptions, or bespoke structuring projects, please reach out.</p>
+      <?php if( get_field('contact_headline') ): ?>
+        <h1 class="text-4xl font-bold mb-4"><?php the_field('contact_headline'); ?></h1>
+      <?php endif; ?>
+      <?php if( get_field('contact_intro') ): ?>
+        <p class="mb-12 text-gray-400"><?php the_field('contact_intro'); ?></p>
+      <?php endif; ?>
   </div>
 
   <div class="grid md:grid-cols-2 gap-12">
     <div>
-      <h2 class="text-2xl font-semibold text-gold mb-4">Contact Details</h2>
+      <?php if( get_field('details_headline') ): ?>
+        <h2 class="text-2xl font-semibold text-gold mb-4"><?php the_field('details_headline'); ?></h2>
+      <?php endif; ?>
       <ul class="space-y-4 text-gray-300">
-        <li class="flex items-center">
-          <span class="mr-3 w-6 text-center">📍</span>
-          <span>Office: Cape Town, South Africa</span>
-        </li>
-        <li class="flex items-center">
-          <span class="mr-3 w-6 text-center">✉️</span>
-          <span>Email: <a href="mailto:support@asset-arc.com" class="hover:text-gold">support@asset-arc.com</a></span>
-        </li>
-        <li class="flex items-center">
-          <span class="mr-3 w-6 text-center">📞</span>
-          <span>Phone: +27 xxx xxx xxxx</span>
-        </li>
+        <?php if( get_field('contact_office') ): ?>
+          <li class="flex items-center">
+            <span class="mr-3 w-6 text-center">📍</span>
+            <span><?php the_field('contact_office'); ?></span>
+          </li>
+        <?php endif; ?>
+        <?php if( get_field('contact_email') ): ?>
+          <li class="flex items-center">
+            <span class="mr-3 w-6 text-center">✉️</span>
+            <span>Email: <a href="mailto:<?php the_field('contact_email'); ?>" class="hover:text-gold"><?php the_field('contact_email'); ?></a></span>
+          </li>
+        <?php endif; ?>
+        <?php if( get_field('contact_phone') ): ?>
+          <li class="flex items-center">
+            <span class="mr-3 w-6 text-center">📞</span>
+            <span>Phone: <?php the_field('contact_phone'); ?></span>
+          </li>
+        <?php endif; ?>
       </ul>
       <div class="mt-8 border-t border-neutral-700 pt-6">
-          <h3 class="text-xl font-semibold text-gold mb-2">Book a Demo</h3>
-          <p class="text-sm text-gray-400">Use our booking calendar to schedule a live demo. <!-- Placeholder for booking calendar embed --></p>
-          <h3 class="text-xl font-semibold text-gold mt-4 mb-2">Live Chat</h3>
-          <p class="text-sm text-gray-400">Chat with our team during business hours. <!-- Placeholder for live chat widget --></p>
+          <?php if( get_field('demo_headline') ): ?>
+            <h3 class="text-xl font-semibold text-gold mb-2"><?php the_field('demo_headline'); ?></h3>
+          <?php endif; ?>
+          <?php if( get_field('demo_content') ): ?>
+            <div class="text-sm text-gray-400"><?php the_field('demo_content'); ?></div>
+          <?php endif; ?>
+          <?php if( get_field('chat_headline') ): ?>
+            <h3 class="text-xl font-semibold text-gold mt-4 mb-2"><?php the_field('chat_headline'); ?></h3>
+          <?php endif; ?>
+          <?php if( get_field('chat_content') ): ?>
+            <div class="text-sm text-gray-400"><?php the_field('chat_content'); ?></div>
+          <?php endif; ?>
       </div>
     </div>
     <div>
