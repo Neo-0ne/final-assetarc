@@ -45,6 +45,7 @@ FLASHCARD_SCHEMA = {
       "properties":{
         "subsection":{"type":"string","enum":["za_simple_liability","za_simple_asset_protection","intl_simple_trade","intl_simple_tax","za_hybrid_full","za_edge_cases"]},
         "difficulty":{"type":"string","enum":["simple","complex","edge"]},
+        "rationale":{"type":"string"},
         "version":{"type":"string"}
       }
     }
