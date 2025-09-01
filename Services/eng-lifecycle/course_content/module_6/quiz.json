@@ -1,0 +1,32 @@
+[
+  {
+    "question": "What is the most important principle for a successful global structure?",
+    "options": [
+      "Choosing a country with zero taxes and no laws.",
+      "Ensuring your offshore company has real 'substance' (local directors, an office, etc.).",
+      "Keeping the structure a complete secret from everyone.",
+      "Avoiding countries that have tax treaties."
+    ],
+    "correct_option": 1
+  },
+  {
+    "question": "What is an 'Exit Tax'?",
+    "options": [
+      "A fee you pay at the airport when you leave the country.",
+      "A tax on the deemed disposal of your worldwide assets when you cease to be a tax resident.",
+      "A penalty for selling your business to a foreigner.",
+      "A tax on moving money between your own bank accounts."
+    ],
+    "correct_option": 1
+  },
+  {
+    "question": "What is the 'golden rule' of tax emigration planning?",
+    "options": [
+      "Move first, then figure out your structure later.",
+      "Get your asset structure right first, then change your tax residency.",
+      "Sell all your assets for cash before you move.",
+      "Assume your new country's laws will protect you from your old country's taxes."
+    ],
+    "correct_option": 1
+  }
+]

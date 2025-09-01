@@ -1,0 +1,32 @@
+[
+  {
+    "question": "What is the primary goal of global transparency initiatives like BO Registers and CRS?",
+    "options": [
+      "To make it harder to do business internationally.",
+      "To ensure regulators know which real person ultimately owns and controls a legal entity.",
+      "To create more paperwork for entrepreneurs.",
+      "To replace all trusts with companies."
+    ],
+    "correct_option": 1
+  },
+  {
+    "question": "In a well-structured arrangement where a Trust owns a Company, who are typically considered the 'Beneficial Owners' for compliance purposes?",
+    "options": [
+      "Only the person who founded the company.",
+      "No one needs to be declared.",
+      "The company's lawyers and accountants.",
+      "The Trustees and Beneficiaries of the Trust."
+    ],
+    "correct_option": 3
+  },
+  {
+    "question": "What is the best mindset to have towards modern compliance?",
+    "options": [
+      "Try to be invisible and hide your assets.",
+      "Ignore the rules as they are too complex.",
+      "Be 'transparently compliant' with a legally sound and well-documented structure.",
+      "Assume your advisor is handling it and don't ask questions."
+    ],
+    "correct_option": 2
+  }
+]

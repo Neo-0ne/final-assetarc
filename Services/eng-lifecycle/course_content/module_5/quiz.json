@@ -1,0 +1,32 @@
+[
+  {
+    "question": "What is the primary benefit of a 'Trust-Company Combo'?",
+    "options": [
+      "It doubles your revenue.",
+      "It creates a powerful governance machine that separates business fate from personal fate.",
+      "It's a simple structure for first-time business owners.",
+      "It is only useful for offshore tax planning."
+    ],
+    "correct_option": 1
+  },
+  {
+    "question": "Why is owning property in your personal name a major risk for your legacy?",
+    "options": [
+      "It is illegal to own property personally.",
+      "It can lead to a large Estate Duty tax bill for your heirs.",
+      "Property values only go down when owned personally.",
+      "It is difficult to sell."
+    ],
+    "correct_option": 1
+  },
+  {
+    "question": "What is the main purpose of a Buy-Sell Agreement?",
+    "options": [
+      "To force partners to sell their shares when the company is struggling.",
+      "To create a clear, legally-binding plan for what happens when a shareholder exits the business.",
+      "To ensure that the government gets a share of your business.",
+      "To make it easier to take out business loans."
+    ],
+    "correct_option": 1
+  }
+]

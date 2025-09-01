@@ -1,0 +1,32 @@
+[
+  {
+    "question": "What is the primary benefit of the 'Four-Structure Stack'?",
+    "options": [
+      "It is the cheapest structure to set up.",
+      "It provides maximum flexibility and scalability for a growing business.",
+      "It is required for all international businesses.",
+      "It completely eliminates all taxes."
+    ],
+    "correct_option": 1
+  },
+  {
+    "question": "What is the correct sequence for creating a new structure?",
+    "options": [
+      "OpCo, then HoldCo, then Trust.",
+      "HoldCo, then Trust, then OpCo.",
+      "Trust, then HoldCo, then OpCo.",
+      "The order does not matter."
+    ],
+    "correct_option": 2
+  },
+  {
+    "question": "What does a 'tax-neutral restructure' like a Section 42 transaction allow you to do?",
+    "options": [
+      "Avoid paying tax forever.",
+      "Sell your company without telling the tax authority.",
+      "Erase all your previous tax debts.",
+      "Reorganize your assets into a better structure without triggering an immediate tax bill."
+    ],
+    "correct_option": 3
+  }
+]

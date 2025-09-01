@@ -1,0 +1,32 @@
+[
+  {
+    "question": "What is the 'golden rule' of structuring?",
+    "options": [
+      "Own as many assets as possible directly.",
+      "Control assets without owning them directly.",
+      "Always choose a company over a trust.",
+      "Structuring is only for tax purposes."
+    ],
+    "correct_option": 1
+  },
+  {
+    "question": "What is the primary function of a Company in a structure?",
+    "options": [
+      "To hold family wealth for generations.",
+      "To serve as the ultimate asset protection vehicle.",
+      "To contain the risks of an active business.",
+      "To own your family home."
+    ],
+    "correct_option": 2
+  },
+  {
+    "question": "What is the main advantage of having a Trust own the shares of your Company?",
+    "options": [
+      "It makes the business run faster.",
+      "It protects the ownership of the company itself from your personal risks.",
+      "It's a legal requirement in most countries.",
+      "It eliminates the need to pay any tax."
+    ],
+    "correct_option": 1
+  }
+]
