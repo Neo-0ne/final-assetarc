@@ -1,0 +1,83 @@
+You are a highly experienced senior legal architect and knowledge management expert. Your task is to create a foundational, structured library of legal clauses that will be used to train an advanced AI (the Sapient HRM) to assemble legal documents.
+
+**Primary Objective:**
+Generate a comprehensive list of common legal clauses, grouped by the type of document they typically appear in. The output must be a single JSON object containing a list of document types. Adhere strictly to the JSON schema provided below.
+
+**JSON Output Schema:**
+Your entire output must be a single JSON object with a root key named `document_clause_library`. This key should contain an array of "document" objects. Each document object must have the following structure:
+
+```json
+{
+  "document_type": "string",
+  "clauses": [
+    {
+      "clause_id": "string",
+      "clause_name": "string",
+      "description": "string"
+    }
+  ]
+}
+```
+
+**Schema Field Definitions:**
+*   `document_type`: The common name of the legal document (e.g., "Trust Deed", "Loan Agreement").
+*   `clauses`: An array of objects, where each object represents a single, distinct clause.
+*   `clause_id`: A unique, machine-readable identifier for the clause. Use the format `clause:<document_short_name>_<clause_name_snake_case>_v1`. For example, `clause:trust_deed_definitions_v1` or `clause:loan_agreement_interest_rate_v1`.
+*   `clause_name`: The human-readable name of the clause (e.g., "Definitions", "Interest Rate and Payment").
+*   `description`: A concise, one-sentence explanation of the clause's purpose.
+
+**Content Generation Guidelines:**
+
+1.  **Comprehensiveness:** Generate a wide variety of clauses for each document type. Think about standard boilerplate, optional clauses, and clauses that handle specific situations.
+2.  **Document Variety:** Include a diverse range of common legal and business documents in your library. Your list should include, but is not limited to:
+    *   Trust Deed (for a family trust)
+    *   Loan Agreement (secured and unsecured)
+    *   Board Resolution
+    *   Share Purchase Agreement
+    *   Non-Disclosure Agreement (NDA)
+    *   Employment Agreement
+    *   Will and Testament
+3.  **Clarity and Precision:** The `clause_name` should be clear and the `description` should be precise. This library will be reviewed by human legal experts, so accuracy is paramount.
+4.  **Strict Adherence to Schema:** The output must be a single, valid JSON object that perfectly matches the schema described above. Do not include any extra text, commentary, or markdown outside of the JSON structure.
+
+**Example Snippet of the Expected JSON Output:**
+
+```json
+{
+  "document_clause_library": [
+    {
+      "document_type": "Board Resolution",
+      "clauses": [
+        {
+          "clause_id": "clause:board_res_header_v1",
+          "clause_name": "Company and Meeting Details",
+          "description": "Specifies the company name, date, and location of the board meeting."
+        },
+        {
+          "clause_id": "clause:board_res_attendance_v1",
+          "clause_name": "Directors in Attendance",
+          "description": "Lists the directors present, absent, and any invitees, and confirms a quorum was met."
+        },
+        {
+          "clause_id": "clause:board_res_background_v1",
+          "clause_name": "Background and Recitals",
+          "description": "Provides context for the resolutions being passed."
+        },
+        {
+          "clause_id": "clause:board_res_resolutions_v1",
+          "clause_name": "Resolutions",
+          "description": "The main section detailing the matters formally resolved by the board."
+        }
+      ]
+    },
+    {
+      "document_type": "Loan Agreement",
+      "clauses": [
+        // ... clauses for Loan Agreement would go here
+      ]
+    }
+  ]
+}
+```
+
+Now, please generate the complete `document_clause_library` as a single JSON object.
