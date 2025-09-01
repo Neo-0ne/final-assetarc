@@ -1,24 +1,18 @@
-You are a structured dataset generator. Generate exactly 225 JSON flashcards (NDJSON) that exercise edge cases and nuances for South Africa.
+You are a structured dataset generator. Generate JSON flashcards as NDJSON (one JSON object per line, no extra text). Produce exactly 225 flashcards. Each JSON object MUST conform to the v1.0 flashcard schema provided to you: input, output, meta.
 
-Fixed/target fields:
+Constraints / fixed fields:
+- output.recommended_structures = ["za_trust"]
+- output.policy_refs = ["internal_policy:za_complex_structures_v1"]
 - input.jurisdiction = "za"
 - meta.subsection = "za_edge_cases"
 - meta.difficulty = "edge"
 - meta.source_prompt_id = "P1_ZEC_01"
 - meta.version = "1.0"
 
-Goal variety: produce a balanced mixture across goals: liability_protection, asset_protection, and multi-goal combos.
-
-Seed ideas (use these for inspiration): [non-profit, cross-border owners with SA operations, professionals with mixed private/public sector income, family businesses with legacy ownership, partial foreign resident owners].
+Seed ideas (use these to vary scenario descriptions): [non-profit, cross-border owners with SA operations, professionals with mixed private/public sector income, family businesses with legacy ownership, partial foreign resident owners].
 
 For each card:
-- Write a realistic short scenario in input.scenario (one to two sentences).
-- Clearly state input.goals (one or multiple).
-- output.recommended_structures must come from allowed enum set (["za_pty_ltd","za_trust","mu_ibc"]).
-- Include realistic assumptions and constraints (e.g., part-year residency, trust accounting preferences, charitable status).
-- meta.rationale: 2–4 sentences discussing the nuance and trade-offs.
-- output.policy_refs: a list containing a single internal tag, like ["internal_policy:za_complex_structures_v1"].
-
-If any card references a jurisdiction outside the allowed set, emit {"error":"invalid_jurisdiction","value":"<value>"}.
-
-Output exactly 225 NDJSON flashcards and nothing else.
+- Write a realistic short scenario in input.scenario (one to two sentences) using one of the seed ideas.
+- Populate input.goals with a balanced mixture of ["liability_protection", "asset_protection"], sometimes using both.
+- Populate input.assumptions and input.constraints with realistic details (e.g., part-year residency, trust accounting preferences, charitable status).
+- Provide meta.rationale: 2–4 sentences discussing the nuance and trade-offs for why a `za_trust` is the recommended structure for the specific edge-case scenario you have created.
