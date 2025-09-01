@@ -1,0 +1,151 @@
+/*
+Theme Name: AssetArc
+Theme URI: https://www.assetarc.com
+Author: Your Name or Company
+Description: A dark-themed, gold-accented minimalist theme for AssetArc
+Version: 1.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: assetarc
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Lato:wght@400;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Lato', sans-serif;
+  background-color: #000;
+  color: #fff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+a {
+  color: #FFD700;
+  text-decoration: none;
+}
+
+.site-header {
+  background-color: #111;
+  padding: 20px 0;
+  border-bottom: 1px solid #222;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-container,
+.footer-columns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.site-logo img {
+  max-height: 50px;
+}
+
+.nav-menu,
+.footer-menu {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.btn {
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, #8C6239, #B78628, #FFD700);
+  color: #fff;
+}
+
+.btn-outline {
+  border: 2px solid #FFD700;
+  color: #FFD700;
+  background: transparent;
+}
+
+.site-footer {
+  background-color: #111;
+  padding: 40px 0;
+  border-top: 1px solid #222;
+  font-size: 14px;
+}
+
+/* Card Styling Overrides */
+.path-card,
+.bot-card,
+.testimonial-card,
+.pricing-card,
+.resource-card,
+.card {
+  background-color: #FFFFFF;
+  color: #111; /* Dark text for readability */
+  border: 1px solid #e0e0e0; /* Subtle border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Adjust text colors within cards that might still be white */
+.path-card h3, .path-card p,
+.bot-card h4, .bot-card p,
+.testimonial-card h4, .testimonial-card p,
+.pricing-card h4, .pricing-card p,
+.resource-card h4, .resource-card p {
+  color: #111;
+}
+
+/* Special handling for gold text inside cards */
+.path-card .text-gold,
+.bot-card .text-gold,
+.testimonial-card .text-gold,
+.pricing-card .text-gold,
+.resource-card .text-gold {
+  color: #B78628; /* Use the darker gold for better contrast on white */
+}
+
+/* Dashboard Page Styles */
+.dashboard-page .bg-gray-800 {
+  background-color: #FFFFFF;
+  color: #111;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-page h1,
+.dashboard-page h2,
+.dashboard-page h3,
+.dashboard-page p {
+  color: #111; /* Change main text to dark */
+}
+
+/* Override for gold text to ensure it's the dark gold variant for contrast */
+.dashboard-page .text-gold {
+  color: #B78628;
+}
+
+/* Table styles */
+.dashboard-page table th,
+.dashboard-page table td {
+  color: #333; /* Darker text for table content */
+}
+
+.dashboard-page table .border-gray-700 {
+  border-color: #e0e0e0; /* Lighter border for table rows */
+}
+
+/* Special override for yellow status text */
+.dashboard-page .text-yellow-400 {
+    color: #B78628; /* Use dark gold for status */
+}

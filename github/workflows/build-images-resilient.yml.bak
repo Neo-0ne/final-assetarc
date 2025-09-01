@@ -1,0 +1,144 @@
+name: Build & Push Images
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: assetarc
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute tag
+        id: tag
+        run: |
+          if [[ "${GITHUB_REF_TYPE}" == "branch" ]]; then
+            echo "tag=${GITHUB_REF_NAME}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+          fi
+
+      # Optional: ensure Dockerfiles exist (harmless if you already added them)
+      - name: Ensure Dockerfiles exist (optional)
+        run: |
+          python3 - << 'PY'
+          import os,glob,sys,subprocess
+          roots = []
+          roots += [p for p in glob.glob("P[0-9][0-9]-*") if os.path.isdir(p)]
+          if os.path.isdir("services"):
+              roots += [p for p in glob.glob("services/P[0-9][0-9]-*") if os.path.isdir(p)]
+          missing = []
+          for r in roots:
+              code = r
+              subs = [d for d in glob.glob(os.path.join(r,"assetarc-*")) if os.path.isdir(d)]
+              if subs: code = subs[0]
+              if not os.path.isfile(os.path.join(code,"Dockerfile")):
+                  missing.append(code)
+          if missing:
+              print("NOTE: Missing Dockerfile in:", ", ".join(missing))
+          PY
+
+      - name: Build & push (resilient)
+        id: buildpush
+        env:
+          OWNER: ${{ github.repository_owner }}
+          TAG: ${{ steps.tag.outputs.tag }}
+          REGISTRY: ${{ env.REGISTRY }}
+          IMAGE_PREFIX: ${{ env.IMAGE_PREFIX }}
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+
+          # normalize namespace + prefix to lowercase (OCI requires lowercase repo names)
+          OWNER_LC=$(echo "${OWNER}" | tr '[:upper:]' '[:lower:]')
+          IMAGE_PREFIX_LC=$(echo "${IMAGE_PREFIX}" | tr '[:upper:]' '[:lower:]')
+
+          roots=()
+          for p in P[0-9][0-9]-*; do [ -d "$p" ] && roots+=("$p"); done
+          if [ -d services ]; then
+            for p in services/P[0-9][0-9]-*; do [ -d "$p" ] && roots+=("$p"); done
+          fi
+          if [ ${#roots[@]} -eq 0 ]; then
+            echo "::error title=No services::No P##-* service dirs found at root or ./services"
+            exit 1
+          fi
+
+          ok_list=(); skip_list=(); fail_list=()
+
+          for svc in "${roots[@]}"; do
+            key=$(basename "$svc" | tr '[:upper:]' '[:lower:]')
+            code="$svc"
+            sub=$(ls -d "$svc"/assetarc-* 2>/dev/null | head -n1 || true)
+            [ -n "$sub" ] && code="$sub"
+
+            if [ ! -f "$code/Dockerfile" ]; then
+              echo "::warning title=Skip::No Dockerfile at $code"; skip_list+=("$key (no Dockerfile)"); continue; fi
+            if [ ! -f "$code/requirements.txt" ]; then
+              echo "::warning title=Skip::No requirements.txt at $code"; skip_list+=("$key (no requirements.txt)"); continue; fi
+
+            image="${REGISTRY}/${OWNER_LC}/${IMAGE_PREFIX_LC}-${key}:${TAG}"
+            echo "==> Building ${image} from ${code}"
+            if docker buildx build --push -t "${image}" "${code}"; then
+              ok_list+=("$key")
+            else
+              fail_list+=("$key")
+            fi
+          done
+
+          echo "OK::${ok_list[*]}"      > build-summary.txt
+          echo "SKIP::${skip_list[*]}" >> build-summary.txt
+          echo "FAIL::${fail_list[*]}" >> build-summary.txt
+          echo "Built: ${#ok_list[@]}, Skipped: ${#skip_list[@]}, Failed: ${#fail_list[@]}"
+          if [ "${#fail_list[@]}" -ne 0 ]; then
+            echo "::error title=Build failures::${fail_list[*]}"; exit 2; fi
+
+      - name: Upload build summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-summary
+          path: build-summary.txt
+
+  deploy:
+    needs: build-push
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy to VM
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            set -e
+            echo "--- DOCKER LOGIN ---"
+            echo ${{ secrets.GH_PAT }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            echo "--- DEPLOYING ---"
+            cd ${{ secrets.PROJECT_PATH }}
+            docker compose -f docker-compose.integrated.yml pull
+            docker compose -f docker-compose.integrated.yml up -d --remove-orphans
+            docker image prune -f
+            echo "--- DEPLOYMENT COMPLETE ---"
