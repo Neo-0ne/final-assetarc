@@ -9,7 +9,7 @@ Fixed fields:
 - meta.source_prompt_id = "P1_ZSAP_01"
 - meta.version = "1.0"
 
-Diversity seeds (use these): [property, investments, art_collection, inheritance, business_shares, cryptocurrency_holdings].
+Diversity seeds (use these): [property, investments, art_collection, inheritance, business_shares, cryptocurrency_holdings, real_estate_development, private_equity, logistics_and_shipping, media_production, pharmaceuticals, agriculture].
 
 For each card:
 - input.scenario: realistic profile of a high-net-worth South African (1–3 sentences).
