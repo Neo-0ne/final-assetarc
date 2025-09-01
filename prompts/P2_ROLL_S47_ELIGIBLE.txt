@@ -1,0 +1,62 @@
+You are an expert in South African tax law, specifically corporate rollover relief provisions. Your task is to generate a high-quality dataset for training a specialized AI model.
+
+**Primary Objective:**
+Generate exactly 50 flashcards in NDJSON format. Each flashcard must represent a transaction that is **ELIGIBLE** for relief under **Section 47** of the Income Tax Act (Liquidation transactions).
+
+**Flashcard Schema:**
+Each JSON object must have three top-level keys: `input`, `output`, and `meta`.
+
+**1. Input Schema:**
+The `input` object must conform to the following structure.
+
+```json
+{
+  "section": "s47",
+  "taxpayer_type": "string",
+  "transferor_residency": "SA",
+  "transferee_residency": "SA",
+  "liquidation_details": { "steps_to_deregister_within_36m": true },
+  "asset_profile": { "type": "string", "market_value": "number", "base_cost": "number" },
+  "consideration": {}, "group_relationship": {}, "continuity_flags": {}, "timing_flags": {}, "unbundling_details": {}
+}
+```
+
+**2. Output Schema:**
+The `output` object must represent a successful eligibility check.
+
+```json
+{
+  "eligibility": {
+    "eligible": true,
+    "failed_reasons": [],
+    "warnings": []
+  },
+  "tax_comparison": {
+    "cgt_no_relief": "number",
+    "cgt_with_relief": 0,
+    "rolled_base_cost_to_acquirer": "number",
+    "net_deferral_benefit": "number",
+    "notes": ["string"]
+  }
+}
+```
+
+**3. Meta Schema:**
+
+```json
+{
+  "rationale": "string",
+  "source_prompt_id": "P2_ROLL_S47_ELIGIBLE"
+}
+```
+
+**Content Generation Constraints (Very Important):**
+1.  **Fixed Values:** The `input.section` must always be `"s47"`. `input.liquidation_details.steps_to_deregister_within_36m` must be `true`. `output.eligibility.eligible` must always be `true`.
+2.  **Logical Consistency:** The financial numbers must be arithmetically plausible. `net_deferral_benefit` should be greater than zero.
+3.  **Rationale:** The `meta.rationale` must explain *why* the scenario is eligible for s47 relief, referencing the key conditions for liquidation transactions (e.g., "The transaction qualifies for Section 47 relief as the liquidating company has taken the necessary steps to deregister within 36 months.").
+
+**Example Flashcard:**
+
+{"input": {"section": "s47", "taxpayer_type": "company", "transferor_residency": "SA", "transferee_residency": "SA", "liquidation_details": {"steps_to_deregister_within_36m": true}, "asset_profile": {"type": "capital", "market_value": 25000000, "base_cost": 15000000}, "consideration": {}, "group_relationship": {}, "continuity_flags": {}, "timing_flags": {}, "unbundling_details": {}}, "output": {"eligibility": {"eligible": true, "failed_reasons": [], "warnings": []}, "tax_comparison": {"cgt_no_relief": 1800000, "cgt_with_relief": 0, "rolled_base_cost_to_acquirer": 15000000, "net_deferral_benefit": 1800000, "notes": ["Calculation assumes a 18% CGT inclusion rate for companies and a 27% corporate income tax rate for 2024."]}}, "meta": {"rationale": "The transaction qualifies for Section 47 relief. The liquidating company is an SA resident, and has commenced the process of liquidation and deregistration which will be completed within the required 36-month period.", "source_prompt_id": "P2_ROLL_S47_ELIGIBLE"}}
+
+Now, please generate exactly 50 flashcards following these instructions.

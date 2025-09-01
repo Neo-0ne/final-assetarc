@@ -1,0 +1,63 @@
+You are an expert in South African tax law, specifically corporate rollover relief provisions. Your task is to generate a high-quality dataset for training a specialized AI model.
+
+**Primary Objective:**
+Generate exactly 50 flashcards in NDJSON format. Each flashcard must represent a transaction that is **ELIGIBLE** for relief under **Section 45** of the Income Tax Act (Intra-Group transactions).
+
+**Flashcard Schema:**
+Each JSON object must have three top-level keys: `input`, `output`, and `meta`.
+
+**1. Input Schema:**
+The `input` object must conform to the following structure.
+
+```json
+{
+  "section": "s45",
+  "taxpayer_type": "string",
+  "transferor_residency": "SA",
+  "transferee_residency": "SA",
+  "group_relationship": { "same_group": true, "percentage": "number" },
+  "asset_profile": { "type": "string", "market_value": "number", "base_cost": "number" },
+  "consideration": {}, "continuity_flags": {}, "timing_flags": {}, "unbundling_details": {}, "liquidation_details": {}
+}
+```
+
+**2. Output Schema:**
+The `output` object must represent a successful eligibility check.
+
+```json
+{
+  "eligibility": {
+    "eligible": true,
+    "failed_reasons": [],
+    "warnings": ["string"]
+  },
+  "tax_comparison": {
+    "cgt_no_relief": "number",
+    "cgt_with_relief": "number",
+    "rolled_base_cost_to_acquirer": "number",
+    "net_deferral_benefit": "number",
+    "notes": ["string"]
+  }
+}
+```
+
+**3. Meta Schema:**
+
+```json
+{
+  "rationale": "string",
+  "source_prompt_id": "P2_ROLL_S45_ELIGIBLE"
+}
+```
+
+**Content Generation Constraints (Very Important):**
+1.  **Fixed Values:** The `input.section` must always be `"s45"`. Both `transferor_residency` and `transferee_residency` must be `"SA"`. `input.group_relationship.same_group` must be `true`. The `input.group_relationship.percentage` must be a number >= 70.
+2.  **Eligibility:** `output.eligibility.eligible` must always be `true` and `output.eligibility.failed_reasons` must be an empty list `[]`.
+3.  **Logical Consistency:** The financial numbers in `output.tax_comparison` must be arithmetically plausible. `net_deferral_benefit` should be greater than zero.
+4.  **Rationale:** The `meta.rationale` must explain *why* the scenario is eligible for s45 relief, referencing the key conditions being met (e.g., "The transaction is eligible for s45 relief as it occurs between two SA resident companies that form part of the same group of companies (with >= 70% shareholding).").
+
+**Example Flashcard:**
+
+{"input": {"section": "s45", "taxpayer_type": "company", "transferor_residency": "SA", "transferee_residency": "SA", "group_relationship": {"same_group": true, "percentage": 80}, "asset_profile": {"type": "capital", "market_value": 2000000, "base_cost": 1000000}, "consideration": {}, "continuity_flags": {}, "timing_flags": {}, "unbundling_details": {}, "liquidation_details": {}}, "output": {"eligibility": {"eligible": true, "failed_reasons": [], "warnings": []}, "tax_comparison": {"cgt_no_relief": 180000, "cgt_with_relief": 0, "rolled_base_cost_to_acquirer": 1000000, "net_deferral_benefit": 180000, "notes": ["Calculation assumes a 18% CGT inclusion rate for companies and a 27% corporate income tax rate for 2024."]}}, "meta": {"rationale": "The transaction qualifies for Section 45 relief because it's an intra-group transaction between two SA resident companies where the shareholding (80%) meets the >= 70% threshold.", "source_prompt_id": "P2_ROLL_S45_ELIGIBLE"}}
+
+Now, please generate exactly 50 flashcards following these instructions.
