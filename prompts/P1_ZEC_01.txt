@@ -12,6 +12,7 @@ Goal variety: produce a balanced mixture across goals: liability_protection, ass
 Seed ideas (use these for inspiration): [non-profit, cross-border owners with SA operations, professionals with mixed private/public sector income, family businesses with legacy ownership, partial foreign resident owners].
 
 For each card:
+- Write a realistic short scenario in input.scenario (one to two sentences).
 - Clearly state input.goals (one or multiple).
 - output.recommended_structures must come from allowed enum set (["za_pty_ltd","za_trust","mu_ibc"]).
 - Include realistic assumptions and constraints (e.g., part-year residency, trust accounting preferences, charitable status).
