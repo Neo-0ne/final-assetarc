@@ -1,0 +1,73 @@
+openapi: 3.0.3
+info: { title: AssetArc  Pricing & Billing (E3), version: 1.0.0 }
+servers: [ { url: https://billing.example.com } ]
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
+paths:
+  /pricing/quote:
+    post:
+      summary: Quote with FX
+      security: [ { bearerAuth: [] } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ base, target, amount ]
+              properties:
+                base: { type: string }
+                target: { type: string }
+                amount: { type: number }
+      responses: { '200': { description: OK } }
+  /pricing/lock:
+    post:
+      summary: Create 24h FX lock
+      security: [ { bearerAuth: [] } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ base, target ]
+              properties:
+                base: { type: string }
+                target: { type: string }
+                amount: { type: number }
+      responses: { '200': { description: Lock meta } }
+  /checkout/session:
+    post:
+      summary: Create payment session
+      security: [ { bearerAuth: [] } ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items: { type: array, items: { type: object } }
+                lock_id: { type: string }
+      responses: { '200': { description: Pay URL } }
+  /webhooks/{provider}:
+    post:
+      summary: Payment webhooks
+      parameters:
+        - in: path
+          name: provider
+          schema: { type: string }
+          required: true
+      responses: { '200': { description: OK } }
+  /tokens/consume:
+    post:
+      summary: Consume usage token(s)
+      security: [ { bearerAuth: [] } ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount: { type: integer }
+      responses: { '200': { description: OK } }
