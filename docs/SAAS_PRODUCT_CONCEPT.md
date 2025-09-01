@@ -56,7 +56,16 @@ The SaaS product would be built around a suite of integrated features:
         -   **Risk Assessment Agent:** Flags ambiguous language, non-standard clauses, or potential risks.
         -   **Compliance Agent:** Checks the document against specific regulatory checklists.
 
-## 5. Next Steps (For Future Consideration)
+## 5. Technical Principles
+
+### Model Agnosticism
+The platform should be architected to be "model-agnostic." This means the core logic should not be tightly coupled to a single AI provider (e.g., OpenAI's GPT series).
+
+- **Interchangeable Models:** We should be able to easily swap out the large language models used for tasks like document drafting and analysis.
+- **Broad Compatibility:** The system should be designed to support top-tier commercial models (from OpenAI, Anthropic, Google) as well as leading open-source models (like Llama, Mistral, Qwen).
+- **Benefits:** This provides flexibility, avoids vendor lock-in, allows for cost optimization, and future-proofs the platform as new and better models are released.
+
+## 6. Next Steps (For Future Consideration)
 
 -   Flesh out the business model (e.g., subscription tiers, per-seat pricing).
 -   Define a Minimum Viable Product (MVP) feature set.
