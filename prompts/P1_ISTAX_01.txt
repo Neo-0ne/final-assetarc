@@ -13,6 +13,7 @@ Diversity seeds:
 - Industries (use for inspiration): [digital_services, SaaS, consultancy, holding_companies]
 
 For each card:
+- IMPORTANT: For every single flashcard, you must include all the fields listed in the "Constraints / fixed fields" section with their specified values.
 - Write a realistic short scenario in input.scenario (one to two sentences) for one of the jurisdictions and industries.
 - The scenario should include realistic constraints like permanent establishment risk, VAT/sales tax considerations, or the presence of local employees.
 - Populate input.jurisdiction with the chosen jurisdiction for the scenario.
