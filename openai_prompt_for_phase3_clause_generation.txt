@@ -1,7 +1,7 @@
 You are a highly experienced senior legal architect and knowledge management expert. Your task is to create a foundational, structured library of legal clauses that will be used to train an advanced AI (the Sapient HRM) to assemble legal documents.
 
 **Primary Objective:**
-Generate a comprehensive list of common legal clauses, grouped by the type of document they typically appear in. The output must be a single JSON object containing a list of document types. Adhere strictly to the JSON schema provided below.
+Generate a comprehensive list of common legal clauses, grouped by the type of document they typically appear in, based on the definitive list provided. The output must be a single JSON object containing a list of document types. Adhere strictly to the JSON schema provided below.
 
 **JSON Output Schema:**
 Your entire output must be a single JSON object with a root key named `document_clause_library`. This key should contain an array of "document" objects. Each document object must have the following structure:
@@ -28,15 +28,91 @@ Your entire output must be a single JSON object with a root key named `document_
 
 **Content Generation Guidelines:**
 
-1.  **Comprehensiveness:** Generate a wide variety of clauses for each document type. Think about standard boilerplate, optional clauses, and clauses that handle specific situations.
-2.  **Document Variety:** Include a diverse range of common legal and business documents in your library. Your list should include, but is not limited to:
-    *   Trust Deed (for a family trust)
-    *   Loan Agreement (secured and unsecured)
-    *   Board Resolution
-    *   Share Purchase Agreement
-    *   Non-Disclosure Agreement (NDA)
-    *   Employment Agreement
-    *   Will and Testament
+1.  **Comprehensiveness:** Generate a wide variety of clauses for each document type in the definitive list below. Think about standard boilerplate, optional clauses, and clauses that handle specific situations.
+2.  **Definitive Document List:** You must generate clauses for the following list of documents. This list is categorized for clarity. You should focus on the first five categories and ignore the final "Internal & UI Components" category.
+
+    ### **Company & Trust Services (South Africa)**
+    - Company Board Resolution (ZA)
+    - Share Certificate (ZA)
+    - Incorporation Checklist (ZA)
+    - Share Transfer Form (ZA)
+    - Trust Deed (ZA)
+    - Trust Deed Addendum (ZA)
+    - Letter of Wishes (ZA)
+    - Trustee Resolution (ZA)
+    - Trustee Minutes (ZA)
+    - Trustee Meeting Agenda
+    - COR14.1: Notice of Incorporation
+    - COR14.2: Memorandum of Incorporation (MOI)
+    - COR39: Notice of Change of Directors
+    - COR15.2: Notice of Amendment to MOI
+    - Director Consent to Act Letter
+    - Certificate of Good Standing Request Template
+    - J401: Master of the High Court Trust Registration Form
+
+    ### **Offshore & IBC Services**
+    - Memorandum of Association (IBC)
+    - Nominee Agreement (IBC)
+    - Director Consent (IBC)
+    - Registered Agent Agreement
+    - First Board Minutes (IBC)
+    - Register of Members (IBC)
+    - Offshore Trust Deed Templates
+    - Protector Appointment Agreement
+    - Articles of Association (BVI)
+    - Registered Agent Appointment Letter (BVI)
+    - Memorandum & Articles of Association (Seychelles)
+    - Certificate of Incumbency format (Seychelles)
+    - GBL1/GBL2 Application Forms (Mauritius)
+    - Tax Residency Certificate Request Letter (Mauritius)
+    - Bank Account Opening Resolution Template
+
+    ### **Compliance & Legal**
+    - B-BBEE Affidavit (ZA)
+    - B-BBEE Verification Checklist
+    - Compliance Checklist (Sec 42–47, ZA)
+    - FICA Checklist (ZA)
+    - FICA Client Declaration (ZA)
+    - KYC Checklist (IBC)
+    - Beneficial Ownership Declaration
+    - FATCA/CRS Self-Certification Form
+    - SARS Ruling Request (ZA)
+    - Legal Audit Report
+    - Solvency & Liquidity Test Template
+    - Financial Assistance Resolution Template
+    - Share Buyback Special Resolution Template
+    - Source of Funds Declaration
+    - Politically Exposed Person (PEP) Checklist
+    - Non-Disclosure Agreement (NDA) Template
+    - Shareholders’ Agreement Template
+
+    ### **General Business & Client Communication**
+    - Invoice
+    - Proforma Invoice
+    - Quote (Proposal)
+    - Letter (Generic)
+    - Follow-up Letter
+    - Email Follow-up
+    - Subscription Welcome Email
+    - Welcome Email
+    - Newsletter Base
+    - Structure Memo
+    - Structure Comparison Memo
+    - Engagement Letter Template
+    - Filing Cover Letter Templates
+    - Receipt Template
+
+    ### **Reporting & Analytics**
+    - Analytics Report
+    - Advisor KPI Report
+    - Doc Engine Report
+    - FICA Report (HTML)
+    - Residency Plan Report
+    - Review Summary
+    - Structure Comparison Report
+    - Transaction Summary Report
+    - UTM Report
+
 3.  **Clarity and Precision:** The `clause_name` should be clear and the `description` should be precise. This library will be reviewed by human legal experts, so accuracy is paramount.
 4.  **Strict Adherence to Schema:** The output must be a single, valid JSON object that perfectly matches the schema described above. Do not include any extra text, commentary, or markdown outside of the JSON structure.
 
@@ -80,4 +156,4 @@ Your entire output must be a single JSON object with a root key named `document_
 }
 ```
 
-Now, please generate the complete `document_clause_library` as a single JSON object.
+Now, please generate the complete `document_clause_library` as a single JSON object based on the definitive list provided.
