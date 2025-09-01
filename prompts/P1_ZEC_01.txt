@@ -9,7 +9,7 @@ Constraints / fixed fields:
 - meta.source_prompt_id = "P1_ZEC_01"
 - meta.version = "1.0"
 
-Seed ideas (use these to vary scenario descriptions): [non-profit, cross-border owners with SA operations, professionals with mixed private/public sector income, family businesses with legacy ownership, partial foreign resident owners].
+Seed ideas (use these to vary scenario descriptions): [non-profit, cross-border owners with SA operations, professionals with mixed private/public sector income, family businesses with legacy ownership, partial foreign resident owners, real_estate_development, private_equity, logistics_and_shipping, media_production, pharmaceuticals, agriculture].
 
 For each card:
 - Write a realistic short scenario in input.scenario (one to two sentences) using one of the seed ideas.

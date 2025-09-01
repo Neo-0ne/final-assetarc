@@ -9,7 +9,7 @@ Fixed fields:
 - meta.source_prompt_id = "P1_ZHF_01"
 - meta.version = "1.0"
 
-Diversity seeds (use these): [doctor, architect, lawyer, engineer].
+Diversity seeds (use these): [doctor, architect, lawyer, engineer, real_estate_development, private_equity, logistics_and_shipping, media_production, pharmaceuticals, agriculture].
 
 For each card:
 - input.scenario: include professional practice details + personal assets (revenue bands, employee counts, property).

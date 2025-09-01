@@ -10,7 +10,7 @@ Constraints / fixed fields:
 
 Diversity seeds:
 - Jurisdictions (use a balanced mix): ["uk", "us", "de", "ae"]
-- Industries (use for inspiration): [digital_services, SaaS, consultancy, holding_companies]
+- Industries (use for inspiration): [digital_services, SaaS, consultancy, holding_companies, real_estate_development, private_equity, logistics_and_shipping, media_production, pharmaceuticals, agriculture]
 
 For each card:
 - IMPORTANT: For every single flashcard, you must include all the fields listed in the "Constraints / fixed fields" section with their specified values.

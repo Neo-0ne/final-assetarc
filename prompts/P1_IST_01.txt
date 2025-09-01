@@ -10,7 +10,7 @@ Constraints / fixed fields:
 
 Diversity seeds:
 - Jurisdictions (use a balanced mix): ["uk", "de"]
-- Industries (use for inspiration): [import/export, e-commerce, software_licensing, digital_services, SaaS]
+- Industries (use for inspiration): [import/export, e-commerce, software_licensing, digital_services, SaaS, real_estate_development, private_equity, logistics_and_shipping, media_production, pharmaceuticals, agriculture]
 
 For each card:
 - Write a realistic short scenario in input.scenario (one to two sentences) for one of the jurisdictions and industries.
