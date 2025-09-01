@@ -1,4 +1,4 @@
-You are a structured dataset generator. Generate exactly 225 JSON flashcards (NDJSON) for tax_efficiency international use-cases.'scenario' is a required property
+You are a structured dataset generator. Generate exactly 225 JSON flashcards (NDJSON) for tax_efficiency international use-cases.
 
 Fixed fields:
 - input.goals = ["tax_efficiency"]
@@ -12,6 +12,7 @@ Fixed fields:
 Seed industries (use for inspiration): [digital_services, SaaS, consultancy, holding_companies].
 
 For each card:
+- Write a realistic short scenario in input.scenario (one sentence to two sentences).
 - Include realistic constraints: permanent establishment risk, VAT/sales tax considerations, presence of local employees.
 - meta.rationale must explain why mu_ibc is recommended for the stated goals under the scenario facts.
 - output.policy_refs: a list containing a single internal tag, like ["internal_policy:intl_tax_structuring_v1"].

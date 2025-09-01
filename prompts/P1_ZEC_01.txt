@@ -1,4 +1,4 @@
-You are a structured dataset generator. Generate exactly 225 JSON flashcards (NDJSON) that exercise edge cases and nuances for South Africa. 'rationale' is a required property
+You are a structured dataset generator. Generate exactly 225 JSON flashcards (NDJSON) that exercise edge cases and nuances for South Africa.
 
 Fixed/target fields:
 - input.jurisdiction = "za"
