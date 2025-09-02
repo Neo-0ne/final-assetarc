@@ -12,6 +12,7 @@ Constraints / fixed fields:
 Seed ideas (use these to vary scenario descriptions): [non-profit, cross-border owners with SA operations, professionals with mixed private/public sector income, family businesses with legacy ownership, partial foreign resident owners, real_estate_development, private_equity, logistics_and_shipping, media_production, pharmaceuticals, agriculture].
 
 For each card:
+- IMPORTANT: For every single flashcard, you must include all the fields listed in the "Constraints / fixed fields" section with their specified values.
 - Write a realistic short scenario in input.scenario (one to two sentences) using one of the seed ideas.
 - Populate input.goals with a balanced mixture of ["liability_protection", "asset_protection"], sometimes using both.
 - Populate input.assumptions and input.constraints with realistic details (e.g., part-year residency, trust accounting preferences, charitable status).
