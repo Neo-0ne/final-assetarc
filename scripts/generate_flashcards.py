@@ -56,15 +56,15 @@ print("--- JSON Schema defined (Line 61) ---")
 # --- 2. Function to Call the LLM ---
 def generate_from_llm(prompt):
     """
-    Calls the OpenAI API with a given prompt to generate flashcards.
+    Calls the OpenAI API with a given prompt to generate flashcards, using streaming.
     """
-    print(f"INFO: Calling OpenAI API...")
+    print(f"INFO: Calling OpenAI API with streaming...")
     try:
         client = openai.OpenAI(
             base_url="http://127.0.0.1:1234/v1",
             api_key="not-needed"
         )
-        response = client.chat.completions.create(
+        stream = client.chat.completions.create(
             model="local-model",
             messages=[
                 {"role": "system", "content": "You are a structured dataset generator. You only output valid, newline-delimited JSON (NDJSON) objects conforming to the user's requested schema. Do not output any other text, explanations, or markdown formatting."},
@@ -72,9 +72,18 @@ def generate_from_llm(prompt):
             ],
             temperature=0.7,
             timeout=300.0,
+            stream=True
         )
-        print("INFO: OpenAI API call successful.")
-        return response.choices[0].message.content
+
+        full_response = ""
+        print("INFO: Streaming response from LLM...")
+        for chunk in stream:
+            content = chunk.choices[0].delta.content
+            if content:
+                full_response += content
+
+        print("INFO: OpenAI API stream finished.")
+        return full_response
     except Exception as e:
         print(f"ERROR: OpenAI API call failed: {e}")
         return ""
