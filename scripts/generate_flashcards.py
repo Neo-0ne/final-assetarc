@@ -54,7 +54,7 @@ FLASHCARD_SCHEMA = {
 print("--- JSON Schema defined (Line 61) ---")
 
 # --- 2. Function to Call the LLM ---
-def generate_from_llm(prompt, api_key):
+def generate_from_llm(prompt):
     """
     Calls the OpenAI API with a given prompt to generate flashcards.
     """
@@ -65,12 +65,13 @@ def generate_from_llm(prompt, api_key):
             api_key="not-needed"
         )
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="local-model",
             messages=[
                 {"role": "system", "content": "You are a structured dataset generator. You only output valid, newline-delimited JSON (NDJSON) objects conforming to the user's requested schema. Do not output any other text, explanations, or markdown formatting."},
                 {"role": "user", "content": prompt}
             ],
             temperature=0.7,
+            timeout=300.0,
         )
         print("INFO: OpenAI API call successful.")
         return response.choices[0].message.content
@@ -106,7 +107,6 @@ def main():
     parser = argparse.ArgumentParser(description="Generate AI training flashcards using an LLM.")
     parser.add_argument("--prompt-file", type=str, required=True, help="The path to the .txt file containing the prompt.")
     parser.add_argument("--output-file", type=str, required=True, help="The path to save the output NDJSON file.")
-    parser.add_argument("--api-key", type=str, default=None, help="Optional: OpenAI API key. If not provided, it will be fetched from secrets.")
     parser.add_argument("--debug-file", type=str, default=None, help="Optional: Path to save the raw, unfiltered output from the LLM for debugging.")
     
     args = parser.parse_args()
@@ -128,14 +128,8 @@ def main():
         print(f"INFO: Output directory '{output_dir}' not found. Creating it now.")
         os.makedirs(output_dir)
 
-    api_key = args.api_key or get_secret("OPENAI_API_KEY")
-
-    if not api_key:
-        print("ERROR: OpenAI API key not found. Please provide it via the --api-key argument or set the OPENAI_API_KEY secret.")
-        sys.exit(1)
-
     # Generate
-    raw_output = generate_from_llm(prompt_content, api_key)
+    raw_output = generate_from_llm(prompt_content)
 
     if not raw_output:
         print("ERROR: Received no output from the LLM. Exiting.")
