@@ -53,44 +53,7 @@ FLASHCARD_SCHEMA = {
 }
 print("--- JSON Schema defined (Line 61) ---")
 
-# --- 2. Function to Call the LLM ---
-def generate_from_llm(prompt):
-    """
-    Calls the OpenAI API with a given prompt to generate flashcards, using streaming.
-    """
-    print(f"INFO: Calling OpenAI API with streaming...")
-    try:
-        client = openai.OpenAI(
-            base_url="http://127.0.0.1:1234/v1",
-            api_key="not-needed"
-        )
-        stream = client.chat.completions.create(
-            model="local-model",
-            messages=[
-                {"role": "system", "content": "You are a structured dataset generator. You only output valid, newline-delimited JSON (NDJSON) objects conforming to the user's requested schema. Do not output any other text, explanations, or markdown formatting."},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.7,
-            timeout=300.0,
-            stream=True
-        )
-
-        full_response = ""
-        print("INFO: Streaming response from LLM...")
-        for chunk in stream:
-            content = chunk.choices[0].delta.content
-            if content:
-                full_response += content
-
-        print("INFO: OpenAI API stream finished.")
-        return full_response
-    except Exception as e:
-        print(f"ERROR: OpenAI API call failed: {e}")
-        return ""
-
-print("--- generate_from_llm function defined (Line 88) ---")
-
-# --- 3. Function to Validate a Single Flashcard ---
+# --- 2. Function to Validate a Single Flashcard ---
 def validate_flashcard(flashcard_json):
     """
     Validates a single JSON object against the FLASHCARD_SCHEMA.
@@ -107,10 +70,96 @@ def validate_flashcard(flashcard_json):
 
 print("--- validate_flashcard function defined (Line 105) ---")
 
+
+# --- 3. Function to Generate Flashcards via Streaming ---
+def generate_and_write_flashcards(prompt, output_filepath, debug_filepath=None):
+    """
+    Calls the LLM with a prompt, streams the response, and writes valid flashcards to a file.
+    """
+    print(f"INFO: Calling OpenAI API with streaming...")
+    raw_output_for_debug = ""
+    valid_count = 0
+    total_count = 0
+
+    try:
+        client = openai.OpenAI(
+            base_url="http://127.0.0.1:1234/v1",
+            api_key="not-needed"
+        )
+        stream = client.chat.completions.create(
+            model="local-model",
+            messages=[
+                {"role": "system", "content": "You are a structured dataset generator. You only output valid, newline-delimited JSON (NDJSON) objects conforming to the user's requested schema. Do not output any other text, explanations, or markdown formatting."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7,
+            timeout=300.0,
+            stream=True
+        )
+
+        print("INFO: Streaming response from LLM and writing to file...")
+        buffer = ""
+        with open(output_filepath, 'w') as f:
+            for chunk in stream:
+                content = chunk.choices[0].delta.content
+                if content:
+                    if debug_filepath:
+                        raw_output_for_debug += content
+                    buffer += content
+                    while '\n' in buffer:
+                        line, buffer = buffer.split('\n', 1)
+                        if not line.strip(): continue # Skip empty lines
+                        total_count += 1
+                        try:
+                            flashcard = json.loads(line)
+                            if validate_flashcard(flashcard):
+                                f.write(json.dumps(flashcard) + '\n')
+                                valid_count += 1
+                            else:
+                                print(f"INFO: Skipping invalid flashcard (see validation warning above).")
+                        except json.JSONDecodeError:
+                            print(f"INFO: Skipping line with invalid JSON: {line}")
+
+        # Process any remaining content in the buffer
+        if buffer.strip():
+            total_count += 1
+            try:
+                flashcard = json.loads(buffer)
+                if validate_flashcard(flashcard):
+                    with open(output_filepath, 'a') as f:
+                        f.write(json.dumps(flashcard) + '\n')
+                    valid_count += 1
+                else:
+                    print(f"INFO: Skipping invalid flashcard (see validation warning above).")
+            except json.JSONDecodeError:
+                print(f"INFO: Skipping incomplete line at end of stream: {buffer}")
+
+        print("\n--- Generation Complete ---")
+        print(f"Total lines received from LLM: {total_count}")
+        print(f"Valid flashcards written: {valid_count}")
+        print(f"Output file saved at: {output_filepath}")
+
+        if debug_filepath:
+            debug_dir = os.path.dirname(debug_filepath)
+            if debug_dir and not os.path.exists(debug_dir):
+                os.makedirs(debug_dir)
+            with open(debug_filepath, 'w') as f:
+                f.write(raw_output_for_debug)
+            print(f"INFO: Saved raw LLM output to debug file: {debug_filepath}")
+
+        return True
+
+    except Exception as e:
+        print(f"ERROR: OpenAI API call failed: {e}")
+        return False
+
+print("--- generate_and_write_flashcards function defined ---")
+
+
 # --- 4. Main Script Logic ---
 def main():
     """
-    Main function to parse arguments, generate, validate, and save flashcards.
+    Main function to parse arguments and trigger flashcard generation.
     """
     print("--- Main function entered ---")
     parser = argparse.ArgumentParser(description="Generate AI training flashcards using an LLM.")
@@ -123,7 +172,6 @@ def main():
     print(f"INFO: Starting flashcard generation process.")
     print(f"INFO: Reading prompt from {args.prompt_file}")
 
-    # Read the prompt from the specified file
     try:
         with open(args.prompt_file, 'r') as f:
             prompt_content = f.read()
@@ -131,51 +179,18 @@ def main():
         print(f"ERROR: The prompt file was not found at '{args.prompt_file}'. Please check the path.")
         sys.exit(1)
 
-    # Automatically create the output directory if it doesn't exist
     output_dir = os.path.dirname(args.output_file)
     if output_dir and not os.path.exists(output_dir):
         print(f"INFO: Output directory '{output_dir}' not found. Creating it now.")
         os.makedirs(output_dir)
 
-    # Generate
-    raw_output = generate_from_llm(prompt_content)
+    success = generate_and_write_flashcards(prompt_content, args.output_file, args.debug_file)
 
-    if not raw_output:
-        print("ERROR: Received no output from the LLM. Exiting.")
+    if not success:
+        print("ERROR: Flashcard generation failed. See error messages above.")
         sys.exit(1)
 
-    # If a debug file path is provided, save the raw output there.
-    if args.debug_file:
-        debug_dir = os.path.dirname(args.debug_file)
-        if debug_dir and not os.path.exists(debug_dir):
-            os.makedirs(debug_dir)
-        with open(args.debug_file, 'w') as f:
-            f.write(raw_output)
-        print(f"INFO: Saved raw LLM output to debug file: {args.debug_file}")
-
-    # Validate and Write
-    valid_count = 0
-    total_count = 0
-    print(f"INFO: Writing valid flashcards to {args.output_file}...")
-    with open(args.output_file, 'w') as f:
-        for line in raw_output.strip().split('\n'):
-            total_count += 1
-            try:
-                flashcard = json.loads(line)
-                if validate_flashcard(flashcard):
-                    f.write(json.dumps(flashcard) + '\n')
-                    valid_count += 1
-                else:
-                    print(f"INFO: Skipping invalid flashcard (see validation warning above).")
-            except json.JSONDecodeError:
-                print(f"INFO: Skipping line with invalid JSON: {line}")
-
-    print("\n--- Generation Complete ---")
-    print(f"Total lines received from LLM: {total_count}")
-    print(f"Valid flashcards written: {valid_count}")
-    print(f"Output file saved at: {args.output_file}")
-
-print("--- main function defined (Line 196) ---")
+print("--- main function defined ---")
 
 if __name__ == '__main__':
     print("--- __name__ is '__main__', calling main() function ---")
