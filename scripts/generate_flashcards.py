@@ -60,7 +60,10 @@ def generate_from_llm(prompt, api_key):
     """
     print(f"INFO: Calling OpenAI API...")
     try:
-        client = openai.OpenAI(api_key=api_key)
+        client = openai.OpenAI(
+            base_url="http://127.0.0.1:1234/v1",
+            api_key="not-needed"
+        )
         response = client.chat.completions.create(
             model="gpt-4o",
             messages=[
