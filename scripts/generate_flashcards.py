@@ -112,6 +112,11 @@ def generate_and_write_flashcards(prompt, output_filepath, debug_filepath=None):
                         total_count += 1
                         try:
                             flashcard = json.loads(line)
+                            # Fallback for missing jurisdiction
+                            if 'input' in flashcard and isinstance(flashcard.get('input'), dict) and 'jurisdiction' not in flashcard['input']:
+                                print("INFO: 'jurisdiction' is missing. Adding default 'za'.")
+                                flashcard['input']['jurisdiction'] = 'za'
+
                             if validate_flashcard(flashcard):
                                 f.write(json.dumps(flashcard) + '\n')
                                 valid_count += 1
@@ -125,6 +130,11 @@ def generate_and_write_flashcards(prompt, output_filepath, debug_filepath=None):
             total_count += 1
             try:
                 flashcard = json.loads(buffer)
+                # Fallback for missing jurisdiction
+                if 'input' in flashcard and isinstance(flashcard.get('input'), dict) and 'jurisdiction' not in flashcard['input']:
+                    print("INFO: 'jurisdiction' is missing. Adding default 'za'.")
+                    flashcard['input']['jurisdiction'] = 'za'
+
                 if validate_flashcard(flashcard):
                     with open(output_filepath, 'a') as f:
                         f.write(json.dumps(flashcard) + '\n')
