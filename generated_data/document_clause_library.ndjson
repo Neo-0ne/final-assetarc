@@ -134,11 +134,7 @@
           "description": "Explains when and how the trust may be dissolved or terminated."
         }
       ]
-    }
-  ]
-}
-{
-  "document_clause_library": [
+    },
     {
       "document_type": "Trust Deed Addendum (ZA)",
       "clauses": [
@@ -250,7 +246,7 @@
         {
           "clause_id": "clause:cor14_1_directors_v1",
           "clause_name": "Initial Directors",
-          "description": "Lists the names and details of the company’s initial directors."
+          "description": "Lists the names and details of the company\u2019s initial directors."
         },
         {
           "clause_id": "clause:cor14_1_incorporators_v1",
@@ -274,7 +270,7 @@
         },
         {
           "clause_id": "clause:moi_directors_powers_v1",
-          "clause_name": "Directors’ Powers",
+          "clause_name": "Directors\u2019 Powers",
           "description": "Specifies the powers and duties of the directors."
         },
         {
@@ -320,7 +316,7 @@
         {
           "clause_id": "clause:director_consent_declaration_v1",
           "clause_name": "Consent Declaration",
-          "description": "Confirms the individual’s consent to act as a director."
+          "description": "Confirms the individual\u2019s consent to act as a director."
         },
         {
           "clause_id": "clause:director_consent_fiduciary_duties_v1",
@@ -363,11 +359,7 @@
           "description": "Identifies the beneficiaries of the trust."
         }
       ]
-    }
-  ]
-}
-{
-  "document_clause_library": [
+    },
     {
       "document_type": "Memorandum of Association (IBC)",
       "clauses": [
@@ -390,6 +382,16 @@
           "clause_id": "clause:moa_ibc_share_capital_v1",
           "clause_name": "Share Capital",
           "description": "Sets out the authorized share capital, number of shares, and par value."
+        },
+        {
+          "clause_id": "clause:moa_ibc_economic_substance_v1",
+          "clause_name": "Economic Substance Compliance",
+          "description": "Affirms that the company will comply with applicable economic substance requirements in its jurisdiction."
+        },
+        {
+          "clause_id": "clause:moa_ibc_dispute_resolution_v1",
+          "clause_name": "Dispute Resolution",
+          "description": "Specifies the forum and governing law for resolving disputes among members."
         }
       ]
     },
@@ -415,6 +417,11 @@
           "clause_id": "clause:nominee_agreement_termination_v1",
           "clause_name": "Termination",
           "description": "Sets out the conditions under which the agreement may be terminated."
+        },
+        {
+          "clause_id": "clause:nominee_agreement_resignation_v1",
+          "clause_name": "Pre-Signed Resignation",
+          "description": "Includes a pre-signed resignation letter from the nominee director to be activated at the beneficial owner's request."
         }
       ]
     },
@@ -424,12 +431,12 @@
         {
           "clause_id": "clause:director_consent_ibc_declaration_v1",
           "clause_name": "Consent Declaration",
-          "description": "Confirms the individual’s consent to act as a director of the IBC."
+          "description": "Confirms the individual\u2019s consent to act as a director of the IBC."
         },
         {
           "clause_id": "clause:director_consent_ibc_duties_v1",
           "clause_name": "Acknowledgment of Duties",
-          "description": "Acknowledges the fiduciary and statutory duties under the jurisdiction’s laws."
+          "description": "Acknowledges the fiduciary and statutory duties under the jurisdiction\u2019s laws."
         }
       ]
     },
@@ -449,7 +456,7 @@
         {
           "clause_id": "clause:agent_agreement_fees_v1",
           "clause_name": "Fees and Payment",
-          "description": "Sets out the agent’s fees, invoicing, and payment terms."
+          "description": "Sets out the agent\u2019s fees, invoicing, and payment terms."
         },
         {
           "clause_id": "clause:agent_agreement_confidentiality_v1",
@@ -474,12 +481,12 @@
         {
           "clause_id": "clause:first_board_minutes_agent_v1",
           "clause_name": "Registered Agent",
-          "description": "Approves the appointment of the company’s registered agent."
+          "description": "Approves the appointment of the company\u2019s registered agent."
         },
         {
           "clause_id": "clause:first_board_minutes_bank_account_v1",
           "clause_name": "Bank Account Opening",
-          "description": "Authorizes the opening of the company’s bank account."
+          "description": "Authorizes the opening of the company\u2019s bank account."
         }
       ]
     },
@@ -520,6 +527,26 @@
           "clause_id": "clause:offshore_trust_beneficiaries_v1",
           "clause_name": "Beneficiaries",
           "description": "Specifies the beneficiaries and the nature of their entitlements."
+        },
+        {
+          "clause_id": "clause:offshore_trust_flight_clause_v1",
+          "clause_name": "Flight Clause",
+          "description": "Allows the trust to redomicile to another jurisdiction if laws change or risks arise."
+        },
+        {
+          "clause_id": "clause:offshore_trust_anti_forced_heirship_v1",
+          "clause_name": "Anti-Forced Heirship",
+          "description": "Excludes application of forced heirship laws to trust assets and distributions."
+        },
+        {
+          "clause_id": "clause:offshore_trust_spendthrift_v1",
+          "clause_name": "Spendthrift Clause",
+          "description": "Protects beneficiaries' interests from claims by creditors or third parties."
+        },
+        {
+          "clause_id": "clause:offshore_trust_confidentiality_v1",
+          "clause_name": "Confidentiality",
+          "description": "Restricts disclosure of trust information except where required by law."
         }
       ]
     },
@@ -555,6 +582,11 @@
           "clause_id": "clause:articles_bvi_dividends_v1",
           "clause_name": "Dividends",
           "description": "Specifies how dividends and distributions may be declared."
+        },
+        {
+          "clause_id": "clause:articles_bvi_alternate_directors_v1",
+          "clause_name": "Alternate Directors",
+          "description": "Allows the appointment of alternate directors to act in place of absent directors."
         }
       ]
     },
@@ -569,7 +601,7 @@
         {
           "clause_id": "clause:agent_bvi_responsibility_v1",
           "clause_name": "Acknowledgment of Responsibility",
-          "description": "Confirms the agent’s responsibility for statutory filings."
+          "description": "Confirms the agent\u2019s responsibility for statutory filings."
         }
       ]
     },
@@ -654,7 +686,7 @@
         {
           "clause_id": "clause:ibc_bank_resolution_authority_v1",
           "clause_name": "Authority to Open Account",
-          "description": "Authorizes the opening of a bank account in the company’s name."
+          "description": "Authorizes the opening of a bank account in the company\u2019s name."
         },
         {
           "clause_id": "clause:ibc_bank_resolution_signatories_v1",
@@ -665,13 +697,19 @@
           "clause_id": "clause:ibc_bank_resolution_mandate_v1",
           "clause_name": "Mandate",
           "description": "Specifies signing rules such as single or dual signatories."
+        },
+        {
+          "clause_id": "clause:ibc_bank_multi_currency_v1",
+          "clause_name": "Multi-Currency Accounts",
+          "description": "Permits opening accounts in multiple currencies for operational flexibility."
+        },
+        {
+          "clause_id": "clause:ibc_bank_digital_authority_v1",
+          "clause_name": "Digital Banking Authority",
+          "description": "Authorizes designated officers to manage the company\u2019s online banking facilities."
         }
       ]
-    }
-  ]
-}
-{
-  "document_clause_library": [
+    },
     {
       "document_type": "B-BBEE Affidavit (ZA)",
       "clauses": [
@@ -723,7 +761,7 @@
       ]
     },
     {
-      "document_type": "Compliance Checklist (Sec 42–47, ZA)",
+      "document_type": "Compliance Checklist (Sec 42\u201347, ZA)",
       "clauses": [
         {
           "clause_id": "clause:compliance_checklist_sec42_v1",
@@ -744,6 +782,16 @@
           "clause_id": "clause:compliance_checklist_sec48_v1",
           "clause_name": "Share Buybacks (Sec 48)",
           "description": "Details prerequisites and procedures for share repurchases under Section 48."
+        },
+        {
+          "clause_id": "clause:compliance_checklist_anti_bribery_v1",
+          "clause_name": "Anti-Bribery Certification",
+          "description": "Includes confirmation that the company complies with anti-bribery and corruption legislation."
+        },
+        {
+          "clause_id": "clause:compliance_checklist_whistleblower_v1",
+          "clause_name": "Whistleblower Protection",
+          "description": "Provides acknowledgment of protections for employees under whistleblower laws."
         }
       ]
     },
@@ -769,6 +817,16 @@
           "clause_id": "clause:fica_checklist_screening_v1",
           "clause_name": "Sanctions & PEP Screening",
           "description": "Mandates screening against sanctions lists and identification of politically exposed persons."
+        },
+        {
+          "clause_id": "clause:fica_checklist_edd_v1",
+          "clause_name": "Enhanced Due Diligence",
+          "description": "Specifies additional checks required for high-risk clients, such as PEPs or offshore entities."
+        },
+        {
+          "clause_id": "clause:fica_checklist_monitoring_v1",
+          "clause_name": "Ongoing Monitoring",
+          "description": "Requires periodic updating of client information and continuous risk monitoring."
         }
       ]
     },
@@ -814,6 +872,11 @@
           "clause_id": "clause:kyc_ibc_risk_assessment_v1",
           "clause_name": "Risk Assessment",
           "description": "Defines the risk scoring criteria and enhanced due diligence triggers for IBC clients."
+        },
+        {
+          "clause_id": "clause:kyc_ibc_ongoing_monitoring_v1",
+          "clause_name": "Ongoing Monitoring",
+          "description": "Specifies the obligation to regularly update KYC information and reassess client risk."
         }
       ]
     },
@@ -909,6 +972,16 @@
           "clause_id": "clause:legal_audit_limitations_v1",
           "clause_name": "Limitations and Disclaimers",
           "description": "States limitations of the audit and any reliance restrictions on the report."
+        },
+        {
+          "clause_id": "clause:legal_audit_regulatory_risk_v1",
+          "clause_name": "Regulatory Risk Assessment",
+          "description": "Assesses the company\u2019s exposure to specific regulatory regimes and compliance risks."
+        },
+        {
+          "clause_id": "clause:legal_audit_litigation_review_v1",
+          "clause_name": "Litigation Review",
+          "description": "Summarizes pending, threatened, or potential litigation affecting the company."
         }
       ]
     },
@@ -1064,6 +1137,16 @@
           "clause_id": "clause:nda_remedies_v1",
           "clause_name": "Remedies for Breach",
           "description": "Outlines equitable and monetary remedies available for breach of the NDA."
+        },
+        {
+          "clause_id": "clause:nda_residual_knowledge_v1",
+          "clause_name": "Residual Knowledge",
+          "description": "Allows the recipient to use general knowledge and skills retained in unaided memory despite receiving confidential information."
+        },
+        {
+          "clause_id": "clause:nda_compelled_disclosure_v1",
+          "clause_name": "Compelled Disclosure",
+          "description": "Provides rules for disclosure of confidential information if required by law or court order."
         }
       ]
     },
@@ -1106,11 +1189,7 @@
           "description": "Outlines agreed exit processes, IPO provisions, buy-sell mechanisms and valuation methods."
         }
       ]
-    }
-  ]
-}
-{
-  "document_clause_library": [
+    },
     {
       "document_type": "Invoice",
       "clauses": [
@@ -1138,6 +1217,16 @@
           "clause_id": "clause:invoice_payment_terms_v1",
           "clause_name": "Payment Terms",
           "description": "Specifies payment due date, accepted methods, and banking details."
+        },
+        {
+          "clause_id": "clause:invoice_due_date_v1",
+          "clause_name": "Due Date",
+          "description": "Specifies the date by which payment must be received."
+        },
+        {
+          "clause_id": "clause:invoice_interest_v1",
+          "clause_name": "Interest on Overdue Accounts",
+          "description": "Applies interest charges to overdue payments at a stated rate."
         }
       ]
     },
@@ -1178,6 +1267,21 @@
           "clause_id": "clause:quote_acceptance_v1",
           "clause_name": "Acceptance and Signature",
           "description": "Includes a section for client approval, signature, and date."
+        },
+        {
+          "clause_id": "clause:proposal_validity_period_v1",
+          "clause_name": "Validity Period",
+          "description": "Specifies the time period during which the proposal is open for acceptance."
+        },
+        {
+          "clause_id": "clause:proposal_exclusions_v1",
+          "clause_name": "Exclusions",
+          "description": "Lists services or costs explicitly not covered by the proposal."
+        },
+        {
+          "clause_id": "clause:proposal_payment_terms_v1",
+          "clause_name": "Payment Terms",
+          "description": "Defines payment schedules, methods, and any penalties for late payment."
         }
       ]
     },
@@ -1198,6 +1302,16 @@
           "clause_id": "clause:letter_signature_v1",
           "clause_name": "Signature Block",
           "description": "Includes sender name, title, and signature line."
+        },
+        {
+          "clause_id": "clause:letter_governing_law_v1",
+          "clause_name": "Governing Law",
+          "description": "Specifies which jurisdiction\u2019s laws govern the interpretation of the letter."
+        },
+        {
+          "clause_id": "clause:letter_confidentiality_v1",
+          "clause_name": "Confidentiality",
+          "description": "Marks the letter as confidential and limits its disclosure to intended recipients only."
         }
       ]
     },
@@ -1237,7 +1351,7 @@
         {
           "clause_id": "clause:email_followup_signature_v1",
           "clause_name": "Signature",
-          "description": "Includes sender’s name, contact details, and professional designation."
+          "description": "Includes sender\u2019s name, contact details, and professional designation."
         }
       ]
     },
@@ -1293,6 +1407,16 @@
           "clause_id": "clause:newsletter_footer_v1",
           "clause_name": "Footer and Unsubscribe",
           "description": "Includes contact details, disclaimers, and unsubscribe instructions."
+        },
+        {
+          "clause_id": "clause:newsletter_unsubscribe_v1",
+          "clause_name": "Unsubscribe Option",
+          "description": "Provides recipients with a clear method to opt out of future newsletters."
+        },
+        {
+          "clause_id": "clause:newsletter_data_protection_v1",
+          "clause_name": "Data Protection Statement",
+          "description": "Advises recipients how their data will be used and stored in line with data privacy regulations."
         }
       ]
     },
@@ -1358,6 +1482,31 @@
           "clause_id": "clause:engagement_termination_v1",
           "clause_name": "Termination",
           "description": "Provides conditions under which the engagement may be terminated."
+        },
+        {
+          "clause_id": "clause:engagement_scope_services_v1",
+          "clause_name": "Scope of Services",
+          "description": "Clearly defines the services to be provided and any limitations."
+        },
+        {
+          "clause_id": "clause:engagement_fee_arrangements_v1",
+          "clause_name": "Fee Arrangements",
+          "description": "Outlines fee structure, billing practices, and reimbursement of expenses."
+        },
+        {
+          "clause_id": "clause:engagement_limitation_liability_v1",
+          "clause_name": "Limitation of Liability",
+          "description": "Caps the liability of the service provider to a defined amount or excludes consequential damages."
+        },
+        {
+          "clause_id": "clause:engagement_data_protection_v1",
+          "clause_name": "Data Protection",
+          "description": "Requires compliance with data protection laws such as GDPR or POPIA."
+        },
+        {
+          "clause_id": "clause:engagement_subcontracting_v1",
+          "clause_name": "Subcontracting",
+          "description": "Allows or restricts the engagement of subcontractors to perform parts of the services."
         }
       ]
     },
@@ -1367,7 +1516,7 @@
         {
           "clause_id": "clause:cover_letter_header_v1",
           "clause_name": "Header and Address",
-          "description": "Sets out the recipient regulator’s address and reference details."
+          "description": "Sets out the recipient regulator\u2019s address and reference details."
         },
         {
           "clause_id": "clause:cover_letter_body_v1",
@@ -1377,7 +1526,7 @@
         {
           "clause_id": "clause:cover_letter_signature_v1",
           "clause_name": "Signature",
-          "description": "Includes authorized signatory’s name, designation, and contact details."
+          "description": "Includes authorized signatory\u2019s name, designation, and contact details."
         }
       ]
     },
@@ -1405,11 +1554,7 @@
           "description": "Includes the signature or stamp of the authorized issuer of the receipt."
         }
       ]
-    }
-  ]
-}
-{
-  "document_clause_library": [
+    },
     {
       "document_type": "Analytics Report",
       "clauses": [
@@ -1432,6 +1577,16 @@
           "clause_id": "clause:analytics_report_recommendations_v1",
           "clause_name": "Recommendations",
           "description": "Summarizes suggested actions based on the data analysis."
+        },
+        {
+          "clause_id": "clause:analytics_confidentiality_v1",
+          "clause_name": "Confidentiality",
+          "description": "States that the report is confidential and may not be shared without authorization."
+        },
+        {
+          "clause_id": "clause:analytics_reliance_limit_v1",
+          "clause_name": "Reliance Limitation",
+          "description": "Limits reliance on the report to the intended recipient and purpose only."
         }
       ]
     },
@@ -1456,7 +1611,17 @@
         {
           "clause_id": "clause:advisor_kpi_compliance_v1",
           "clause_name": "Compliance Rates",
-          "description": "Measures advisor’s adherence to compliance and documentation standards."
+          "description": "Measures advisor\u2019s adherence to compliance and documentation standards."
+        },
+        {
+          "clause_id": "clause:kpi_disclaimer_v1",
+          "clause_name": "Disclaimer",
+          "description": "Notes that performance metrics are indicative only and may not capture qualitative factors."
+        },
+        {
+          "clause_id": "clause:kpi_data_integrity_v1",
+          "clause_name": "Data Integrity Statement",
+          "description": "Confirms that data is based on available records but may be subject to future updates or corrections."
         }
       ]
     },
@@ -1482,6 +1647,16 @@
           "clause_id": "clause:doc_engine_improvements_v1",
           "clause_name": "Improvement Recommendations",
           "description": "Provides system and process recommendations based on analysis."
+        },
+        {
+          "clause_id": "clause:doc_engine_audit_trail_v1",
+          "clause_name": "Audit Trail Reference",
+          "description": "Provides a reference to the underlying document generation logs for verification."
+        },
+        {
+          "clause_id": "clause:doc_engine_limit_liability_v1",
+          "clause_name": "Limitation of Liability",
+          "description": "Excludes liability for errors where users did not review outputs before use."
         }
       ]
     },
@@ -1532,6 +1707,16 @@
           "clause_id": "clause:residency_plan_recommendation_v1",
           "clause_name": "Recommended Pathway",
           "description": "Provides the recommended jurisdiction and residency pathway."
+        },
+        {
+          "clause_id": "clause:residency_assumptions_v1",
+          "clause_name": "Assumptions",
+          "description": "Details assumptions about residency status, income sources, and applicable treaties."
+        },
+        {
+          "clause_id": "clause:residency_disclaimer_v1",
+          "clause_name": "Disclaimer",
+          "description": "Clarifies that the report does not constitute formal tax advice and professional consultation is recommended."
         }
       ]
     },
@@ -1607,6 +1792,16 @@
           "clause_id": "clause:transaction_summary_approval_v1",
           "clause_name": "Approval",
           "description": "Includes a section for review, approval, and sign-off."
+        },
+        {
+          "clause_id": "clause:transaction_confidentiality_v1",
+          "clause_name": "Confidentiality",
+          "description": "Specifies that transaction details are confidential and must not be shared externally."
+        },
+        {
+          "clause_id": "clause:transaction_data_source_v1",
+          "clause_name": "Data Source Verification",
+          "description": "Confirms that information was compiled from available data sources and should be independently verified."
         }
       ]
     },
@@ -1634,10 +1829,166 @@
           "description": "Calculates ROI of campaigns based on cost and conversion metrics."
         }
       ]
+    },
+    {
+      "document_type": "Memorandum of Incorporation (MOI)",
+      "clauses": [
+        {
+          "clause_id": "clause:moi_objects_v1",
+          "clause_name": "Objects of the Company",
+          "description": "Defines the purpose and permitted business activities of the company."
+        },
+        {
+          "clause_id": "clause:moi_share_classes_v1",
+          "clause_name": "Share Classes",
+          "description": "Specifies classes of shares, rights attached to each, and restrictions."
+        },
+        {
+          "clause_id": "clause:moi_directors_powers_v1",
+          "clause_name": "Directors\u2019 Powers",
+          "description": "Sets out the scope of authority and responsibilities of directors."
+        },
+        {
+          "clause_id": "clause:moi_preemptive_rights_v1",
+          "clause_name": "Pre-emptive Rights",
+          "description": "Gives existing shareholders first option to purchase new shares issued by the company."
+        },
+        {
+          "clause_id": "clause:moi_tag_along_v1",
+          "clause_name": "Tag-Along Rights",
+          "description": "Allows minority shareholders to join in a sale of shares by majority shareholders on the same terms."
+        },
+        {
+          "clause_id": "clause:moi_drag_along_v1",
+          "clause_name": "Drag-Along Rights",
+          "description": "Permits majority shareholders to compel minority shareholders to sell their shares in a company sale."
+        },
+        {
+          "clause_id": "clause:moi_deadlock_resolution_v1",
+          "clause_name": "Deadlock Resolution",
+          "description": "Defines mechanisms such as mediation, arbitration, or buy-sell triggers to resolve shareholder or director deadlock."
+        },
+        {
+          "clause_id": "clause:moi_share_buyout_v1",
+          "clause_name": "Share Buyout Mechanisms",
+          "description": "Provides valuation methods and procedures for buying out shareholders in specified scenarios."
+        }
+      ]
+    },
+    {
+      "document_type": "Trust Deed",
+      "clauses": [
+        {
+          "clause_id": "clause:trust_definitions_v1",
+          "clause_name": "Definitions",
+          "description": "Defines key terms used throughout the trust deed."
+        },
+        {
+          "clause_id": "clause:trust_trustees_powers_v1",
+          "clause_name": "Trustees\u2019 Powers",
+          "description": "Sets out the decision-making powers and duties of the trustees."
+        },
+        {
+          "clause_id": "clause:trust_beneficiaries_v1",
+          "clause_name": "Beneficiaries",
+          "description": "Identifies beneficiaries and establishes their entitlements."
+        },
+        {
+          "clause_id": "clause:trust_reserved_powers_v1",
+          "clause_name": "Reserved Powers of Settlor",
+          "description": "Allows the settlor to retain limited powers without invalidating the trust."
+        },
+        {
+          "clause_id": "clause:trust_protector_powers_v1",
+          "clause_name": "Protector\u2019s Extended Powers",
+          "description": "Grants the protector authority to approve distributions, investments, or trustee changes."
+        },
+        {
+          "clause_id": "clause:trust_indemnities_v1",
+          "clause_name": "Trustee Indemnities",
+          "description": "Protects trustees from liability for actions taken in good faith."
+        },
+        {
+          "clause_id": "clause:trust_anti_sham_v1",
+          "clause_name": "Anti-Sham Clause",
+          "description": "Confirms that the trust is genuine and enforceable."
+        },
+        {
+          "clause_id": "clause:trust_tax_residency_v1",
+          "clause_name": "Tax Residency Test",
+          "description": "Ensures the trust is administered in compliance with the residency rules of its jurisdiction."
+        }
+      ]
+    },
+    {
+      "document_type": "Trustee Resolution",
+      "clauses": [
+        {
+          "clause_id": "clause:trustee_res_standard_v1",
+          "clause_name": "Resolution Statement",
+          "description": "Records the decisions taken by the trustees at a meeting or by written resolution."
+        },
+        {
+          "clause_id": "clause:trustee_res_conflicts_v1",
+          "clause_name": "Conflict of Interest Declarations",
+          "description": "Requires trustees to disclose any personal interest in matters under consideration."
+        },
+        {
+          "clause_id": "clause:trustee_res_distribution_v1",
+          "clause_name": "Distribution Discretion",
+          "description": "Records decisions on discretionary income or capital distributions to beneficiaries."
+        },
+        {
+          "clause_id": "clause:trustee_res_investment_policy_v1",
+          "clause_name": "Investment Policy Adoption",
+          "description": "Approves an investment strategy or guidelines for managing trust assets."
+        }
+      ]
+    },
+    {
+      "document_type": "Trustee Minutes",
+      "clauses": [
+        {
+          "clause_id": "clause:trustee_minutes_attendance_v1",
+          "clause_name": "Attendance",
+          "description": "Lists trustees present and confirms quorum."
+        },
+        {
+          "clause_id": "clause:trustee_minutes_discussions_v1",
+          "clause_name": "Discussions",
+          "description": "Summarizes deliberations on matters before the trustees."
+        },
+        {
+          "clause_id": "clause:trustee_minutes_resolutions_v1",
+          "clause_name": "Resolutions Passed",
+          "description": "Details decisions taken and actions agreed upon during the meeting."
+        }
+      ]
+    },
+    {
+      "document_type": "Shareholders\u2019 Agreement Template",
+      "clauses": [
+        {
+          "clause_id": "clause:sha_non_compete_v1",
+          "clause_name": "Non-Compete",
+          "description": "Restricts shareholders from competing with the company\u2019s business during their shareholding and for a defined period after exit."
+        },
+        {
+          "clause_id": "clause:sha_confidentiality_v1",
+          "clause_name": "Confidentiality",
+          "description": "Imposes obligations on shareholders to keep company information confidential."
+        },
+        {
+          "clause_id": "clause:sha_ipo_lockup_v1",
+          "clause_name": "IPO Lock-Up",
+          "description": "Prevents shareholders from selling shares for a specified period following an IPO."
+        },
+        {
+          "clause_id": "clause:sha_cross_option_v1",
+          "clause_name": "Cross-Option Agreement",
+          "description": "Provides a mechanism for shareholders to buy or sell shares upon events such as death or incapacity."
+        }
+      ]
     }
   ]
 }
-
-
-
-
