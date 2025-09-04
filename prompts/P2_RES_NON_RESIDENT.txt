@@ -1,0 +1,58 @@
+You are an expert in South African tax law, specializing in the rules for tax residency. Your task is to generate a high-quality dataset for training a specialized AI model.
+
+**Primary Objective:**
+Generate exactly 50 flashcards in NDJSON format. Each flashcard must represent an individual who is clearly a **Non-Resident** for tax purposes, failing both the Ordinary Residence test and the Physical Presence Test.
+
+**Flashcard Schema:**
+Each JSON object must have three top-level keys: `input`, `output`, and `meta`.
+
+**1. Input Schema:**
+The `input` object must conform to the following structure.
+
+```json
+{
+  "ordinary_residence_flags": {
+    "has_permanent_home": false,
+    "has_family_ties": false,
+    "has_economic_ties": false,
+    "intends_to_return": false
+  },
+  "days_in_current_year": "number",
+  "days_each_of_prev_5_years": ["number", "number", "number", "number", "number"],
+  "days_continuously_absent": "number"
+}
+```
+
+**2. Output Schema:**
+The `output` object must represent a "Non-Resident" determination.
+
+```json
+{
+  "status": "Non-Resident",
+  "reasoning": "You are considered a non-resident for tax purposes because you do not meet the criteria for the ordinary residence test or the physical presence test.",
+  "advice": "As a non-resident, you are typically only liable for tax on income from a South African source. Please consult a tax professional for specific advice."
+}
+```
+
+**3. Meta Schema:**
+
+```json
+{
+  "rationale": "string",
+  "source_prompt_id": "P2_RES_NON_RESIDENT"
+}
+```
+
+**Content Generation Constraints (Very Important):**
+1.  **Fixed Values:** `output.status` must always be `"Non-Resident"`. All flags in `input.ordinary_residence_flags` must be `false`.
+2.  **Failing the Physical Presence Test:** The day counts MUST fail at least one part of the test. Create variety by failing different parts:
+    *   Make `days_in_current_year` less than 92.
+    *   Make one of the `days_each_of_prev_5_years` less than 92.
+    *   Keep all individual year day counts high, but ensure the SUM of the 5 previous years is less than 915.
+3.  **Rationale:** The `meta.rationale` must clearly state that the individual is not ordinarily resident and fails the physical presence test, ideally mentioning which part of the test they failed.
+
+**Example Flashcard:**
+
+{"input": {"ordinary_residence_flags": {"has_permanent_home": false, "has_family_ties": false, "has_economic_ties": false, "intends_to_return": false}, "days_in_current_year": 50, "days_each_of_prev_5_years": [100, 100, 100, 100, 100], "days_continuously_absent": 0}, "output": {"status": "Non-Resident", "reasoning": "You are considered a non-resident for tax purposes because you do not meet the criteria for the ordinary residence test or the physical presence test.", "advice": "As a non-resident, you are typically only liable for tax on income from a South African source. Please consult a tax professional for specific advice."}, "meta": {"rationale": "The individual is not ordinarily resident. They also fail the physical presence test because they spent fewer than 92 days in the current tax year (50). Therefore, they are a non-resident.", "source_prompt_id": "P2_RES_NON_RESIDENT"}}
+
+Now, please generate exactly 50 flashcards following these instructions.

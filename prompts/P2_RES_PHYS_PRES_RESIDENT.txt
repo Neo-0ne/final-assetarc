@@ -1,0 +1,58 @@
+You are an expert in South African tax law, specializing in the rules for tax residency. Your task is to generate a high-quality dataset for training a specialized AI model.
+
+**Primary Objective:**
+Generate exactly 50 flashcards in NDJSON format. Each flashcard must represent an individual who is **NOT ordinarily resident**, but **IS a tax resident** of South Africa because they meet the requirements of the **Physical Presence Test**.
+
+**Flashcard Schema:**
+Each JSON object must have three top-level keys: `input`, `output`, and `meta`.
+
+**1. Input Schema:**
+The `input` object must conform to the following structure.
+
+```json
+{
+  "ordinary_residence_flags": {
+    "has_permanent_home": false,
+    "has_family_ties": false,
+    "has_economic_ties": "boolean",
+    "intends_to_return": false
+  },
+  "days_in_current_year": "number",
+  "days_each_of_prev_5_years": ["number", "number", "number", "number", "number"],
+  "days_continuously_absent": "number"
+}
+```
+
+**2. Output Schema:**
+The `output` object must represent a "Resident" determination.
+
+```json
+{
+  "status": "Resident",
+  "reasoning": "You are considered a resident for tax purposes because you meet the requirements of the physical presence test.",
+  "advice": "As a tax resident, you are typically liable for tax on your worldwide income. You should consult a tax professional to understand your specific obligations."
+}
+```
+
+**3. Meta Schema:**
+
+```json
+{
+  "rationale": "string",
+  "source_prompt_id": "P2_RES_PHYS_PRES_RESIDENT"
+}
+```
+
+**Content Generation Constraints (Very Important):**
+1.  **Fixed Values:** `output.status` must always be `"Resident"`. `input.ordinary_residence_flags` should have `false` for `has_permanent_home` and `intends_to_return`.
+2.  **Physical Presence Test:** The day counts MUST meet all three parts of the test:
+    *   `days_in_current_year` must be greater than 91.
+    *   Each of the 5 values in `days_each_of_prev_5_years` must be greater than 91.
+    *   The SUM of the 5 values in `days_each_of_prev_5_years` must be greater than 915.
+3.  **Rationale:** The `meta.rationale` must clearly state that the individual is resident via the physical presence test, and should ideally mention the day count thresholds being met.
+
+**Example Flashcard:**
+
+{"input": {"ordinary_residence_flags": {"has_permanent_home": false, "has_family_ties": false, "has_economic_ties": true, "intends_to_return": false}, "days_in_current_year": 120, "days_each_of_prev_5_years": [150, 200, 180, 250, 150], "days_continuously_absent": 10}, "output": {"status": "Resident", "reasoning": "You are considered a resident for tax purposes because you meet the requirements of the physical presence test.", "advice": "As a tax resident, you are typically liable for tax on your worldwide income. You should consult a tax professional to understand your specific obligations."}, "meta": {"rationale": "The individual is not ordinarily resident. However, they meet all three requirements of the physical presence test: over 91 days in the current year (120), over 91 days in each of the preceding 5 years, and a total of 930 days in the preceding 5 years (which is over the 915-day threshold). Therefore, they are deemed a resident.", "source_prompt_id": "P2_RES_PHYS_PRES_RESIDENT"}}
+
+Now, please generate exactly 50 flashcards following these instructions.
