@@ -1,0 +1,69 @@
+You are an expert in South African tax law, specifically corporate rollover relief provisions (Sections 42, 45, 46, 47 of the Income Tax Act). Your task is to generate a high-quality dataset for training a specialized AI model (the Sapient HRM) to act as a "Rollover Relief Planner."
+
+**Primary Objective:**
+Generate 250 high-quality, diverse, and accurate flashcards in NDJSON format. Each line of your output must be a single, valid JSON object. Do not include any other text, commentary, or markdown formatting.
+
+**Flashcard Schema:**
+Each JSON object must have three top-level keys: `input`, `output`, and `meta`.
+
+**1. Input Schema:**
+The `input` object must conform to the following structure, representing the details of a proposed corporate transaction.
+
+```json
+{
+  "section": "string",
+  "taxpayer_type": "string",
+  "transferor_residency": "string",
+  "transferee_residency": "string",
+  "group_relationship": { "same_group": "boolean", "percentage": "number" },
+  "consideration": { "shares_issued": "boolean", "cash_boot": "number", "debt_assumed": "number" },
+  "asset_profile": { "type": "string", "market_value": "number", "base_cost": "number" },
+  "continuity_flags": { "nature_retained": "boolean" },
+  "timing_flags": { "earmarked_disposal_months": "number" },
+  "unbundling_details": { "control_threshold_met": "boolean" },
+  "liquidation_details": { "steps_to_deregister_within_36m": "boolean" }
+}
+```
+
+**2. Output Schema:**
+The `output` object must conform to the following structure, representing the calculated outcome of the transaction analysis.
+
+```json
+{
+  "eligibility": {
+    "eligible": "boolean",
+    "failed_reasons": ["string"],
+    "warnings": ["string"]
+  },
+  "tax_comparison": {
+    "cgt_no_relief": "number",
+    "cgt_with_relief": "number",
+    "rolled_base_cost_to_acquirer": "number",
+    "net_deferral_benefit": "number",
+    "notes": ["string"]
+  }
+}
+```
+
+**3. Meta Schema:**
+The `meta` object must contain a `rationale` explaining the link between the input and output.
+
+```json
+{
+  "rationale": "string", // A 2-4 sentence explanation of why the transaction is or is not eligible, and how the tax benefit was derived. This is the most critical field for training.
+  "source_prompt_id": "P2_ROLLOVER_01"
+}
+```
+
+**Content Generation Guidelines:**
+
+1.  **Vary Scenarios:** Create a diverse mix of scenarios for all four sections (s42, s45, s46, s47). Ensure you create both eligible and ineligible scenarios. For ineligible scenarios, the `failed_reasons` list should be populated with clear, legally sound reasons.
+2.  **Logical Consistency:** The `output` must be a logical consequence of the `input`. For example, if `consideration.shares_issued` is `false` for an `s42` transaction, the `eligibility.eligible` must be `false`, and a relevant reason must be in `failed_reasons`.
+3.  **Realistic Financials:** Use realistic numbers for `market_value`, `base_cost`, etc. The `tax_comparison` numbers should be arithmetically plausible based on the inputs.
+4.  **Critical Rationale:** The `rationale` must be the core of the flashcard. It should explain the outcome. For an ineligible case, it might say: "The transaction fails the s42 requirements because the consideration was not settled at least 80% by the issue of shares." For an eligible case, it might say: "The transaction is eligible as it meets all s45 intra-group requirements. The tax deferral benefit is calculated as the capital gains tax that would have been payable without relief."
+
+**Example Flashcard (Ineligible s42):**
+
+{"input": {"section": "s42", "taxpayer_type": "company", "transferor_residency": "SA", "transferee_residency": "SA", "group_relationship": {"same_group": false, "percentage": 0}, "consideration": {"shares_issued": false, "cash_boot": 1000000, "debt_assumed": 0}, "asset_profile": {"type": "capital", "market_value": 5000000, "base_cost": 2000000}, "continuity_flags": {"nature_retained": true}, "timing_flags": {"earmarked_disposal_months": null}, "unbundling_details": {"control_threshold_met": false}, "liquidation_details": {"steps_to_deregister_within_36m": false}}, "output": {"eligibility": {"eligible": false, "failed_reasons": ["Consideration for an s42 transaction must be settled via the issue of equity shares."], "warnings": []}, "tax_comparison": {"cgt_no_relief": 540000, "cgt_with_relief": 540000, "rolled_base_cost_to_acquirer": 2000000, "net_deferral_benefit": 0, "notes": ["Calculation assumes a 18% CGT inclusion rate for companies and a 27% corporate income tax rate for 2024."]}}, "meta": {"rationale": "The transaction is ineligible for Section 42 relief. The primary reason for failure is that no equity shares were issued by the transferee company as consideration for the asset, which is a fundamental requirement of an asset-for-share transaction.", "source_prompt_id": "P2_ROLLOVER_01"}}
+
+Now, please generate exactly 250 flashcards following these instructions.

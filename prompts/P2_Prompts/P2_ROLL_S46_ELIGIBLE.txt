@@ -1,0 +1,62 @@
+You are an expert in South African tax law, specifically corporate rollover relief provisions. Your task is to generate a high-quality dataset for training a specialized AI model.
+
+**Primary Objective:**
+Generate exactly 50 flashcards in NDJSON format. Each flashcard must represent a transaction that is **ELIGIBLE** for relief under **Section 46** of the Income Tax Act (Unbundling transactions).
+
+**Flashcard Schema:**
+Each JSON object must have three top-level keys: `input`, `output`, and `meta`.
+
+**1. Input Schema:**
+The `input` object must conform to the following structure.
+
+```json
+{
+  "section": "s46",
+  "taxpayer_type": "string",
+  "transferor_residency": "SA",
+  "transferee_residency": "SA",
+  "unbundling_details": { "control_threshold_met": true },
+  "asset_profile": { "type": "string", "market_value": "number", "base_cost": "number" },
+  "consideration": {}, "group_relationship": {}, "continuity_flags": {}, "timing_flags": {}, "liquidation_details": {}
+}
+```
+
+**2. Output Schema:**
+The `output` object must represent a successful eligibility check.
+
+```json
+{
+  "eligibility": {
+    "eligible": true,
+    "failed_reasons": [],
+    "warnings": []
+  },
+  "tax_comparison": {
+    "cgt_no_relief": "number",
+    "cgt_with_relief": 0,
+    "rolled_base_cost_to_acquirer": "number",
+    "net_deferral_benefit": "number",
+    "notes": ["string"]
+  }
+}
+```
+
+**3. Meta Schema:**
+
+```json
+{
+  "rationale": "string",
+  "source_prompt_id": "P2_ROLL_S46_ELIGIBLE"
+}
+```
+
+**Content Generation Constraints (Very Important):**
+1.  **Fixed Values:** The `input.section` must always be `"s46"`. `input.unbundling_details.control_threshold_met` must be `true`. `output.eligibility.eligible` must always be `true`.
+2.  **Logical Consistency:** The financial numbers must be arithmetically plausible. `net_deferral_benefit` should be greater than zero.
+3.  **Rationale:** The `meta.rationale` must explain *why* the scenario is eligible for s46 relief, referencing the key conditions for unbundling transactions.
+
+**Example Flashcard:**
+
+{"input": {"section": "s46", "taxpayer_type": "company", "transferor_residency": "SA", "transferee_residency": "SA", "unbundling_details": {"control_threshold_met": true}, "asset_profile": {"type": "capital", "market_value": 50000000, "base_cost": 10000000}, "consideration": {}, "group_relationship": {}, "continuity_flags": {}, "timing_flags": {}, "liquidation_details": {}}, "output": {"eligibility": {"eligible": true, "failed_reasons": [], "warnings": []}, "tax_comparison": {"cgt_no_relief": 7200000, "cgt_with_relief": 0, "rolled_base_cost_to_acquirer": 10000000, "net_deferral_benefit": 7200000, "notes": ["Calculation assumes a 18% CGT inclusion rate for companies and a 27% corporate income tax rate for 2024."]}}, "meta": {"rationale": "The transaction qualifies for Section 46 relief as it is an unbundling transaction where the control threshold was met, allowing for the tax-neutral transfer of shares.", "source_prompt_id": "P2_ROLL_S46_ELIGIBLE"}}
+
+Now, please generate exactly 50 flashcards following these instructions.

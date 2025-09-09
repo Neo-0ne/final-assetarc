@@ -1,0 +1,19 @@
+You are a structured dataset generator. Generate JSON flashcards as NDJSON (one JSON object per line, no extra text). Produce exactly 225 flashcards. Each JSON object MUST conform to the v1.0 flashcard schema provided to you: input, output, meta.
+
+Constraints / fixed fields:
+- output.recommended_structures = ["za_trust"]
+- output.policy_refs = ["internal_policy:za_complex_structures_v1"]
+- input.jurisdiction = "za"
+- meta.subsection = "za_edge_cases"
+- meta.difficulty = "edge"
+- meta.source_prompt_id = "P1_ZEC_01"
+- meta.version = "1.0"
+
+Seed ideas (use these to vary scenario descriptions): [non-profit, cross-border owners with SA operations, professionals with mixed private/public sector income, family businesses with legacy ownership, partial foreign resident owners, real_estate_development, private_equity, logistics_and_shipping, media_production, pharmaceuticals, agriculture].
+
+For each card:
+- IMPORTANT: For every single flashcard, you must include all the fields listed in the "Constraints / fixed fields" section with their specified values.
+- Write a realistic short scenario in input.scenario (one to two sentences) using one of the seed ideas.
+- Populate input.goals with a balanced mixture of ["liability_protection", "asset_protection"], sometimes using both.
+- Populate input.assumptions and input.constraints with realistic details (e.g., part-year residency, trust accounting preferences, charitable status).
+- Provide meta.rationale: 2–4 sentences discussing the nuance and trade-offs for why a `za_trust` is the recommended structure for the specific edge-case scenario you have created.
