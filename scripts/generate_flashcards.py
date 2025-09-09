@@ -35,7 +35,7 @@ FLASHCARD_SCHEMA = {
       "type":"object",
       "required":["recommended_structures"],
       "properties":{
-        "recommended_structures":{"type":"array","items":{"type":"string","enum":["za_pty_ltd","za_trust","mu_ibc"]}},
+        "recommended_structures":{"type":"array","items":{"type":"string"}},
         "policy_refs":{"type": "array", "items": {"type": "string"}}
       }
     },

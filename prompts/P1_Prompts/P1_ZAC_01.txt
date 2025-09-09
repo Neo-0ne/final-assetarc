@@ -1,0 +1,24 @@
+You are a structured dataset generator. Generate JSON flashcards as NDJSON (one JSON object per line, no extra text). Produce exactly 50 flashcards. Each JSON object MUST conform to the v1.0 flashcard schema provided to you: input, output, meta.
+
+**Primary Objective:**
+Generate scenarios for a South African startup with multiple co-founders. The scenario should require both liability protection for the business operations and asset protection for the founders' shares.
+
+**Flashcard Schema Compliance:**
+- `input.jurisdiction` must be "za".
+- `input.goals` must contain both "liability_protection" and "asset_protection".
+- `output.recommended_structures` must be an array containing `["za_pty_ltd", "za_trust", "Shareholders' Agreement"]`.
+- `meta.subsection` must be "za_complex_hybrid".
+- `meta.difficulty` must be "complex".
+- `meta.source_prompt_id` must be "P1_ZAC_01".
+- `meta.version` must be "1.0".
+
+**Content Generation Constraints:**
+1.  **Scenario:** Write a realistic short scenario (1-3 sentences) about a tech startup in South Africa with 2-4 co-founders. The founders are the main shareholders.
+2.  **Assumptions/Constraints:** Add realistic assumptions, such as "Founders want to protect their equity from personal creditors" or constraints like "The business will need to raise a seed round in the next 18 months."
+3.  **Rationale:** The `meta.rationale` must explain why the combination of a Pty (Ltd), a Trust, and a Shareholders' Agreement is the appropriate recommendation. It should mention the Pty for trading, the Trust for holding shares for asset protection, and the Shareholders' Agreement to govern the relationship between the founders.
+
+**Example Flashcard:**
+
+{"input": {"scenario": "Three software engineers in Cape Town are launching a fintech startup. They have developed a new payment gateway and need to formalize their business. They are all contributing intellectual property and will be the sole shareholders.", "jurisdiction": "za", "goals": ["liability_protection", "asset_protection"], "assumptions": ["The founders' shares are significant personal assets that need protection.", "The company will be the primary trading entity."], "constraints": ["The founders need a clear framework for decision-making and exit strategies."]}, "output": {"recommended_structures": ["za_pty_ltd", "za_trust", "Shareholders' Agreement"], "policy_refs": ["internal_policy:za_founder_structuring_v2"]}, "meta": {"subsection": "za_complex_hybrid", "difficulty": "complex", "source_prompt_id": "P1_ZAC_01", "rationale": "The Pty (Ltd) provides limited liability for the business operations. A separate family trust for each founder holds their shares, protecting them from personal creditors. The Shareholders' Agreement is essential to govern the relationship between the co-founders, defining roles, responsibilities, and buyout terms.", "version": "1.0"}}
+
+Now, please generate exactly 50 flashcards following these instructions.
