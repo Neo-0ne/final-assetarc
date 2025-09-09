@@ -1,0 +1,68 @@
+You are an expert in South African B-BBEE (Broad-Based Black Economic Empowerment) legislation, specifically the Ownership scorecard. Your task is to generate a high-quality dataset for training an AI model that automates B-BBEE ownership calculations.
+
+**Primary Objective:**
+Generate exactly 50 flashcards in NDJSON format. Each flashcard must represent a different scenario for the B-BBEE Ownership scorecard calculator.
+
+**Flashcard Schema:**
+Each JSON object must have three top-level keys: `input`, `output`, and `meta`.
+
+**1. Input Schema:**
+The `input` object must be an `OwnershipStructure` model.
+
+```json
+{
+  "shareholders": [
+    {
+      "is_black": "boolean",
+      "is_black_woman": "boolean",
+      "voting_percentage": "number",
+      "economic_interest_percentage": "number"
+    }
+  ],
+  "total_entity_value": "number",
+  "total_acquisition_debt": "number",
+  "years_since_equity_deal": "number"
+}
+```
+
+**2. Output Schema:**
+The `output` object must represent the calculated ownership scorecard.
+
+```json
+{
+  "indicators": {
+    "voting_rights": { "points": "number", "target": "string", "actual": "string" },
+    "voting_rights_black_women": { "points": "number", "target": "string", "actual": "string" },
+    "economic_interest": { "points": "number", "target": "string", "actual": "string" },
+    "economic_interest_black_women": { "points": "number", "target": "string", "actual": "string" },
+    "net_value": { "points": "number", "target": "string", "sub_minimum_met": "boolean" }
+  },
+  "total_ownership_points": "number",
+  "discounting_principle_applied": "boolean"
+}
+```
+
+**3. Meta Schema:**
+
+```json
+{
+  "rationale": "string",
+  "source_prompt_id": "P2_BBBEE_CALC_01"
+}
+```
+
+**Content Generation Constraints (Very Important):**
+1.  **Vary Scenarios:** Create a diverse set of scenarios. Include:
+    *   Simple structures with one or two shareholders.
+    *   Complex structures with multiple shareholders, including a mix of black, non-black, and black women shareholders.
+    *   Scenarios with high and low acquisition debt.
+    *   Vary the `years_since_equity_deal` to test the time-based graduation factor for Net Value.
+    *   Create scenarios that meet the sub-minimum for Net Value and scenarios that do not.
+2.  **Logical Consistency:** The points calculated in the `output` must be arithmetically correct based on the logic in `bbee.py`.
+3.  **Rationale:** The `meta.rationale` must briefly explain the scenario and the key factors influencing the score (e.g., "A scenario for a mature company where the Net Value calculation uses the full graduation factor. The entity meets all targets, resulting in a high score.").
+
+**Example Flashcard:**
+
+{"input": {"shareholders": [{"is_black": true, "is_black_woman": false, "voting_percentage": 26, "economic_interest_percentage": 26}], "total_entity_value": 10000000, "total_acquisition_debt": 2000000, "years_since_equity_deal": 5}, "output": {"indicators": {"voting_rights": {"points": 4.0, "target": "25.0%", "actual": "26.0%"}, "voting_rights_black_women": {"points": 0.0, "target": "10.0%", "actual": "0.0%"}, "economic_interest": {"points": 8.0, "target": "25.0%", "actual": "26.0%"}, "economic_interest_black_women": {"points": 0.0, "target": "10.0%", "actual": "0.0%"}, "net_value": {"points": 3.2, "target": "8 points (subject to sub-minimum)", "sub_minimum_met": true}}, "total_ownership_points": 15.2, "discounting_principle_applied": false}, "meta": {"rationale": "This scenario meets the basic targets for black ownership but lacks black women participation. The Net Value points meet the sub-minimum threshold.", "source_prompt_id": "P2_BBBEE_CALC_01"}}
+
+Now, please generate exactly 50 flashcards following these instructions.

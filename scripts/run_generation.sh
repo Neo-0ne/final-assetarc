@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# A script to automate the generation of the entire Phase 1 training dataset.
-# It reads each prompt file from the prompts/ directory and runs the
-# Python generation script, saving the output to the generated_data/ directory.
+# A master script to automate the generation of the entire training dataset for all phases.
+# It identifies prompts from P1, P2, and P3 directories and runs the
+# corresponding Python generation script for each.
 
 # Ensure the script is run from the repository root
 if [ ! -d "scripts" ] || [ ! -d "prompts" ]; then
@@ -13,36 +13,78 @@ fi
 # Create the output directory if it doesn't exist
 mkdir -p generated_data
 
-# Fetch OpenAI API Key from secrets, or use environment variable
-# Note: The Python script handles this, but we could add an explicit check here too.
-if [ -z "$OPENAI_API_KEY" ]; then
-    echo "INFO: OPENAI_API_KEY environment variable not set. The script will try to use the secrets manager."
-fi
-
 echo "--- Starting AI Training Data Generation ---"
 
-# Loop through all prompt files in the prompts/ directory
-for prompt_file in prompts/P1_*.txt; do
+# --- Phase 1: Corporate Structuring ---
+echo "--- Running Phase 1 Prompts ---"
+for prompt_file in prompts/P1_Prompts/P1_*.txt; do
     if [ -f "$prompt_file" ]; then
-        # Extract the prompt ID from the filename (e.g., P1_ZSL_01)
         prompt_id=$(basename "$prompt_file" .txt)
-
-        echo "INFO: Running generator for prompt: $prompt_id"
-
-        # Define the output file path
+        echo "INFO: Running P1 generator for prompt: $prompt_id"
         output_file="generated_data/${prompt_id}_output.ndjson"
 
-        # Read the prompt content from the file
-        prompt_content=$(cat "$prompt_file")
-
-        # Run the Python script
+        # P1 script uses --prompt-file
         python3 scripts/generate_flashcards.py \
-            --prompt "$prompt_content" \
+            --prompt-file "$prompt_file" \
             --output-file "$output_file"
 
-        echo "INFO: Generation for $prompt_id complete. Output saved to $output_file"
+        echo "INFO: Generation for $prompt_id complete."
         echo "-----------------------------------------------------"
     fi
 done
+
+# --- Phase 2: Compliance Logic (Rollover & Residency) ---
+echo "--- Running Phase 2 Prompts ---"
+for prompt_file in prompts/P2_Prompts/P2_*.txt; do
+    if [ -f "$prompt_file" ]; then
+        prompt_id=$(basename "$prompt_file" .txt)
+        echo "INFO: Running P2 generator for prompt: $prompt_id"
+        output_file="generated_data/${prompt_id}_output.ndjson"
+
+        # Determine the schema type from the filename
+        schema_type=""
+        if [[ $prompt_id == *"_ROLL_"* ]]; then
+            schema_type="rollover"
+        elif [[ $prompt_id == *"_RES_"* ]]; then
+            schema_type="residency"
+        elif [[ $prompt_id == *"_ESTATE_CALC_"* ]]; then
+            schema_type="estate_calculator"
+        elif [[ $prompt_id == *"_BBBEE_CALC_"* ]]; then
+            schema_type="bbee_calculator"
+        elif [[ $prompt_id == *"_INSURANCE_WRAPPER_CALC_"* ]]; then
+            schema_type="insurance_wrapper_calculator"
+        else
+            echo "WARNING: Could not determine schema for P2 prompt $prompt_id. Skipping."
+            continue
+        fi
+
+        python3 scripts/generate_flashcards_phase2.py \
+            --prompt-file "$prompt_file" \
+            --output-file "$output_file" \
+            --schema-type "$schema_type"
+
+        echo "INFO: Generation for $prompt_id complete."
+        echo "-----------------------------------------------------"
+    fi
+done
+
+# --- Phase 3: Document Clause Generation ---
+echo "--- Running Phase 3 Prompts ---"
+for prompt_file in prompts/P3_document_clauses/P3_*.txt; do
+    if [ -f "$prompt_file" ]; then
+        prompt_id=$(basename "$prompt_file" .txt)
+        echo "INFO: Running P3 generator for prompt: $prompt_id"
+        output_file="generated_data/${prompt_id}_output.ndjson"
+
+        python3 scripts/generate_flashcards_phase3.py \
+            --prompt-file "$prompt_file" \
+            --output-file "$output_file" \
+            --schema-type "clause_generation"
+
+        echo "INFO: Generation for $prompt_id complete."
+        echo "-----------------------------------------------------"
+    fi
+done
+
 
 echo "--- All Data Generation Prompts Executed ---"

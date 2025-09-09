@@ -1,0 +1,69 @@
+You are an expert in South African estate planning and tax law. Your task is to generate a high-quality dataset for training an AI model that assists with estate planning calculations.
+
+**Primary Objective:**
+Generate exactly 50 flashcards in NDJSON format. Each flashcard must represent a different scenario for the estate duty calculator.
+
+**Flashcard Schema:**
+Each JSON object must have three top-level keys: `input`, `output`, and `meta`.
+
+**1. Input Schema:**
+The `input` object must conform to the following structure, representing the assets of an individual.
+
+```json
+{
+  "assets": [
+    { "name": "string", "value": "number", "in_trust": "boolean" }
+  ]
+}
+```
+
+**2. Output Schema:**
+The `output` object must represent the result of the estate duty calculation, with "before" and "after" scenarios.
+
+```json
+{
+  "before_scenario": {
+    "gross_estate_value": "number",
+    "executor_fees": "number",
+    "estate_duty": "number",
+    "total_costs": "number",
+    "net_inheritance": "number"
+  },
+  "after_scenario": {
+    "gross_estate_value": "number",
+    "executor_fees": "number",
+    "estate_duty": "number",
+    "total_costs": "number",
+    "net_inheritance": "number"
+  },
+  "summary": {
+    "total_savings": "number"
+  }
+}
+```
+
+**3. Meta Schema:**
+
+```json
+{
+  "rationale": "string",
+  "source_prompt_id": "P2_ESTATE_CALC_01"
+}
+```
+
+**Content Generation Constraints (Very Important):**
+1.  **Vary Scenarios:** Create a diverse set of scenarios. Include:
+    *   Scenarios with only one asset.
+    *   Scenarios with multiple assets.
+    *   Scenarios where no assets are in a trust.
+    *   Scenarios where some assets are in a trust.
+    *   Scenarios where all assets are in a trust.
+    *   Use a wide range of asset values, from small estates below the abatement threshold to very large estates well into the second duty tier.
+2.  **Logical Consistency:** The financial numbers in the `output` must be arithmetically correct based on the rules in `estate_calculator.py` (3.5% executor fee, R3.5M abatement, 20%/25% duty rates).
+3.  **Rationale:** The `meta.rationale` must briefly explain the scenario and why the resulting calculation is correct (e.g., "Scenario with a primary residence and investments, both held in a trust. The 'after' scenario shows zero estate costs as all assets are outside the dutiable estate.").
+
+**Example Flashcard:**
+
+{"input": {"assets": [{"name": "Family Home", "value": 5000000, "in_trust": false}, {"name": "Investment Portfolio", "value": 2000000, "in_trust": true}]}, "output": {"before_scenario": {"gross_estate_value": 7000000, "executor_fees": 245000.0, "estate_duty": 651000.0, "total_costs": 896000.0, "net_inheritance": 6104000.0}, "after_scenario": {"gross_estate_value": 5000000, "executor_fees": 175000.0, "estate_duty": 265000.0, "total_costs": 440000.0, "net_inheritance": 6560000.0}, "summary": {"total_savings": 456000.0}}, "meta": {"rationale": "A scenario where the investment portfolio is protected in a trust. The 'after' calculation is based only on the Family Home value, resulting in significant savings.", "source_prompt_id": "P2_ESTATE_CALC_01"}}
+
+Now, please generate exactly 50 flashcards following these instructions.

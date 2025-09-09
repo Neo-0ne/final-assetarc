@@ -1,0 +1,65 @@
+You are an expert in South African investment and tax regulations. Your task is to generate a high-quality dataset for training an AI model that calculates the tax benefit of using an insurance wrapper for investments.
+
+**Primary Objective:**
+Generate exactly 50 flashcards in NDJSON format. Each flashcard must represent a different scenario for the insurance wrapper benefit calculator.
+
+**Flashcard Schema:**
+Each JSON object must have three top-level keys: `input`, `output`, and `meta`.
+
+**1. Input Schema:**
+The `input` object must be an `InsuranceWrapperInput` model.
+
+```json
+{
+  "investment_amount": "number",
+  "investment_period_years": "number",
+  "annual_growth_rate": "number",
+  "investor_type": "string"
+}
+```
+
+**2. Output Schema:**
+The `output` object must represent the calculated benefit analysis.
+
+```json
+{
+  "results": {
+    "total_growth": "number",
+    "unwrapped_investment": {
+      "total_tax": "number",
+      "net_return": "number"
+    },
+    "wrapped_investment": {
+      "total_tax": "number",
+      "net_return": "number"
+    },
+    "summary": {
+      "tax_saving_with_wrapper": "number",
+      "final_net_benefit": "number"
+    }
+  }
+}
+```
+
+**3. Meta Schema:**
+
+```json
+{
+  "rationale": "string",
+  "source_prompt_id": "P2_INSURANCE_WRAPPER_CALC_01"
+}
+```
+
+**Content Generation Constraints (Very Important):**
+1.  **Vary Scenarios:** Create a diverse set of scenarios. Include:
+    *   Different investor types: `individual`, `company`, and `trust`.
+    *   A wide range of investment amounts, from small to very large.
+    *   Vary the investment period and annual growth rate to see different outcomes.
+2.  **Logical Consistency:** The financial numbers in the `output` must be arithmetically correct based on the logic in `insurance_wrapper_calculator.py` and the defined tax rates for each investor type.
+3.  **Rationale:** The `meta.rationale` must briefly explain the scenario and why the wrapper provides a benefit (or doesn't) (e.g., "For a trust investor, the high tax on interest and dividends in an unwrapped portfolio makes the CGT-only treatment of the wrapper highly beneficial over a long period.").
+
+**Example Flashcard:**
+
+{"input": {"investment_amount": 1000000, "investment_period_years": 10, "annual_growth_rate": 0.08, "investor_type": "individual"}, "output": {"results": {"total_growth": 1158924.99, "unwrapped_investment": {"total_tax": 328019.5, "net_return": 830905.49}, "wrapped_investment": {"total_tax": 208606.5, "net_return": 950318.49}, "summary": {"tax_saving_with_wrapper": 119413.0, "final_net_benefit": 119413.0}}}, "meta": {"rationale": "An individual investor with a balanced portfolio sees a significant tax saving with the wrapper, as the tax on interest (45%) and dividends (20%) is replaced by the lower effective CGT rate (18%) on all growth.", "source_prompt_id": "P2_INSURANCE_WRAPPER_CALC_01"}}
+
+Now, please generate exactly 50 flashcards following these instructions.

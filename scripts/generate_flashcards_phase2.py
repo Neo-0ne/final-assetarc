@@ -86,9 +86,80 @@ RESIDENCY_SCHEMA = {
   }
 }
 
+ESTATE_CALC_SCHEMA = {
+    "type": "object",
+    "required": ["input", "output", "meta"],
+    "properties": {
+        "input": {
+            "type": "object",
+            "required": ["assets"],
+            "properties": {
+                "assets": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": ["name", "value", "in_trust"],
+                        "properties": {
+                            "name": {"type": "string"},
+                            "value": {"type": "number"},
+                            "in_trust": {"type": "boolean"}
+                        }
+                    }
+                }
+            }
+        },
+        "output": {"type": "object"},
+        "meta": {"type": "object"}
+    }
+}
+
+BBBEE_CALC_SCHEMA = {
+    "type": "object",
+    "required": ["input", "output", "meta"],
+    "properties": {
+        "input": {
+            "type": "object",
+            "required": ["shareholders", "total_entity_value", "total_acquisition_debt", "years_since_equity_deal"],
+            "properties": {
+                "shareholders": {
+                    "type": "array",
+                    "items": {"type": "object"}
+                },
+                "total_entity_value": {"type": "number"},
+                "total_acquisition_debt": {"type": "number"},
+                "years_since_equity_deal": {"type": "number"}
+            }
+        },
+        "output": {"type": "object"},
+        "meta": {"type": "object"}
+    }
+}
+
+INSURANCE_WRAPPER_CALC_SCHEMA = {
+    "type": "object",
+    "required": ["input", "output", "meta"],
+    "properties": {
+        "input": {
+            "type": "object",
+            "required": ["investment_amount", "investment_period_years", "annual_growth_rate", "investor_type"],
+            "properties": {
+                "investment_amount": {"type": "number"},
+                "investment_period_years": {"type": "number"},
+                "annual_growth_rate": {"type": "number"},
+                "investor_type": {"type": "string"}
+            }
+        },
+        "output": {"type": "object"},
+        "meta": {"type": "object"}
+    }
+}
+
 SCHEMA_MAP = {
     "rollover": ROLLOVER_SCHEMA,
-    "residency": RESIDENCY_SCHEMA
+    "residency": RESIDENCY_SCHEMA,
+    "estate_calculator": ESTATE_CALC_SCHEMA,
+    "bbee_calculator": BBBEE_CALC_SCHEMA,
+    "insurance_wrapper_calculator": INSURANCE_WRAPPER_CALC_SCHEMA
 }
 
 # --- 2. Function to Call the LLM ---
@@ -139,7 +210,7 @@ def main():
     parser = argparse.ArgumentParser(description="Generate Phase 2 AI training flashcards using an LLM.")
     parser.add_argument("--prompt-file", type=str, required=True, help="The path to the .txt file containing the prompt.")
     parser.add_argument("--output-file", type=str, required=True, help="The path to save the output NDJSON file.")
-    parser.add_argument("--schema-type", type=str, required=True, choices=["rollover", "residency"], help="The type of schema to validate against ('rollover' or 'residency').")
+    parser.add_argument("--schema-type", type=str, required=True, choices=["rollover", "residency", "estate_calculator", "bbee_calculator", "insurance_wrapper_calculator"], help="The type of schema to validate against.")
     parser.add_argument("--api-key", type=str, default=None, help="Optional: OpenAI API key. If not provided, it will be fetched from secrets.")
 
     args = parser.parse_args()
