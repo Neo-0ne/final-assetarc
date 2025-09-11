@@ -1,0 +1,24 @@
+{
+  "generated_at": "2025-09-10T15:40:21.559292Z",
+  "zip": "/mnt/data/flashcards_prompts_extra_regen.zip",
+  "num_prompt_files": 4,
+  "total_flashcards": 8000,
+  "files": [
+    {
+      "file": "P1_ZAC_01_2000.txt",
+      "lines": 2000
+    },
+    {
+      "file": "P2_BBBEE_CALC_01_2000.txt",
+      "lines": 2000
+    },
+    {
+      "file": "P2_ESTATE_CALC_01_2000.txt",
+      "lines": 2000
+    },
+    {
+      "file": "P2_INSURANCE_WRAPPER_CALC_01_2000.txt",
+      "lines": 2000
+    }
+  ]
+}

@@ -1,0 +1,2116 @@
+{
+  "generated_at": "2025-09-10T09:33:16.104993Z",
+  "num_prompts": 111,
+  "total_flashcards_across_rounds": 55500,
+  "prompts": [
+    {
+      "prompt_id": "DEFINITIVE_DOCUMENT_LIST_COMBINED",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/DEFINITIVE_DOCUMENT_LIST_COMBINED_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/DEFINITIVE_DOCUMENT_LIST_COMBINED_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "DOCUMENT_MASTER_LIST",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/DOCUMENT_MASTER_LIST_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/DOCUMENT_MASTER_LIST_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P2_RES_EXIT_RULE",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P2_RES_EXIT_RULE_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P2_RES_EXIT_RULE_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P2_RES_NON_RESIDENT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P2_RES_NON_RESIDENT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P2_RES_NON_RESIDENT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P2_RES_ORD_RESIDENT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P2_RES_ORD_RESIDENT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P2_RES_ORD_RESIDENT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P2_RES_PHYS_PRES_RESIDENT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P2_RES_PHYS_PRES_RESIDENT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P2_RES_PHYS_PRES_RESIDENT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P2_ROLL_S42_ELIGIBLE",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P2_ROLL_S42_ELIGIBLE_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P2_ROLL_S42_ELIGIBLE_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P2_ROLL_S42_INELIGIBLE",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P2_ROLL_S42_INELIGIBLE_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P2_ROLL_S42_INELIGIBLE_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P2_ROLL_S45_ELIGIBLE",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P2_ROLL_S45_ELIGIBLE_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P2_ROLL_S45_ELIGIBLE_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P2_ROLL_S45_INELIGIBLE",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P2_ROLL_S45_INELIGIBLE_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P2_ROLL_S45_INELIGIBLE_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P2_ROLL_S46_ELIGIBLE",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P2_ROLL_S46_ELIGIBLE_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P2_ROLL_S46_ELIGIBLE_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P2_ROLL_S47_ELIGIBLE",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P2_ROLL_S47_ELIGIBLE_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P2_ROLL_S47_ELIGIBLE_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_ADVISOR_NOTES_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_ADVISOR_NOTES_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_ADVISOR_NOTES_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_AGENT_AGR_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_AGENT_AGR_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_AGENT_AGR_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_AGENT_APPOINT_BVI_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_AGENT_APPOINT_BVI_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_AGENT_APPOINT_BVI_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_ANALYTICS_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_ANALYTICS_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_ANALYTICS_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_APOSTILLE_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_APOSTILLE_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_APOSTILLE_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_ARTICLES_BVI_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_ARTICLES_BVI_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_ARTICLES_BVI_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_BANK_RES_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_BANK_RES_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_BANK_RES_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_BANK_RES_PROMPT (2)",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_BANK_RES_PROMPT (2)_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_BANK_RES_PROMPT (2)_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_BBBEE_AFF_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_BBBEE_AFF_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_BBBEE_AFF_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_BBBEE_VER_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_BBBEE_VER_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_BBBEE_VER_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_BEN_OWNER_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_BEN_OWNER_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_BEN_OWNER_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_BOARD_MIN_IBC_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_BOARD_MIN_IBC_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_BOARD_MIN_IBC_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_BOARD_RES_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_BOARD_RES_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_BOARD_RES_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_BOOKING_ERR_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_BOOKING_ERR_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_BOOKING_ERR_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_BUYBACK_RES_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_BUYBACK_RES_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_BUYBACK_RES_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_BUYBACK_RES_PROMPT (2)",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_BUYBACK_RES_PROMPT (2)_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_BUYBACK_RES_PROMPT (2)_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_CERT_GOOD_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_CERT_GOOD_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_CERT_GOOD_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_CERT_GOOD_PROMPT (2)",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_CERT_GOOD_PROMPT (2)_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_CERT_GOOD_PROMPT (2)_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_CERT_INC_SEY_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_CERT_INC_SEY_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_CERT_INC_SEY_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_CERT_INC_SEY_PROMPT (2)",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_CERT_INC_SEY_PROMPT (2)_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_CERT_INC_SEY_PROMPT (2)_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_COMP_CHECK_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_COMP_CHECK_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_COMP_CHECK_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_COMP_CHECK_PROMPT (2)",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_COMP_CHECK_PROMPT (2)_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_COMP_CHECK_PROMPT (2)_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_COR14_1_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_COR14_1_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_COR14_1_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_COR14_2_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_COR14_2_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_COR14_2_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_COR15_2_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_COR15_2_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_COR15_2_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_COR39_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_COR39_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_COR39_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_COURSE_CERT_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_COURSE_CERT_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_COURSE_CERT_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_DIR_CONSENT_IBC_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_DIR_CONSENT_IBC_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_DIR_CONSENT_IBC_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_DIR_CONSENT_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_DIR_CONSENT_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_DIR_CONSENT_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_DOCGEN_INV_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_DOCGEN_INV_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_DOCGEN_INV_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_DOC_ENGINE_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_DOC_ENGINE_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_DOC_ENGINE_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_DRAFT_COVER_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_DRAFT_COVER_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_DRAFT_COVER_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_EMAIL_FOLLOW_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_EMAIL_FOLLOW_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_EMAIL_FOLLOW_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_ENGAGEMENT_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_ENGAGEMENT_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_ENGAGEMENT_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_FATCA_CRS_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_FATCA_CRS_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_FATCA_CRS_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_FATCA_CRS_PROMPT (2)",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_FATCA_CRS_PROMPT (2)_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_FATCA_CRS_PROMPT (2)_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_FICA_CHECK_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_FICA_CHECK_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_FICA_CHECK_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_FICA_DECL_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_FICA_DECL_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_FICA_DECL_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_FICA_REPORT_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_FICA_REPORT_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_FICA_REPORT_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_FILING_COVER_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_FILING_COVER_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_FILING_COVER_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_FILING_COVER_PROMPT (2)",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_FILING_COVER_PROMPT (2)_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_FILING_COVER_PROMPT (2)_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_FINAL_CHECK_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_FINAL_CHECK_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_FINAL_CHECK_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_FIN_ASSIST_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_FIN_ASSIST_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_FIN_ASSIST_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_FIN_ASSIST_PROMPT (2)",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_FIN_ASSIST_PROMPT (2)_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_FIN_ASSIST_PROMPT (2)_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_FOLLOW_UP_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_FOLLOW_UP_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_FOLLOW_UP_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_GBL_MAU_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_GBL_MAU_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_GBL_MAU_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_INC_CHECK_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_INC_CHECK_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_INC_CHECK_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_INVOICE_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_INVOICE_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_INVOICE_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_J401_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_J401_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_J401_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_KPI_REPORT_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_KPI_REPORT_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_KPI_REPORT_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_KYC_CHECK_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_KYC_CHECK_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_KYC_CHECK_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_LEGAL_AUDIT_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_LEGAL_AUDIT_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_LEGAL_AUDIT_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_LETTER_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_LETTER_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_LETTER_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_LETTER_WISHES_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_LETTER_WISHES_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_LETTER_WISHES_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_MINUTES_ADD_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_MINUTES_ADD_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_MINUTES_ADD_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_MNA_SEY_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_MNA_SEY_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_MNA_SEY_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_MOA_IBC_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_MOA_IBC_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_MOA_IBC_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_NDA_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_NDA_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_NDA_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_NEWSLETTER_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_NEWSLETTER_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_NEWSLETTER_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_NOMINEE_IBC_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_NOMINEE_IBC_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_NOMINEE_IBC_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_OFFSHORE_TRUST_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_OFFSHORE_TRUST_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_OFFSHORE_TRUST_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_PEP_CHECK_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_PEP_CHECK_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_PEP_CHECK_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_PROFORMA_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_PROFORMA_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_PROFORMA_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_PROTECTOR_AGR_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_PROTECTOR_AGR_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_PROTECTOR_AGR_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_QUOTE_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_QUOTE_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_QUOTE_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_RECEIPT_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_RECEIPT_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_RECEIPT_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_REG_MEM_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_REG_MEM_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_REG_MEM_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_RESIDENCY_PLAN_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_RESIDENCY_PLAN_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_RESIDENCY_PLAN_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_RESIDENCY_SUM_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_RESIDENCY_SUM_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_RESIDENCY_SUM_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_REVIEW_SUMMARY_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_REVIEW_SUMMARY_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_REVIEW_SUMMARY_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_SARS_RULING_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_SARS_RULING_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_SARS_RULING_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_SEQ_STEP_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_SEQ_STEP_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_SEQ_STEP_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_SHARE_CERT_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_SHARE_CERT_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_SHARE_CERT_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_SHARE_TRANSFER_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_SHARE_TRANSFER_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_SHARE_TRANSFER_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_SHA_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_SHA_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_SHA_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_SOLVENCY_TEST_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_SOLVENCY_TEST_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_SOLVENCY_TEST_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_SOURCE_FUNDS_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_SOURCE_FUNDS_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_SOURCE_FUNDS_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_STRUCT_COMP_MEMO_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_STRUCT_COMP_MEMO_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_STRUCT_COMP_MEMO_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_STRUCT_COMP_REP_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_STRUCT_COMP_REP_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_STRUCT_COMP_REP_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_STRUCT_MEMO_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_STRUCT_MEMO_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_STRUCT_MEMO_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_SUBMISSION_CHK_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_SUBMISSION_CHK_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_SUBMISSION_CHK_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_SUBS_WELCOME_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_SUBS_WELCOME_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_SUBS_WELCOME_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_TAX_RES_MAU_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_TAX_RES_MAU_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_TAX_RES_MAU_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_TRANS_SUMMARY_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_TRANS_SUMMARY_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_TRANS_SUMMARY_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_TRUSTEE_AGENDA_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_TRUSTEE_AGENDA_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_TRUSTEE_AGENDA_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_TRUSTEE_MINUTES_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_TRUSTEE_MINUTES_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_TRUSTEE_MINUTES_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_TRUSTEE_RES_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_TRUSTEE_RES_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_TRUSTEE_RES_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_TRUST_BVI_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_TRUST_BVI_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_TRUST_BVI_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_TRUST_DEED_ADD_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_TRUST_DEED_ADD_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_TRUST_DEED_ADD_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_TRUST_DEED_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_TRUST_DEED_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_TRUST_DEED_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_TRUST_JER_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_TRUST_JER_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_TRUST_JER_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_TRUST_MAU_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_TRUST_MAU_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_TRUST_MAU_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_UTM_REP_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_UTM_REP_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_UTM_REP_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "P3_WELCOME_EMAIL_PROMPT",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/P3_WELCOME_EMAIL_PROMPT_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/P3_WELCOME_EMAIL_PROMPT_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "PHASE_2_GENERATION_GUIDE",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/PHASE_2_GENERATION_GUIDE_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/PHASE_2_GENERATION_GUIDE_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "README_INDEX",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/README_INDEX_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/README_INDEX_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "openai_prompt_for_phase2_residency_planner",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/openai_prompt_for_phase2_residency_planner_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/openai_prompt_for_phase2_residency_planner_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "openai_prompt_for_phase2_rollover_planner",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/openai_prompt_for_phase2_rollover_planner_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/openai_prompt_for_phase2_rollover_planner_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    },
+    {
+      "prompt_id": "openai_prompt_for_phase3_clause_generation",
+      "files": {
+        "round1": null,
+        "round2": null,
+        "round3": null,
+        "round4": "/mnt/data/flashcard_outputs_round4/openai_prompt_for_phase3_clause_generation_round4.txt",
+        "combined": "/mnt/data/flashcard_outputs_combined_fixed/openai_prompt_for_phase3_clause_generation_all_rounds.txt"
+      },
+      "counts": {
+        "round1": 0,
+        "round2": 0,
+        "round3": 0,
+        "round4": 500,
+        "combined": 500
+      },
+      "total_count": 500,
+      "expected_total": 2000
+    }
+  ]
+}
