@@ -1,74 +1,111 @@
-import os
 import json
+import os
 import glob
 import re
 
-def correct_business_logic(record):
+# --- Business Logic Rules (from prompts/P1_Prompts/P1_REV_01.txt) ---
+
+def apply_business_logic_correction(record):
     """
-    Validates and corrects the business logic of a single P1 flashcard record.
-    Returns the (potentially corrected) record and a boolean indicating if a correction was made.
+    Validates a record against business logic rules and corrects it if necessary.
+    Returns the corrected record and a boolean indicating if a correction was made.
     """
     try:
-        goals = record.get("input", {}).get("goals", [])
-        jurisdiction = record.get("input", {}).get("jurisdiction")
-        current_structures = record.get("output", {}).get("recommended_structures", [])
+        jurisdiction = record.get('input', {}).get('jurisdiction')
+        goals = record.get('input', {}).get('goals', [])
+        original_structures = record.get('output', {}).get('recommended_structures', [])
         
-        correct_structures = None
+        # Use sets for easier comparison, ignoring order
+        original_structures_set = set(original_structures)
+        corrected_structures = original_structures.copy()
+        is_corrected = False
+
+        # Rule 1: za + liability_protection
+        if jurisdiction == 'za' and goals == ['liability_protection']:
+            if original_structures_set != {'za_pty_ltd'}:
+                corrected_structures = ['za_pty_ltd']
+                is_corrected = True
         
-        # Rule 1 & 2: Simple ZA cases
-        if jurisdiction == 'za':
-            if sorted(goals) == ['asset_protection']:
-                correct_structures = ['za_trust']
-            elif sorted(goals) == ['liability_protection']:
-                correct_structures = ['za_pty_ltd']
-            # Rule 3: Hybrid ZA case
-            elif 'asset_protection' in goals and 'liability_protection' in goals:
-                correct_structures = sorted(list(set(current_structures) | {'za_pty_ltd', 'za_trust'}))
+        # Rule 2: za + asset_protection
+        elif jurisdiction == 'za' and goals == ['asset_protection']:
+            if original_structures_set != {'za_trust'}:
+                corrected_structures = ['za_trust']
+                is_corrected = True
 
-        # Rule 4: International cases
-        if 'international_trade' in goals or 'tax_efficiency' in goals:
-            if jurisdiction != 'za':
-                 correct_structures = sorted(list(set(current_structures) | {'mu_ibc'}))
+        # Rule 3: za + both liability and asset protection
+        elif jurisdiction == 'za' and 'liability_protection' in goals and 'asset_protection' in goals:
+            if not {'za_pty_ltd', 'za_trust'}.issubset(original_structures_set):
+                corrected_structures = ['za_pty_ltd', 'za_trust']
+                is_corrected = True
 
-        if correct_structures and sorted(current_structures) != sorted(correct_structures):
-            record["output"]["recommended_structures"] = correct_structures
-            return record, True
+        # Rule 4: non-za + international_trade or tax_efficiency
+        elif jurisdiction != 'za' and ('international_trade' in goals or 'tax_efficiency' in goals):
+            if 'mu_ibc' not in original_structures_set:
+                corrected_structures.append('mu_ibc')
+                is_corrected = True
 
-    except Exception:
+        if is_corrected:
+            record['output']['recommended_structures'] = sorted(corrected_structures) # Sort for consistency
+
+        return record, is_corrected
+
+    except (KeyError, TypeError):
         return record, False
 
-    return record, False
+# --- Content Safety Rules (from prompts/P1_Prompts/P1_REV_02.txt) ---
 
-def flag_content_safety_issues(record):
+GUARANTEE_KEYWORDS = [
+    'guaranteed', 'you will not owe tax', 'no tax', 'will avoid all tax',
+    '100% success', 'zero risk', 'risk-free', 'certain to'
+]
+EMAIL_REGEX = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
+
+def apply_content_safety_flags(record):
     """
-    Analyzes a record for content safety issues like PII or guarantees.
-    Returns the record with a `qc_flags` key added if issues are found,
-    and a boolean indicating if a flag was added.
+    Checks a record for content safety issues and adds flags if any are found.
+    Returns the record (potentially with flags) and a boolean indicating if flags were added.
     """
-    flags = []
-    text_to_check = json.dumps(record)
+    flags_to_add = []
+    text_to_check = json.dumps(record) # Check the whole record for simplicity
 
-    if re.search(r'[\w\.-]+@[\w\.-]+', text_to_check):
-        flags.append({"type": "content_safety", "details": "Found potential email address"})
-    
-    guarantee_keywords = ["guarantee", "guaranteed", "no risk", "will not owe", "certain to"]
-    if any(keyword in text_to_check.lower() for keyword in guarantee_keywords):
-        flags.append({"type": "content_safety", "details": "Found potential guarantee of outcome"})
+    # Check for PII (simple email check)
+    if EMAIL_REGEX.search(text_to_check):
+        flags_to_add.append({"type": "content_safety", "details": "Found potential PII (email address)"})
 
-    if flags:
-        if "qc_flags" in record:
-            record["qc_flags"].extend(flags)
-        else:
-            record["qc_flags"] = flags
+    # Check for guarantees
+    if any(keyword in text_to_check.lower() for keyword in GUARANTEE_KEYWORDS):
+        flags_to_add.append({"type": "content_safety", "details": "Found potential guarantee of outcome"})
+
+    if flags_to_add:
+        if 'qc_flags' not in record:
+            record['qc_flags'] = []
+        # Avoid adding duplicate flags
+        for flag in flags_to_add:
+            if flag not in record['qc_flags']:
+                record['qc_flags'].append(flag)
         return record, True
 
     return record, False
 
+# --- Main Processing Logic ---
+
 def process_files():
     """
-    Main function to find P1 data files, process them, and generate a report.
+    Main function to find and process all P1 NDJSON files and generate a detailed report.
     """
-    p1_files = glob.glob("generated_data/P1_*.ndjson")
+    script_dir = os.path.dirname(__file__)
+    source_dir = os.path.abspath(os.path.join(script_dir, '..', 'generated_data', 'P1'))
+    files_to_process = glob.glob(os.path.join(source_dir, 'P1_*.ndjson'))
+
+    # Filter out files that are already corrected
+    files_to_process = [f for f in files_to_process if '_corrected' not in os.path.basename(f)]
+
+    if not files_to_process:
+        print(f"No P1 NDJSON files to process were found in {source_dir}")
+        return
+
+    print(f"Found {len(files_to_process)} files to process...")
+
     report = {
         "files_processed": [],
         "total_records_checked": 0,
@@ -77,36 +114,28 @@ def process_files():
         "details": {}
     }
 
-    if not p1_files:
-        print("No P1 NDJSON files found in generated_data/. Exiting.")
-        return
-
-    for filepath in p1_files:
+    for filepath in files_to_process:
         filename = os.path.basename(filepath)
         corrected_filepath = filepath.replace(".ndjson", "_corrected.ndjson")
         
-        file_stats = {
-            "records_checked": 0,
-            "errors_corrected": 0,
-            "flags_added": 0
-        }
+        file_stats = {"records_checked": 0, "errors_corrected": 0, "flags_added": 0}
+        print(f"\nProcessing {filename}...")
 
-        print(f"Processing {filename}...")
-
-        with open(filepath, 'r') as infile, open(corrected_filepath, 'w') as outfile:
+        with open(filepath, 'r', encoding='utf-8') as infile, \
+             open(corrected_filepath, 'w', encoding='utf-8') as outfile:
             for line in infile:
                 if not line.strip():
                     continue
                 
+                file_stats["records_checked"] += 1
                 try:
                     record = json.loads(line)
-                    file_stats["records_checked"] += 1
 
-                    corrected_record, was_corrected = correct_business_logic(record)
+                    corrected_record, was_corrected = apply_business_logic_correction(record)
                     if was_corrected:
                         file_stats["errors_corrected"] += 1
 
-                    flagged_record, was_flagged = flag_content_safety_issues(corrected_record)
+                    flagged_record, was_flagged = apply_content_safety_flags(corrected_record)
                     if was_flagged:
                         file_stats["flags_added"] += 1
                     
@@ -114,16 +143,16 @@ def process_files():
 
                 except json.JSONDecodeError:
                     print(f"  WARNING: Skipping invalid JSON line in {filename}")
+                    outfile.write(line) # Write invalid lines as-is
 
         report["files_processed"].append(filename)
         report["details"][filename] = file_stats
         report["total_records_checked"] += file_stats["records_checked"]
         report["total_errors_corrected"] += file_stats["errors_corrected"]
         report["total_flags_added"] += file_stats["flags_added"]
+        print(f"  Finished. Corrected file saved to {os.path.basename(corrected_filepath)}")
 
-        print(f"  Finished processing. Corrected file saved to {corrected_filepath}")
-
-    # Print final report
+    # Print final summary report
     print("\n--- QC Run Summary ---")
     print(f"Total files processed: {len(report['files_processed'])}")
     print(f"Total records checked: {report['total_records_checked']}")

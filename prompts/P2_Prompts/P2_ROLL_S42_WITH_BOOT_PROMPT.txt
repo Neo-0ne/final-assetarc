@@ -1,0 +1,66 @@
+You are an expert in South African tax law, specifically corporate rollover relief provisions. Your task is to generate a high-quality dataset for training a specialized AI model.
+
+**Primary Objective:**
+Generate exactly 50 flashcards in NDJSON format. Each flashcard must represent a transaction that is **ELIGIBLE** for relief under **Section 42**, but where some tax is triggered due to the presence of **"boot"** (non-share consideration like cash or assumed debt).
+
+**Flashcard Schema:**
+Each JSON object must have three top-level keys: `input`, `output`, and `meta`.
+
+**1. Input Schema:**
+The `input` object must conform to the following structure.
+
+```json
+{
+  "section": "s42",
+  "taxpayer_type": "string",
+  "transferor_residency": "SA",
+  "transferee_residency": "SA",
+  "consideration": { "shares_issued": true, "cash_boot": "number", "debt_assumed": "number" },
+  "asset_profile": { "type": "string", "market_value": "number", "base_cost": "number" },
+  "continuity_flags": { "nature_retained": true },
+  "timing_flags": { "earmarked_disposal_months": null },
+  "group_relationship": {}, "unbundling_details": {}, "liquidation_details": {}
+}
+```
+
+**2. Output Schema:**
+The `output` object must represent a successful eligibility check where partial tax is calculated.
+
+```json
+{
+  "eligibility": {
+    "eligible": true,
+    "failed_reasons": [],
+    "warnings": ["string"]
+  },
+  "tax_comparison": {
+    "cgt_no_relief": "number",
+    "cgt_with_relief": "number",
+    "tax_on_boot": "number",
+    "rolled_base_cost_to_acquirer": "number",
+    "net_deferral_benefit": "number",
+    "notes": ["string"]
+  }
+}
+```
+
+**3. Meta Schema:**
+
+```json
+{
+  "rationale": "string",
+  "source_prompt_id": "P2_ROLL_S42_WITH_BOOT"
+}
+```
+
+**Content Generation Constraints (Very Important):**
+1.  **Fixed Values:** The `input.section` must always be `"s42"`. The `input.consideration.shares_issued` must always be `true`. `input.transferor_residency` and `input.transferee_residency` must be `"SA"`. `output.eligibility.eligible` must always be `true`.
+2.  **Boot Requirement:** The sum of `input.consideration.cash_boot` and `input.consideration.debt_assumed` must be **greater than zero**.
+3.  **Logical Consistency:** The `output.tax_comparison.cgt_with_relief` and `output.tax_comparison.tax_on_boot` must be greater than zero and equal to each other. The `net_deferral_benefit` must be a positive number, representing the difference between `cgt_no_relief` and `cgt_with_relief`.
+4.  **Rationale:** The `meta.rationale` must explain *why* the transaction is eligible but still triggers tax, referencing the "boot" (e.g., "The transaction is eligible for s42 relief as the core requirements are met. However, partial CGT is triggered on the cash 'boot' received by the transferor.").
+
+**Example Flashcard:**
+
+{"input": {"section": "s42", "taxpayer_type": "individual", "transferor_residency": "SA", "transferee_residency": "SA", "consideration": {"shares_issued": true, "cash_boot": 50000, "debt_assumed": 0}, "asset_profile": {"type": "capital", "market_value": 2000000, "base_cost": 1500000}, "continuity_flags": {"nature_retained": true}, "timing_flags": {"earmarked_disposal_months": null}, "group_relationship": {}, "unbundling_details": {}, "liquidation_details": {}}, "output": {"eligibility": {"eligible": true, "failed_reasons": [], "warnings": []}, "tax_comparison": {"cgt_no_relief": 90000, "cgt_with_relief": 9000, "tax_on_boot": 9000, "rolled_base_cost_to_acquirer": 1500000, "net_deferral_benefit": 81000, "notes": ["Calculation assumes a 40% CGT inclusion rate for individuals and a 45% marginal tax rate for 2024."]}}, "meta": {"rationale": "The transaction qualifies for Section 42 relief, but CGT is payable on the R50,000 cash boot received, as this portion of the gain cannot be deferred.", "source_prompt_id": "P2_ROLL_S42_WITH_BOOT"}}
+
+Now, please generate exactly 50 flashcards following these instructions.

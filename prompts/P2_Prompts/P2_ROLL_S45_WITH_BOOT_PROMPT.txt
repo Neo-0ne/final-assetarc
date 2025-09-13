@@ -1,0 +1,65 @@
+You are an expert in South African tax law, specifically corporate rollover relief provisions. Your task is to generate a high-quality dataset for training a specialized AI model.
+
+**Primary Objective:**
+Generate exactly 50 flashcards in NDJSON format. Each flashcard must represent an intra-group transaction that is **ELIGIBLE** for relief under **Section 45**, but where some tax is triggered due to the presence of **"boot"** (non-share consideration like cash or assumed debt).
+
+**Flashcard Schema:**
+Each JSON object must have three top-level keys: `input`, `output`, and `meta`.
+
+**1. Input Schema:**
+The `input` object must conform to the following structure.
+
+```json
+{
+  "section": "s45",
+  "taxpayer_type": "company",
+  "transferor_residency": "SA",
+  "transferee_residency": "SA",
+  "group_relationship": { "same_group": true, "percentage": "number" },
+  "consideration": { "shares_issued": false, "cash_boot": "number", "debt_assumed": "number" },
+  "asset_profile": { "type": "string", "market_value": "number", "base_cost": "number" },
+  "continuity_flags": {}, "timing_flags": {}, "unbundling_details": {}, "liquidation_details": {}
+}
+```
+
+**2. Output Schema:**
+The `output` object must represent a successful eligibility check where partial tax is calculated.
+
+```json
+{
+  "eligibility": {
+    "eligible": true,
+    "failed_reasons": [],
+    "warnings": ["string"]
+  },
+  "tax_comparison": {
+    "cgt_no_relief": "number",
+    "cgt_with_relief": "number",
+    "tax_on_boot": "number",
+    "rolled_base_cost_to_acquirer": "number",
+    "net_deferral_benefit": "number",
+    "notes": ["string"]
+  }
+}
+```
+
+**3. Meta Schema:**
+
+```json
+{
+  "rationale": "string",
+  "source_prompt_id": "P2_ROLL_S45_WITH_BOOT"
+}
+```
+
+**Content Generation Constraints (Very Important):**
+1.  **Fixed Values:** The `input.section` must always be `"s45"`. The `input.group_relationship.same_group` must be `true` and `input.group_relationship.percentage` must be `>= 70`. The `input.taxpayer_type` must be `"company"`. `output.eligibility.eligible` must always be `true`.
+2.  **Boot Requirement:** The sum of `input.consideration.cash_boot` and `input.consideration.debt_assumed` must be **greater than zero**.
+3.  **Logical Consistency:** The `output.tax_comparison.cgt_with_relief` and `output.tax_comparison.tax_on_boot` must be greater than zero and equal to each other. The `net_deferral_benefit` must be a positive number.
+4.  **Rationale:** The `meta.rationale` must explain *why* the transaction is eligible for s45 relief but still triggers tax due to boot (e.g., "The transaction is eligible for s45 as it's an intra-group transfer between SA resident companies. However, CGT is triggered on the debt assumed by the transferee, as this constitutes 'boot'.").
+
+**Example Flashcard:**
+
+{"input": {"section": "s45", "taxpayer_type": "company", "transferor_residency": "SA", "transferee_residency": "SA", "group_relationship": {"same_group": true, "percentage": 80}, "consideration": {"shares_issued": false, "cash_boot": 0, "debt_assumed": 100000}, "asset_profile": {"type": "immovable_property", "market_value": 5000000, "base_cost": 3000000}, "continuity_flags": {}, "timing_flags": {}, "unbundling_details": {}, "liquidation_details": {}}, "output": {"eligibility": {"eligible": true, "failed_reasons": [], "warnings": ["De-grouping within 6 years can trigger a tax clawback."]}, "tax_comparison": {"cgt_no_relief": 448000, "cgt_with_relief": 22400, "tax_on_boot": 22400, "rolled_base_cost_to_acquirer": 3000000, "net_deferral_benefit": 425600, "notes": ["Calculation assumes an 80% CGT inclusion rate for companies and a 28% corporate income tax rate."]}}, "meta": {"rationale": "The transaction qualifies for Section 45 intra-group relief. However, CGT is payable on the R100,000 of debt assumed by the transferee, as this is treated as taxable 'boot'.", "source_prompt_id": "P2_ROLL_S45_WITH_BOOT"}}
+
+Now, please generate exactly 50 flashcards following these instructions.
