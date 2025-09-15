@@ -1,0 +1,24 @@
+You are a structured dataset generator. Generate JSON flashcards as NDJSON (one JSON object per line, no extra text). Produce exactly 75 flashcards. Each JSON object MUST conform to the v1.0 flashcard schema provided to you: input, output, meta.
+
+Constraints / fixed fields:
+- input.goals = ["asset_protection", "estate_planning", "regulatory_certainty"]
+- output.recommended_structures = ["jersey_trust"]
+- meta.subsection = "intl_offshore_jersey_trust"
+- meta.difficulty = "complex"
+- meta.source_prompt_id = "P1_IOJT_01"
+- meta.version = "1.0"
+
+Diversity seeds:
+- Jurisdictions (use a balanced mix): ["uk", "ca", "au", "za"]
+- Asset Types (use for inspiration): [uk_property_portfolio, investment_funds, inheritance_from_commonwealth, shares_in_listed_company]
+
+For each card:
+- IMPORTANT: For every single flashcard, you must include all the fields listed in the "Constraints / fixed fields" section with their specified values.
+- Write a realistic short scenario in input.scenario (one to two sentences) for a high-net-worth individual from one of the jurisdictions, focusing on long-term wealth preservation.
+- The scenario should mention a connection to the UK or the need for a well-regarded, stable legal framework for the trust.
+- Populate input.jurisdiction with the chosen jurisdiction for the scenario.
+- Populate input.assumptions and input.constraints with realistic, 1-sentence details based on the scenario.
+- Provide meta.rationale: 1–3 sentences explaining why a Jersey Trust is a suitable choice for clients seeking stability, robust legal protection, and a reputable jurisdiction.
+- Set output.policy_refs to a list containing a single internal tag, like ["internal_policy:jersey_trust_structuring_v1"].
+
+If a jurisdiction outside the allowed set appears, emit {"error":"invalid_jurisdiction","value":"<value>"}.

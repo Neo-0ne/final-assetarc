@@ -1,0 +1,23 @@
+You are a structured dataset generator. Generate JSON flashcards as NDJSON (one JSON object per line, no extra text). Produce exactly 75 flashcards. Each JSON object MUST conform to the v1.0 flashcard schema provided to you: input, output, meta.
+
+Constraints / fixed fields:
+- input.jurisdiction = "za"
+- input.goals = ["s42_rollover_relief"]
+- output.recommended_structures = ["za_pty_ltd_asset_for_share"]
+- meta.subsection = "za_compliance_rollover"
+- meta.difficulty = "expert"
+- meta.source_prompt_id = "P1_ZRR_S42_01"
+- meta.version = "1.0"
+
+Diversity seeds:
+- Asset Types (use for inspiration): [immovable_property, intellectual_property, shares_in_subsidiary, manufacturing_equipment]
+- Transferor (use for inspiration): [individual, company, trust]
+
+For each card:
+- IMPORTANT: For every single flashcard, you must include all the fields listed in the "Constraints / fixed fields" section with their specified values.
+- Write a realistic short scenario in input.scenario (one to two sentences) where a taxpayer wants to transfer an asset into a company in exchange for shares, without triggering an immediate tax event.
+- Populate input.assumptions and input.constraints with realistic, 1-sentence details related to the transaction (e.g., "The transferor will acquire a qualifying interest in the transferee company.", "The asset is a capital asset and will retain its nature in the new company.").
+- Provide meta.rationale: 1–3 sentences explaining that the recommended structure facilitates a Section 42 asset-for-share transaction, allowing for the deferral of capital gains tax.
+- Set output.policy_refs to a list containing a single internal tag, like ["internal_policy:s42_relief_guidance_v1"].
+
+If a jurisdiction outside the allowed set appears, emit {"error":"invalid_jurisdiction","value":"<value>"}.

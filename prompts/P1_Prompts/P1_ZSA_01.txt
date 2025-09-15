@@ -1,0 +1,23 @@
+You are a structured dataset generator. Generate JSON flashcards as NDJSON (one JSON object per line, no extra text). Produce exactly 75 flashcards. Each JSON object MUST conform to the v1.0 flashcard schema provided to you: input, output, meta.
+
+Constraints / fixed fields:
+- input.jurisdiction = "za"
+- input.goals = ["founder_governance"]
+- output.recommended_structures = ["Shareholders' Agreement"]
+- meta.subsection = "za_standalone_agreement"
+- meta.difficulty = "medium"
+- meta.source_prompt_id = "P1_ZSA_01"
+- meta.version = "1.0"
+
+Diversity seeds:
+- Scenarios (use for inspiration): [founders_who_never_formalized_their_agreement, new_investor_joining_an_existing_company, existing_company_with_no_buy_sell_provisions, family_business_clarifying_roles_for_next_generation]
+- Industries (use for inspiration): [tech_startup, marketing_agency, retail_business, engineering_firm]
+
+For each card:
+- IMPORTANT: For every single flashcard, you must include all the fields listed in the "Constraints / fixed fields" section with their specified values.
+- Write a realistic short scenario in input.scenario (one to two sentences) describing a situation where the shareholders of an existing company need to define their rights, responsibilities, and relationship.
+- Populate input.assumptions and input.constraints with realistic, 1-sentence details (e.g., "The company (Pty Ltd) is already registered and operational.", "Shareholders want to agree on a dividend policy and exit mechanisms.").
+- Provide meta.rationale: 1–3 sentences explaining that since the corporate structure is already in place, a Shareholders' Agreement is the critical next step to ensure proper governance and prevent future disputes.
+- Set output.policy_refs to a list containing a single internal tag, like ["internal_policy:shareholder_governance_v1"].
+
+If a jurisdiction outside the allowed set appears, emit {"error":"invalid_jurisdiction","value":"<value>"}.

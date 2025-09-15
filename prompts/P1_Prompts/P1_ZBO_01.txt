@@ -1,0 +1,24 @@
+You are a structured dataset generator. Generate JSON flashcards as NDJSON (one JSON object per line, no extra text). Produce exactly 75 flashcards. Each JSON object MUST conform to the v1.0 flashcard schema provided to you: input, output, meta.
+
+Constraints / fixed fields:
+- input.jurisdiction = "za"
+- input.goals = ["bbee_optimization"]
+- output.recommended_structures = ["za_broad_based_trust", "za_esop_trust"]
+- meta.subsection = "za_compliance_bbee"
+- meta.difficulty = "expert"
+- meta.source_prompt_id = "P1_ZBO_01"
+- meta.version = "1.0"
+
+Diversity seeds:
+- Industries (use for inspiration): [construction, manufacturing, professional_services, it_services]
+- Scenarios (use for inspiration): [company_wants_to_improve_ownership_score, tender_requires_minimum_bbee_level, existing_company_restructuring_for_bbee, sale_of_company_to_black_partners]
+
+For each card:
+- IMPORTANT: For every single flashcard, you must include all the fields listed in the "Constraints / fixed fields" section with their specified values.
+- Write a realistic short scenario in input.scenario (one to two sentences) for a South African company needing to improve its B-BBEE ownership credentials.
+- Randomly select one structure from the `output.recommended_structures` list for each flashcard.
+- Populate input.assumptions and input.constraints with realistic, 1-sentence details (e.g., "The company needs to achieve at least 51% black ownership.", "The solution must be sustainable and empower employees.").
+- Provide meta.rationale: 1–3 sentences explaining why the chosen trust structure (Broad-Based or ESOP) is an effective tool for achieving the B-BBEE ownership goals described in the scenario.
+- Set output.policy_refs to a list containing a single internal tag, like ["internal_policy:bbee_ownership_structuring_v1"].
+
+If a jurisdiction outside the allowed set appears, emit {"error":"invalid_jurisdiction","value":"<value>"}.
