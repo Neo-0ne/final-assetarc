@@ -30,6 +30,39 @@ def apply_content_safety_flags(record):
 
     return flags
 
+def validate_p2_completeness(record):
+    """
+    Checks for the presence of required fields based on the record type.
+    """
+    flags = []
+    source_prompt = record.get('meta', {}).get('source_prompt_id', '')
+    input_data = record.get('input', {})
+    output_data = record.get('output', {})
+
+    if 'ROLL' in source_prompt:
+        required_input = ['section', 'consideration', 'asset_profile']
+        required_output = ['eligibility', 'tax_comparison']
+        for field in required_input:
+            if field not in input_data:
+                flags.append({"type": "completeness", "details": f"Missing required input field for Rollover: {field}"})
+        for field in required_output:
+            if field not in output_data:
+                flags.append({"type": "completeness", "details": f"Missing required output field for Rollover: {field}"})
+
+    elif 'BBBEE' in source_prompt:
+        required_input = ['shareholders']
+        required_output = ['indicators', 'total_ownership_points']
+        for field in required_input:
+            if field not in input_data:
+                flags.append({"type": "completeness", "details": f"Missing required input field for B-BBEE: {field}"})
+        for field in required_output:
+            if field not in output_data:
+                flags.append({"type": "completeness", "details": f"Missing required output field for B-BBEE: {field}"})
+
+    # Add other completeness checks here if needed
+
+    return flags
+
 # --- Business Logic Rules (from prompts/P2_Prompts/P2_REV_01.txt) ---
 
 def validate_bbee_logic(record):
@@ -115,6 +148,7 @@ def process_files():
         "total_records_checked": 0,
         "total_business_logic_flags": 0,
         "total_content_safety_flags": 0,
+        "total_completeness_flags": 0,
         "details": {}
     }
 
@@ -122,7 +156,7 @@ def process_files():
         filename = os.path.basename(filepath)
         corrected_filepath = filepath.replace(".ndjson", "_corrected.ndjson")
 
-        file_stats = {"records_checked": 0, "business_logic_flags": 0, "content_safety_flags": 0}
+        file_stats = {"records_checked": 0, "business_logic_flags": 0, "content_safety_flags": 0, "completeness_flags": 0}
         print(f"\nProcessing {filename}...")
 
         with open(filepath, 'r', encoding='utf-8') as infile, \
@@ -136,7 +170,11 @@ def process_files():
                     record = json.loads(line)
                     all_flags = []
 
-                    # Unlike P1, for P2 we will only flag, not auto-correct business logic
+                    completeness_flags = validate_p2_completeness(record)
+                    if completeness_flags:
+                        file_stats["completeness_flags"] += len(completeness_flags)
+                        all_flags.extend(completeness_flags)
+
                     business_flags = apply_business_logic_flags(record)
                     if business_flags:
                         file_stats["business_logic_flags"] += len(business_flags)
@@ -166,6 +204,7 @@ def process_files():
         report["total_records_checked"] += file_stats["records_checked"]
         report["total_business_logic_flags"] += file_stats["business_logic_flags"]
         report["total_content_safety_flags"] += file_stats["content_safety_flags"]
+        report["total_completeness_flags"] += file_stats["completeness_flags"]
         print(f"  Finished. Flagged file saved to {os.path.basename(corrected_filepath)}")
 
     # Print final summary report
@@ -174,12 +213,14 @@ def process_files():
     print(f"Total records checked: {report['total_records_checked']}")
     print(f"Total business logic issues flagged: {report['total_business_logic_flags']}")
     print(f"Total content safety issues flagged: {report['total_content_safety_flags']}")
+    print(f"Total completeness issues flagged: {report['total_completeness_flags']}")
     print("\n--- Detailed Report by File ---")
     for filename, stats in report["details"].items():
         print(f"\nFile: {filename}")
         print(f"  - Records Checked: {stats['records_checked']}")
         print(f"  - Business Logic Flags: {stats['business_logic_flags']}")
         print(f"  - Content Safety Flags: {stats['content_safety_flags']}")
+        print(f"  - Completeness Flags: {stats['completeness_flags']}")
     print("\n--- End of Report ---")
 
 if __name__ == "__main__":
