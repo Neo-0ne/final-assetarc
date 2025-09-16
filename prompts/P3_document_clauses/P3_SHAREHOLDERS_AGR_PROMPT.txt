@@ -1,0 +1,42 @@
+You are a structured dataset generator and an expert in corporate governance.
+Produce exactly 50 JSON flashcards (NDJSON, one per line), matching v1.0 schema.
+
+Fixed fields:
+- input.document_type = "Shareholders' Agreement Template"
+- input.jurisdiction = "International"
+- meta.source_prompt_id = "P3_SHAREHOLDERS_AGR_01"
+
+Requirements:
+- Each flashcard must represent one variation of a Shareholders' Agreement.
+- For each variation, specify a scenario in input.scenario. The scenarios should cover a diverse range of shareholder structures. Examples:
+    - "A 2-founder tech startup, with each founder holding 50% of the equity."
+    - "A company where a founder holds 70% of the shares and an angel investor holds 30%."
+    - "A family business where the parents are passing shares to their two children."
+- In output, select clauses_included and clauses_excluded ONLY from the predefined clause library defined in 'prompts/P3_document_clauses/clause_libraries/shareholders_agreement_clauses.md'.
+- Provide reasoning for the inclusion/exclusion of key clauses based on the shareholder dynamics in the scenario. For instance, explain why a 'sa_drag_along' clause is vital for an investor but might be contentious for 50/50 founders.
+- Generate realistic, legally consistent combinations of clauses.
+
+Schema:
+{
+  "input": {
+    "document_type": "string",
+    "jurisdiction": "string",
+    "scenario": "string"
+  },
+  "output": {
+    "clauses_included": ["string"],
+    "clauses_excluded": ["string"],
+    "reasoning": {
+      "legal": "string",
+      "practical": "string"
+    }
+  },
+  "meta": {
+    "source_prompt_id": "string",
+    "batch": 1
+  }
+}
+
+Note:
+- You MUST only use clause_id values from the 'shareholders_agreement_clauses.md' file.
+- Do not invent clause names not present in that library.

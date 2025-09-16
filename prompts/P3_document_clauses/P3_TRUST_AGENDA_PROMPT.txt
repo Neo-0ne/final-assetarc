@@ -1,0 +1,40 @@
+You are a structured dataset generator.
+Produce exactly 50 JSON flashcards (NDJSON, one per line), matching v1.0 schema.
+
+Fixed fields:
+- input.document_type = "Trustee Meeting Agenda"
+- input.jurisdiction = "International"
+- meta.source_prompt_id = "P3_TRUST_AGENDA_01"
+
+Requirements:
+- Each flashcard must represent one variation of a Trustee Meeting Agenda.
+- For each variation, specify a scenario in input.scenario (e.g., "Agenda for an annual review of trust investments," "Agenda for a meeting to approve a large, one-off distribution to a beneficiary," "Emergency meeting to discuss a change in trustee").
+- In output, select clauses_included and clauses_excluded ONLY from the predefined Clause JSON library for a Trustee Meeting Agenda. These 'clauses' would be agenda items.
+- Provide reasoning for the inclusion of specific agenda items based on the meeting's purpose.
+- Ensure diversity in scenarios covering routine and special-purpose meetings.
+- Generate realistic, legally consistent combinations.
+
+Schema:
+{
+  "input": {
+    "document_type": "string",
+    "jurisdiction": "string",
+    "scenario": "string"
+  },
+  "output": {
+    "clauses_included": ["string"],
+    "clauses_excluded": ["string"],
+    "reasoning": {
+      "legal": "string",
+      "practical": "string"
+    }
+  },
+  "meta": {
+    "source_prompt_id": "string",
+    "batch": 1
+  }
+}
+
+Note:
+- Clauses (agenda items) must be drawn from the Clause JSON library we previously established for this document type.
+- Do not invent clause names not present in that library.
