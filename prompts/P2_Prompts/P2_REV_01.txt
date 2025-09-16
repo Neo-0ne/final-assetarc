@@ -8,10 +8,12 @@ You are a rules-checker assistant for structured data from a corporate finance A
 ---
 
 **Rollover Planner Rules (applies if meta.source_prompt_id contains 'ROLL'):**
-1.  **S42 Eligibility:** If `input.section` is 's42', the `output.eligibility.eligible` field must be consistent with the core requirements (e.g., `input.consideration.shares_issued` must be true for the transaction to be eligible).
-2.  **S45 Eligibility:** If `input.section` is 's45', the `output.eligibility.eligible` field must be consistent with the core requirements (e.g., must be between companies in the same group).
-3.  **Tax Calculation:** The `output.tax_comparison.cgt_no_relief` must be arithmetically plausible based on the `input.asset_profile.market_value` and `input.asset_profile.base_cost`.
-4.  **Deferral Logic:** If `output.eligibility.eligible` is true and there is a capital gain, `output.tax_comparison.net_deferral_benefit` must be greater than 0.
+1.  **S42 Eligibility:** If `input.section` is 's42', `output.eligibility.eligible` must be true only if `input.consideration.shares_issued` is true and `input.transferee_residency` is 'SA'.
+2.  **S45 Eligibility:** If `input.section` is 's45', `output.eligibility.eligible` must be true only if `input.group_relationship.same_group` is true and both parties are 'SA' residents.
+3.  **S46 Eligibility (Unbundling):** If `input.section` is 's46', `output.eligibility.eligible` must be true only if `input.unbundling_details.control_threshold_met` is true and both parties are 'SA' residents.
+4.  **S47 Eligibility (Liquidation):** If `input.section` is 's47', `output.eligibility.eligible` must be true only if `input.group_relationship.same_group` is true and the holding company is an 'SA' resident.
+5.  **Tax Calculation:** The `output.tax_comparison.cgt_no_relief` must be arithmetically plausible based on the `input.asset_profile.market_value` and `input.asset_profile.base_cost`.
+6.  **Deferral Logic:** If `output.eligibility.eligible` is true and there is a capital gain, `output.tax_comparison.net_deferral_benefit` must be greater than 0.
 
 **B-BBEE Scorecard Rules (applies if meta.source_prompt_id contains 'BBBEE'):**
 1.  **Points Summation:** The `output.total_ownership_points` must be the sum of all points in the `output.indicators` object.

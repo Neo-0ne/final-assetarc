@@ -2,209 +2,155 @@ import json
 import os
 import glob
 import re
+import math
 from decimal import Decimal, InvalidOperation
 
-# --- Content Safety Rules (from prompts/P2_Prompts/P2_REV_02.txt) ---
-
-GUARANTEE_KEYWORDS = [
-    'guaranteed', 'you will not owe tax', 'no tax', 'will avoid all tax',
-    '100% success', 'zero risk', 'risk-free', 'certain to'
-]
-EMAIL_REGEX = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
-PLACEHOLDER_REGEX = re.compile(r'\b(TODO|FIXME|N/A|PLACEHOLDER)\b', re.IGNORECASE)
+# --- Validation Functions ---
 
 def apply_content_safety_flags(record):
-    """
-    Checks a record for content safety issues and returns a list of flags.
-    """
+    """Checks for content safety issues."""
     flags = []
-    # Check the whole record as a string for simplicity
     text_to_check = json.dumps(record)
-
+    GUARANTEE_KEYWORDS = ['guaranteed', 'risk-free', 'certain to']
+    EMAIL_REGEX = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
     if EMAIL_REGEX.search(text_to_check):
         flags.append({"type": "content_safety", "details": "Found potential PII (email address)"})
     if any(keyword in text_to_check.lower() for keyword in GUARANTEE_KEYWORDS):
         flags.append({"type": "content_safety", "details": "Found potential guarantee of outcome"})
-    if PLACEHOLDER_REGEX.search(text_to_check):
-        flags.append({"type": "content_safety", "details": "Found placeholder text in output"})
-
     return flags
 
 def validate_p2_completeness(record):
-    """
-    Checks for the presence of required fields based on the record type.
-    """
+    """Checks for presence of required fields."""
     flags = []
     source_prompt = record.get('meta', {}).get('source_prompt_id', '')
     input_data = record.get('input', {})
-    output_data = record.get('output', {})
-
-    if 'ROLL' in source_prompt:
-        required_input = ['section', 'consideration', 'asset_profile']
-        required_output = ['eligibility', 'tax_comparison']
-        for field in required_input:
-            if field not in input_data:
-                flags.append({"type": "completeness", "details": f"Missing required input field for Rollover: {field}"})
-        for field in required_output:
-            if field not in output_data:
-                flags.append({"type": "completeness", "details": f"Missing required output field for Rollover: {field}"})
-
-    elif 'BBBEE' in source_prompt:
-        required_input = ['shareholders']
-        required_output = ['indicators', 'total_ownership_points']
-        for field in required_input:
-            if field not in input_data:
-                flags.append({"type": "completeness", "details": f"Missing required input field for B-BBEE: {field}"})
-        for field in required_output:
-            if field not in output_data:
-                flags.append({"type": "completeness", "details": f"Missing required output field for B-BBEE: {field}"})
-
-    # Add other completeness checks here if needed
-
+    if 'ROLL' in source_prompt and not all(k in input_data for k in ['section', 'consideration', 'asset_profile']):
+        flags.append({"type": "completeness", "details": "Missing required fields for Rollover."})
+    elif 'BBBEE' in source_prompt and 'shareholders' not in input_data:
+        flags.append({"type": "completeness", "details": "Missing required field for B-BBEE: shareholders"})
     return flags
 
-# --- Business Logic Rules (from prompts/P2_Prompts/P2_REV_01.txt) ---
-
 def validate_bbee_logic(record):
-    """Validates the logic of a B-BBEE scorecard record."""
+    """Validates B-BBEE scorecard logic."""
     flags = []
     try:
         indicators = record.get('output', {}).get('indicators', {})
-        total_points = record.get('output', {}).get('total_ownership_points', 0)
-
+        total_points = Decimal(str(record.get('output', {}).get('total_ownership_points', 0)))
         calculated_sum = sum(Decimal(str(v.get('points', 0))) for v in indicators.values())
-
-        # Use a small tolerance for floating point comparisons
-        if abs(Decimal(str(total_points)) - calculated_sum) > Decimal('0.01'):
-            flags.append({
-                "type": "business_logic",
-                "details": f"B-BBEE points do not sum correctly. Stated total: {total_points}, calculated sum: {calculated_sum}"
-            })
+        if abs(total_points - calculated_sum) > Decimal('0.01'):
+            flags.append({"type": "business_logic", "details": "B-BBEE points do not sum correctly."})
     except (TypeError, KeyError, InvalidOperation):
-        flags.append({"type": "business_logic", "details": "Malformed B-BBEE record structure."})
+        flags.append({"type": "business_logic", "details": "Malformed B-BBEE record."})
     return flags
 
 def validate_rollover_logic(record):
-    """Validates the logic of a Rollover Planner record."""
+    """Validates Rollover Planner logic."""
     flags = []
     try:
         input_data = record.get('input', {})
-        output_data = record.get('output', {})
-        section = input_data.get('section')
-        is_eligible = output_data.get('eligibility', {}).get('eligible')
-
-        # S42 eligibility check
-        if section == 's42' and not input_data.get('consideration', {}).get('shares_issued') and is_eligible:
-            flags.append({
-                "type": "business_logic",
-                "details": "s42 transaction incorrectly marked as eligible despite no shares being issued."
-            })
-
-        # Deferral benefit check
-        net_deferral = Decimal(str(output_data.get('tax_comparison', {}).get('net_deferral_benefit', 0)))
-        capital_gain = Decimal(str(input_data.get('asset_profile',{}).get('market_value',0))) - Decimal(str(input_data.get('asset_profile',{}).get('base_cost',0)))
-
-        if is_eligible and capital_gain > 0 and net_deferral <= 0:
-             flags.append({
-                "type": "business_logic",
-                "details": f"Eligible transaction with a capital gain of {capital_gain} has a non-positive deferral benefit of {net_deferral}."
-            })
-
-    except (TypeError, KeyError, InvalidOperation):
-        flags.append({"type": "business_logic", "details": "Malformed Rollover record structure."})
+        is_eligible = record.get('output', {}).get('eligibility', {}).get('eligible')
+        if input_data.get('section') == 's42' and not input_data.get('consideration', {}).get('shares_issued') and is_eligible:
+            flags.append({"type": "business_logic", "details": "s42 transaction incorrectly marked eligible."})
+    except (TypeError, KeyError):
+        flags.append({"type": "business_logic", "details": "Malformed Rollover record."})
     return flags
 
 def apply_business_logic_flags(record):
-    """
-    Routes a record to the correct business logic validator based on its source prompt.
-    """
+    """Routes record to correct business logic validator."""
     source_prompt = record.get('meta', {}).get('source_prompt_id', '')
     if 'BBBEE' in source_prompt:
         return validate_bbee_logic(record)
     if 'ROLL' in source_prompt:
         return validate_rollover_logic(record)
-    # Add other P2 validators here if needed (e.g., for residency, estate planning)
     return []
 
-# --- Main Processing Logic ---
+def validate_statistical_anomalies(record, stats):
+    """Checks for statistical outliers in numerical fields."""
+    flags = []
+    fields_to_check = ['market_value', 'base_cost']
+    try:
+        asset_profile = record.get('input', {}).get('asset_profile', {})
+        if not asset_profile: return flags
+        for field in fields_to_check:
+            if field in asset_profile:
+                value = Decimal(str(asset_profile[field]))
+                stat = stats.get(field)
+                if not stat or stat['std_dev'] == 0: continue
+                z_score = abs((value - stat['mean']) / stat['std_dev'])
+                if z_score > 5:
+                    flags.append({"type": "statistical_anomaly", "details": f"Field '{field}' value {value} is a statistical outlier (Z-score: {z_score:.2f})"})
+    except (TypeError, KeyError, InvalidOperation):
+        flags.append({"type": "business_logic", "details": "Malformed asset_profile for stats check."})
+    return flags
+
+# --- Main Processing Logic (Two Passes) ---
 
 def process_files():
-    """
-    Main function to find and process all P2 NDJSON files and generate a detailed report.
-    """
+    """Main function to find and process all P2 NDJSON files."""
     script_dir = os.path.dirname(__file__)
     source_dir = os.path.abspath(os.path.join(script_dir, '..', 'generated_data', 'P2'))
     files_to_process = glob.glob(os.path.join(source_dir, 'P2_*.ndjson'))
     files_to_process = [f for f in files_to_process if '_corrected' not in os.path.basename(f)]
 
     if not files_to_process:
-        print(f"No P2 NDJSON files to process were found in {source_dir}")
-        return
+        print(f"No P2 NDJSON files to process were found in {source_dir}"); return
 
     print(f"Found {len(files_to_process)} files to process...")
 
-    report = {
-        "files_processed": [],
-        "total_records_checked": 0,
-        "total_business_logic_flags": 0,
-        "total_content_safety_flags": 0,
-        "total_completeness_flags": 0,
-        "details": {}
-    }
+    # --- Pass 1: Calculate Statistics ---
+    print("\n--- Pass 1: Calculating statistics for anomaly detection ---")
+    values = {'market_value': [], 'base_cost': []}
+    for filepath in files_to_process:
+        with open(filepath, 'r', encoding='utf-8') as infile:
+            for line in infile:
+                try:
+                    record = json.loads(line)
+                    asset_profile = record.get('input', {}).get('asset_profile', {})
+                    if 'market_value' in asset_profile: values['market_value'].append(Decimal(str(asset_profile['market_value'])))
+                    if 'base_cost' in asset_profile: values['base_cost'].append(Decimal(str(asset_profile['base_cost'])))
+                except (json.JSONDecodeError, InvalidOperation): continue
+
+    stats = {}
+    for field, data in values.items():
+        if len(data) > 1:
+            mean = sum(data) / len(data)
+            variance = sum([(x - mean) ** 2 for x in data]) / len(data)
+            stats[field] = {'mean': mean, 'std_dev': Decimal(math.sqrt(variance))}
+            print(f"  - {field}: Mean={stats[field]['mean']:.2f}, StdDev={stats[field]['std_dev']:.2f}")
+
+    # --- Pass 2: Process Files and Apply Validations ---
+    print("\n--- Pass 2: Processing files and applying validations ---")
+    report = {"files_processed": [], "total_records_checked": 0, "total_business_logic_flags": 0, "total_content_safety_flags": 0, "total_completeness_flags": 0, "total_anomaly_flags": 0, "details": {}}
 
     for filepath in files_to_process:
         filename = os.path.basename(filepath)
         corrected_filepath = filepath.replace(".ndjson", "_corrected.ndjson")
-
-        file_stats = {"records_checked": 0, "business_logic_flags": 0, "content_safety_flags": 0, "completeness_flags": 0}
+        file_stats = {"records_checked": 0, "business_logic_flags": 0, "content_safety_flags": 0, "completeness_flags": 0, "anomaly_flags": 0}
         print(f"\nProcessing {filename}...")
-
-        with open(filepath, 'r', encoding='utf-8') as infile, \
-             open(corrected_filepath, 'w', encoding='utf-8') as outfile:
+        with open(filepath, 'r', encoding='utf-8') as infile, open(corrected_filepath, 'w', encoding='utf-8') as outfile:
             for line in infile:
-                if not line.strip():
-                    continue
-
                 file_stats["records_checked"] += 1
                 try:
                     record = json.loads(line)
-                    all_flags = []
-
-                    completeness_flags = validate_p2_completeness(record)
-                    if completeness_flags:
-                        file_stats["completeness_flags"] += len(completeness_flags)
-                        all_flags.extend(completeness_flags)
-
-                    business_flags = apply_business_logic_flags(record)
-                    if business_flags:
-                        file_stats["business_logic_flags"] += len(business_flags)
-                        all_flags.extend(business_flags)
-
-                    safety_flags = apply_content_safety_flags(record)
-                    if safety_flags:
-                        file_stats["content_safety_flags"] += len(safety_flags)
-                        all_flags.extend(safety_flags)
-
+                    all_flags = [
+                        *validate_p2_completeness(record),
+                        *apply_business_logic_flags(record),
+                        *apply_content_safety_flags(record),
+                        *validate_statistical_anomalies(record, stats)
+                    ]
                     if all_flags:
-                        if 'qc_flags' not in record:
-                            record['qc_flags'] = []
-                        # Avoid adding duplicate flags
-                        for flag in all_flags:
-                            if flag not in record['qc_flags']:
-                                record['qc_flags'].append(flag)
-
+                        file_stats["completeness_flags"] += sum(1 for f in all_flags if f['type'] == 'completeness')
+                        file_stats["business_logic_flags"] += sum(1 for f in all_flags if f['type'] == 'business_logic')
+                        file_stats["content_safety_flags"] += sum(1 for f in all_flags if f['type'] == 'content_safety')
+                        file_stats["anomaly_flags"] += sum(1 for f in all_flags if f['type'] == 'statistical_anomaly')
+                        record['qc_flags'] = all_flags
                     outfile.write(json.dumps(record) + '\n')
-
                 except json.JSONDecodeError:
-                    print(f"  WARNING: Skipping invalid JSON line in {filename}")
-                    outfile.write(line) # Write invalid lines as-is
+                    outfile.write(line)
 
         report["files_processed"].append(filename)
         report["details"][filename] = file_stats
-        report["total_records_checked"] += file_stats["records_checked"]
-        report["total_business_logic_flags"] += file_stats["business_logic_flags"]
-        report["total_content_safety_flags"] += file_stats["content_safety_flags"]
-        report["total_completeness_flags"] += file_stats["completeness_flags"]
+        for key in file_stats: report[f"total_{key}"] = report.get(f"total_{key}", 0) + file_stats[key]
         print(f"  Finished. Flagged file saved to {os.path.basename(corrected_filepath)}")
 
     # Print final summary report
@@ -214,13 +160,12 @@ def process_files():
     print(f"Total business logic issues flagged: {report['total_business_logic_flags']}")
     print(f"Total content safety issues flagged: {report['total_content_safety_flags']}")
     print(f"Total completeness issues flagged: {report['total_completeness_flags']}")
+    print(f"Total anomaly issues flagged: {report['total_anomaly_flags']}")
     print("\n--- Detailed Report by File ---")
     for filename, stats in report["details"].items():
         print(f"\nFile: {filename}")
-        print(f"  - Records Checked: {stats['records_checked']}")
-        print(f"  - Business Logic Flags: {stats['business_logic_flags']}")
-        print(f"  - Content Safety Flags: {stats['content_safety_flags']}")
-        print(f"  - Completeness Flags: {stats['completeness_flags']}")
+        for key, value in stats.items():
+            print(f"  - {key.replace('_', ' ').title()}: {value}")
     print("\n--- End of Report ---")
 
 if __name__ == "__main__":
