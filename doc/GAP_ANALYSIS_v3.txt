@@ -1,0 +1,48 @@
+# Gap Analysis Report v3
+
+This report details the gaps identified between the required system capabilities and the current coverage of data generation prompts (Phases 1, 2, and 3).
+
+---
+
+## 1. Compliance Logic Gaps (P2 Prompts)
+
+**Summary:** The P2 prompt coverage for the compliance logic modules in `Services/eng-compliance/app/` is very good but has one notable gap.
+
+**Analysis:**
+- **Required Modules:** `s42_47`/`rollover_planner`, `bbee_ownership`, `estate_duty_calculator`, `insurance_wrapper_calculator`, `residency_planner`, `succession_planner`.
+- **Covered Modules:** All modules are well-covered by specific P2 prompts (`P2_ROLL_*`, `P2_BBBEE_*`, `P2_ESTATE_*`, `P2_INSURANCE_*`, `P2_RES_*`).
+- **Identified Gaps:**
+    - **`succession_planner`:** There is no corresponding P2 prompt to generate training data for the `run_succession_check` function defined in `Services/eng-compliance/app/modules.py`. The model is not being trained on this specific capability.
+
+---
+
+## 2. Document Assembly Gaps (P3 Prompts)
+
+**Summary:** There are significant gaps in the P3 prompts for document assembly. The model is not being trained to assemble several core legal documents required by the definitive document list.
+
+**Analysis:**
+The following required documents, sourced from `prompts/P3_document_clauses/DEFINITIVE_DOCUMENT_LIST_COMBINED.md`, do not have corresponding P3 prompts for clause selection and assembly.
+
+**Key Gaps:**
+- **`Shareholders’ Agreement Template`**: **(Critical Gap)** This is a foundational document for any multi-founder company. There is no P3 prompt to train the model on how to assemble or vary this agreement based on a scenario.
+- **`Trust Deed (ZA)`**: The system can create a *Trustee Resolution* but lacks a prompt for generating the main Trust Deed itself.
+- **`Offshore Trust Deed Templates`**: A major gap for offshore services. No prompts exist for generating trust deeds for key jurisdictions like Mauritius, Jersey, or BVI.
+- **`Nominee Agreement (IBC)`**: This is a required document for offshore structures that lacks a P3 prompt.
+- **`Protector Appointment Agreement`**: Another key offshore document with no P3 prompt coverage.
+- **`Source of Funds Declaration`**: A common compliance document with no corresponding P3 prompt.
+
+---
+
+## 3. High-Level Reasoning Gaps (P1 Prompts)
+
+**Summary:** The P1 prompts are effective for the specific, siloed scenarios they target but do not cover the breadth of comparative reasoning required by the platform. The model is being trained to recommend a few specific structures but not how to *decide between them*.
+
+**Identified Gaps:**
+- **Lack of Comparative Reasoning:** There are no prompts that train the model to compare and contrast different structures. For example:
+    - **Offshore Jurisdiction Selection:** Why choose a Mauritius GBC over a Seychelles IBC or a BVI company? The P1 prompts only recommend one structure at a time.
+    - **South African Structure Selection:** Why choose a `za_pty_ltd` alone versus the `za_pty_ltd` + `za_trust` combination? The model isn't trained on the trade-offs.
+- **Incomplete Structure Coverage:** The P1 prompts only cover a small subset of the structures implied by the `DEFINITIVE_DOCUMENT_LIST_COMBINED.md`. There are no P1 prompts that would lead to the recommendation of:
+    - A Seychelles structure.
+    - A Jersey trust.
+    - Other complex South African structures beyond the single founder-focused one.
+- **Lack of Reasoning for Ancillary Documents:** The system needs to know *when* to recommend ancillary documents. For example, there are no P1 prompts that train the model to identify a scenario requiring a `Letter of Wishes` for a trust or a `FATCA/CRS Self-Certification Form` for a client. The P3 prompts can *assemble* these, but the model doesn't learn *when* to recommend them.
