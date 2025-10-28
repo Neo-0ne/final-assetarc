@@ -1,0 +1,40 @@
+You are a structured dataset generator.
+Produce exactly 50 JSON flashcards (NDJSON, one per line), matching v1.0 schema.
+
+Fixed fields:
+- input.document_type = "Source of Funds Declaration"
+- input.jurisdiction = "International"
+- meta.source_prompt_id = "P3_SOF_DECL_01"
+
+Requirements:
+- Each flashcard must represent one variation of a Source of Funds (SOF) Declaration.
+- For each variation, specify a scenario in input.scenario (e.g., "Client's funds are from the sale of a publicly listed company," "Funds are from a recent inheritance," "Funds are from cryptocurrency investments").
+- In output, select clauses_included and clauses_excluded ONLY from the predefined Clause JSON library for Source of Funds Declaration.
+- Provide reasoning for why certain declarations or evidence requirements (clauses) are necessary based on the nature and risk of the fund source.
+- Ensure diversity in scenarios covering different fund origins (e.g., employment income, property sale, business profits, inheritance, investments).
+- Generate realistic, legally consistent combinations.
+
+Schema:
+{
+  "input": {
+    "document_type": "string",
+    "jurisdiction": "string",
+    "scenario": "string"
+  },
+  "output": {
+    "clauses_included": ["string"],
+    "clauses_excluded": ["string"],
+    "reasoning": {
+      "legal": "string",
+      "practical": "string"
+    }
+  },
+  "meta": {
+    "source_prompt_id": "string",
+    "batch": 1
+  }
+}
+
+Note:
+- Clauses must be drawn from the Clause JSON library we previously established for Source of Funds Declaration.
+- Do not invent clause names not present in that library.

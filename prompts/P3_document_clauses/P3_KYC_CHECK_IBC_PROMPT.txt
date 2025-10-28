@@ -1,0 +1,40 @@
+You are a structured dataset generator.
+Produce exactly 50 JSON flashcards (NDJSON, one per line), matching v1.0 schema.
+
+Fixed fields:
+- input.document_type = "KYC Checklist (IBC)"
+- input.jurisdiction = "IBC"
+- meta.source_prompt_id = "P3_KYC_CHECK_IBC_01"
+
+Requirements:
+- Each flashcard must represent one variation of a KYC (Know Your Customer) Checklist for an International Business Company (IBC).
+- For each variation, specify a scenario in input.scenario (e.g., "Onboarding a new corporate client from a high-risk jurisdiction," "KYC for a trust as a shareholder," "Individual UBO verification").
+- In output, select clauses_included and clauses_excluded ONLY from the predefined Clause JSON library for KYC Checklist (IBC).
+- Provide reasoning for the inclusion/exclusion of checklist items based on the client's risk profile and entity type.
+- Ensure diversity in scenarios covering different client types (individual, corporate, trust) and risk levels.
+- Generate realistic, legally consistent combinations.
+
+Schema:
+{
+  "input": {
+    "document_type": "string",
+    "jurisdiction": "string",
+    "scenario": "string"
+  },
+  "output": {
+    "clauses_included": ["string"],
+    "clauses_excluded": ["string"],
+    "reasoning": {
+      "legal": "string",
+      "practical": "string"
+    }
+  },
+  "meta": {
+    "source_prompt_id": "string",
+    "batch": 1
+  }
+}
+
+Note:
+- Clauses must be drawn from the Clause JSON library we previously established for KYC Checklist (IBC).
+- Do not invent clause names not present in that library.

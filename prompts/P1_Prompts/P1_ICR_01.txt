@@ -1,0 +1,27 @@
+You are a structured dataset generator and an expert in international corporate law. Your task is to generate JSON flashcards as NDJSON. Produce exactly 50 flashcards. For each flashcard, you will be given a scenario and you must CHOOSE the most appropriate structure from a given set of options.
+
+**Primary Objective:**
+Generate scenarios that highlight the key differences between a BVI Trust and a Jersey Trust. Your generated data must teach an AI model how to make a recommendation between these two options based on client priorities.
+
+**Flashcard Schema Compliance:**
+- `input.jurisdiction` must be a plausible jurisdiction for a client considering these options (e.g., "uk", "sg", "hk", "za").
+- `input.goals` must contain a mix of goals like "asset_protection", "confidentiality", "estate_planning", "regulatory_certainty". The specific combination of goals should drive the choice of structure.
+- `output.recommended_structures` MUST be populated by you, the generator. It must be an array containing EITHER `["bvi_trust"]` OR `["jersey_trust"]`.
+- `meta.subsection` must be "intl_comparative_reasoning".
+- `meta.difficulty` must be "complex".
+- `meta.source_prompt_id` must be "P1_ICR_01".
+- `meta.version` must be "1.0".
+
+**Content Generation Constraints:**
+1.  **Scenario Generation:** Write a realistic short scenario (2-3 sentences).
+    *   For scenarios where **BVI Trust** is the better choice, emphasize goals like maximum confidentiality, lower cost, and simplicity. The client might be more focused on privacy than on the jurisdiction's reputation.
+    *   For scenarios where **Jersey Trust** is the better choice, emphasize goals like regulatory certainty, a well-established legal framework, and reputation. The client might have connections to the UK or be dealing with institutional partners who value a premier jurisdiction.
+2.  **Rationale is Critical:** The `meta.rationale` is the most important part. It must clearly explain:
+    *   Why the chosen structure is a good fit for the scenario's goals.
+    *   Why the *other* structure is a *less* suitable choice for this specific client.
+3.  **Balanced Dataset:** Generate a balanced number of flashcards for each choice (approx. 25 for BVI, 25 for Jersey).
+
+**Example Flashcard (Jersey Choice):**
+{"input": {"scenario": "A UK-based family office needs to set up a trust to hold a portfolio of London real estate and manage succession for the next generation. They are seeking a robust, reputable jurisdiction with a legal system based on English common law to ensure stability and predictability.", "jurisdiction": "uk", "goals": ["estate_planning", "regulatory_certainty"], "assumptions": ["The beneficiaries will likely have ties to the UK and EU.", "The trust will need to interact with major financial institutions."], "constraints": ["The structure must be perceived as highly reputable by third parties."]}, "output": {"recommended_structures": ["jersey_trust"], "policy_refs": ["internal_policy:offshore_trust_selection_v1"]}, "meta": {"subsection": "intl_comparative_reasoning", "difficulty": "complex", "source_prompt_id": "P1_ICR_01", "rationale": "A Jersey Trust is the ideal choice due to its international reputation, political stability, and mature legal system based on English common law, which aligns with the client's UK assets and need for certainty. While a BVI trust offers confidentiality, Jersey's status as a well-regulated 'white-listed' jurisdiction is more suitable for a client concerned with reputation and institutional interaction.", "version": "1.0"}}
+
+Now, please generate exactly 50 flashcards following these instructions.

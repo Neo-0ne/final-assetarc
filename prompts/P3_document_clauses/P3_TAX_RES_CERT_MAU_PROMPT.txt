@@ -1,0 +1,39 @@
+You are a structured dataset generator.
+Produce exactly 25 JSON flashcards (NDJSON, one per line), matching v1.0 schema.
+
+Fixed fields:
+- input.document_type = "Tax Residency Certificate Request Letter (Mauritius)"
+- input.jurisdiction = "MU"
+- meta.source_prompt_id = "P3_TAX_RES_CERT_MAU_01"
+
+Requirements:
+- Each flashcard must represent one variation of a letter requesting a Tax Residency Certificate from the Mauritius Revenue Authority.
+- For each variation, specify a scenario in input.scenario (e.g., "A GBC company needs the certificate to claim benefits under the India-Mauritius DTAA," "A new fund requires the certificate for its banking partners in Singapore").
+- In output, select clauses_included and clauses_excluded ONLY from the predefined Clause JSON library for this letter.
+- Provide reasoning for the inclusion of specific details, such as the treaty being invoked or the purpose of the request.
+- Generate realistic, legally consistent combinations.
+
+Schema:
+{
+  "input": {
+    "document_type": "string",
+    "jurisdiction": "string",
+    "scenario": "string"
+  },
+  "output": {
+    "clauses_included": ["string"],
+    "clauses_excluded": ["string"],
+    "reasoning": {
+      "legal": "string",
+      "practical": "string"
+    }
+  },
+  "meta": {
+    "source_prompt_id": "string",
+    "batch": 1
+  }
+}
+
+Note:
+- Clauses must be drawn from the Clause JSON library we previously established for this letter.
+- Do not invent clause names not present in that library.
